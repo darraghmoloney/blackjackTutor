@@ -1,0 +1,95 @@
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Food Pyramid</title>
+	
+	
+	<link rel="stylesheet" href="assignment-01.css">
+</head>
+<body>
+
+
+	
+	<div class="pyramid-container">
+	<div class="shape one">
+
+		<input class = "onebutton1" type=button value="+" onclick="button1()"/>
+		
+		<input class = "onebutton2" type=button value="-" onclick="button2()" />
+		<div class="buttonvalue1" id="value1"></div>
+
+
+	</div>
+
+	
+	<div class="shape x1"> </div>
+	<div class="shape two">
+		<input class = "twobutton1" type=button value="+" onclick="button3()"/>
+		
+		<input class = "twobutton2" type=button value="-" onclick="button4()" />
+		<div class="buttonvalue2" id="value2"></div>
+	</div>
+	<div class="shape x2"> </div>
+	<div class="shape three">
+		<input class = "threebutton1" type=button value="+" onclick="button5()"/>
+		
+		<input class = "threebutton2" type=button value="-" onclick="button6()" />
+		<div class="buttonvalue3" id="value3"></div>
+	</div>
+	
+	<div class="shape four">
+		<input class = "fourbutton1" type=button value="+" onclick="button7()"/>
+		
+		<input class = "fourbutton2" type=button value="-" onclick="button8()" />
+		<div class="buttonvalue4" id="value4"></div>
+	</div>
+	
+
+	<div class="shape five">
+		<input class = "fivebutton1" type=button value="+" onclick="button9()"/>
+		
+		<input class = "fivebutton2" type=button value="-" onclick="button10()" />
+		<div class="buttonvalue5" id="value5"></div>
+	</div>
+	
+
+	<div class="shape six">
+		<input class = "sixbutton1" type=button value="+" onclick="button11()"/>
+		<div class="buttonvalue6" id="value6"></div>
+		<input class = "sixbutton2" type=button value="-" onclick="button12()" />
+		
+	</div>
+	<br>
+
+	<div class="amountDiv1"> NOT EVERY DAY</div>
+	<div class="amountDiv2"> Very Small Amounts</div>
+	<div class="amountDiv3"> 2 servings a day</div>
+	<div class="amountDiv4"> 3 servings a day</div>
+	<div class="amountDiv5"> 3-5 servings a day</div>
+	<div class="amountDiv6"> 5-7 servings a day</div>
+
+</div>
+<!-- date section -->
+	<p id="date">
+	<i><b>Please Enter Todays Date Below:</b></i>
+	</p>
+		<input type="date" id="todayDate">
+
+
+			&nbsp;
+		<button onclick="enterDate()" id="button1">
+		Enter</button>
+
+		<div id="content"></div>
+
+		<div id="recommend">
+			<div id="recommendGreen"></div>
+			<div id="recommendGreenText"><i>: Congrats! You are within the recommended daily range :)</i> </div>
+			<div class="buttonvalue4" id="recommendOrange"></div>
+			<div id="recommendOrangeText"><i>: Careful now... Watch what you are eating!!!</i> </div>
+		</div>
+<script type="text/javascript" src="assignment-01.js"></script>
+</body>
+</html>
