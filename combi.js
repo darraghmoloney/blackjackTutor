@@ -414,6 +414,63 @@ let numHardAces = 0;
 let gameDeck = new Deck(8);
 gameDeck.shuffle();
 
+let dealersHand = [];
+let dealerHardAces = 0;
+
+function getDealerCards() {
+  let dealerCard1 = gameDeck.getNextCard();
+  dealersHand.push( dealerCard1 );
+  if(dealerCard1.isAce) {
+    dealerHardAces++;
+  }
+
+  let dealerCard2 = gameDeck.getNextCard();
+  dealersHand.push( dealerCard2 );
+  if(dealerCard2.isAce) {
+    dealerHardAces++;
+  }
+}
+
+function showDealerCards() {
+  /* Show the card back to reveal one card later */
+
+  let cardBack = `<img src="./cardImages/200px-Card_back_05.svg.png"
+    alt="card back" />`;
+
+    /*Show the SECOND card for easier reveal logic */
+  let card2 = dealersHand[1];
+
+  let visibleCard = `<img src="${card2.imagePath}"
+    alt=""/>`
+
+  let dealerHTML = cardBack + visibleCard;
+
+  document.getElementById("dealerCards").innerHTML =
+    cardBack + visibleCard;
+
+}
+
+getDealerCards();
+showDealerCards();
+
+function revealFirstCard() {
+  let hiddenCard = dealersHand[1];
+
+  let card1 = dealersHand[0];
+  let card2 = dealersHand[1];
+
+
+
+  let totalPoints = card1.points + card2.points;
+
+  document.getElementById("dealerCards").innerHTML =
+    `<img src="${card1.imagePath}" alt="${card1.shortName}" />
+      <img src="${card2.imagePath}" alt="${card2.shortName}" />
+      ${totalPoints}
+    `;
+
+}
+
 function getCardShowImage() {
 
   let next = gameDeck.getNextCard();
@@ -439,8 +496,14 @@ function getCardShowImage() {
 
 function resetShowImage() {
   currentPoints = 0;
+  numHardAces = 0;
   document.getElementById("card").innerHTML = "";
   document.getElementById("points").innerHTML = currentPoints;
+
+  dealersHand = [];
+  dealerHardAces = 0;
+  getDealerCards();
+  showDealerCards();
 }
 
 ///deck class test
