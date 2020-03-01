@@ -416,6 +416,7 @@ gameDeck.shuffle();
 
 let dealersHand = [];
 let dealerHardAces = 0;
+let dealerPoints = 0;
 
 function getDealerCards() {
   let dealerCard1 = gameDeck.getNextCard();
@@ -439,11 +440,16 @@ function showDealerCards() {
 
     /*Show the SECOND card for easier reveal logic */
   let card2 = dealersHand[1];
+  dealerPoints = card2.points;
 
   let visibleCard = `<img src="${card2.imagePath}"
     alt=""/>`
 
   let dealerHTML = cardBack + visibleCard;
+
+  document.getElementById("dealerPoints").innerHTML =
+    `Dealer: ${dealerPoints}`;
+
 
   document.getElementById("dealerCards").innerHTML =
     cardBack + visibleCard;
@@ -461,13 +467,43 @@ function revealFirstCard() {
 
 
 
-  let totalPoints = card1.points + card2.points;
+  dealerPoints = card1.points + card2.points;
 
   document.getElementById("dealerCards").innerHTML =
     `<img src="${card1.imagePath}" alt="${card1.shortName}" />
       <img src="${card2.imagePath}" alt="${card2.shortName}" />
-      ${totalPoints}
+
     `;
+
+    document.getElementById("dealerPoints").innerHTML =
+      `Dealer: ${dealerPoints}`;
+
+}
+
+function dealerHit() {
+  let nextCard = gameDeck.getNextCard();
+
+  if(nextCard.isAce) {
+    dealerHardAces++;
+  }
+  /* Try to convert ace points to 1 if we go over 21,
+    for as many hard aces as there are left in the deck.
+  */
+  while(dealerHardAces > 0 && dealerPoints + nextCard.points > 21) {
+    dealerPoints -= 10;
+    dealerHardAces--;
+  }
+  dealerPoints += nextCard.points;
+
+  let dealerHTML = document.getElementById("dealerCards").innerHTML;
+
+  dealerHTML += `<img src="${nextCard.imagePath}" alt="${nextCard.shortName}" />
+  `;
+
+  document.getElementById("dealerCards").innerHTML = dealerHTML;
+
+  document.getElementById("dealerPoints").innerHTML =
+    `Dealer: ${dealerPoints}`;
 
 }
 
@@ -491,17 +527,19 @@ function getCardShowImage() {
   }
   currentPoints += next.points;
 
-  document.getElementById("points").innerHTML = currentPoints;
+  document.getElementById("points").innerHTML = `You: ${currentPoints}`;
 }
 
 function resetShowImage() {
   currentPoints = 0;
   numHardAces = 0;
   document.getElementById("card").innerHTML = "";
-  document.getElementById("points").innerHTML = currentPoints;
+  document.getElementById("points").innerHTML = `You: ${currentPoints}`;
 
   dealersHand = [];
   dealerHardAces = 0;
+  dealerPoints = 0;
+  document.getElementById("dealerPoints").innerHTML = `Dealer: ${dealerPoints}`;
   getDealerCards();
   showDealerCards();
 }
