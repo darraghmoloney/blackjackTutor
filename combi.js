@@ -428,7 +428,7 @@ function getCardShowImage() {
       21, we try to change any ace points to 1 until we can't
       anymore.
   */
-  while(numHardAces > 0 && currentPoints + next.points >= 21) {
+  while(numHardAces > 0 && currentPoints + next.points > 21) {
     currentPoints -= 10;
     numHardAces--;
   }
