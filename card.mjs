@@ -1,3 +1,6 @@
+// Images from http://byronknoll.blogspot.com/2011/03/vector-playing-cards.html
+// https://commons.wikimedia.org/wiki/Category:Playing_cards_set_by_Byron_Knoll
+
 class Card {
 
   constructor(suit, value) {
@@ -9,6 +12,7 @@ class Card {
     this.shortName = this.generateShortName(); // Get e.g. "5H" for 5 of Hearts
     this.icon = this.generateIcon(); // Get a unicode icon for console
 
+    this.image = this.generateImage(); //get image path
   }
 
   get isAce() {
@@ -165,6 +169,54 @@ class Card {
 
     //Get the suit's own sub-array, and then the correct icon inside it
     return cardIcons[cardSuit][val];
+
+  }
+
+  generateImage() {
+    let imagePath = "./cardImages/";
+
+    let tagString = "";
+
+    switch(this.value) {
+      case "J":
+        imagePath+= "jack";
+        tagString = "2";
+        break;
+      case "Q":
+        imagePath+= "queen";
+        tagString = "2";
+        break;
+      case "K":
+        imagePath+= "king";
+        tagString = "2";
+        break;
+      case "A":
+        imagePath+= "ace";
+        tagString = "2";
+        break;
+      default:
+        imagePath+= this.value;
+    }
+
+    imagePath += "_of_";
+
+    switch(this.suit) {
+      case "Spades":
+        imagePath += "clubs";
+        break;
+      case "Hearts":
+        imagePath += "clubs";
+        break;
+      case "Diamonds":
+        imagePath += "clubs";
+        break;
+      case "Clubs":
+        imagePath += "clubs";
+        break;
+    }
+
+    imagePath += tagString + ".png";
+
 
   }
 
