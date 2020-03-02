@@ -10,20 +10,13 @@ class Card {
 
     this.points = this.generatePoints(); // Set the points based on face value
     this.shortName = this.generateShortName(); // Get e.g. "5H" for 5 of Hearts
-    this.icon = this.generateIcon(); // Get a unicode icon for console
 
-    this.imagePath = this.generateImagePath(); //get image path
+    this.imagePath = this.generateImagePath(); //get image file location
   }
 
   get isAce() {
 
     return this.value==="A";
-
-  }
-
-  get isHard() {
-
-    return this.isAce && this.points === 11;
 
   }
 
@@ -89,89 +82,6 @@ class Card {
 
   }
 
-  //Unicode icon for console.
-  //Real game will use real images - but this console icon is good for
-  //debugging.
-  generateIcon() {
-
-    const cardSuit = this.suit;
-    const val = this.value;
-
-    const cardIcons = {
-      "Spades" :
-        {
-          "A": "🂡",
-          "2": "🂢",
-          "3": "🂣",
-          "4": "🂤",
-          "5": "🂥",
-          "6": "🂦",
-          "7": "🂧",
-          "8": "🂨",
-          "9": "🂩",
-          "10": "🂪",
-          "J": "🂫",
-          "Q": "🂭",
-          "K": "🂮"
-        },
-
-      "Hearts":
-        {
-          "A": "🂱",
-          "2": "🂲",
-          "3": "🂳",
-          "4": "🂴",
-          "5": "🂵",
-          "6": "🂶",
-          "7": "🂷",
-          "8": "🂸",
-          "9": "🂹",
-          "10": "🂺",
-          "J": "🂻",
-          "Q": "🂽",
-          "K": "🂾"
-        },
-
-      "Diamonds":
-        {
-          "A": "🃁",
-          "2": "🃂",
-          "3": "🃃",
-          "4": "🃄",
-          "5": "🃅",
-          "6": "🃆",
-          "7": "🃇",
-          "8": "🃈",
-          "9": "🃉",
-          "10": "🃊",
-          "J": "🃋",
-          "Q": "🃍",
-          "K": "🃎"
-        },
-
-      "Clubs":
-        {
-          "A": "🃑",
-          "2": "🃒",
-          "3": "🃓",
-          "4": "🃔",
-          "5": "🃕",
-          "6": "🃖",
-          "7": "🃗",
-          "8": "🃘",
-          "9": "🃙",
-          "10": "🃚",
-          "J": "🃛",
-          "Q": "🃝",
-          "K": "🃞"
-        }
-    };
-
-    //Get the suit's own sub-array, and then the correct icon inside it
-    return cardIcons[cardSuit][val];
-
-  }
-
   generateImagePath() {
     let imagePath = `./cardImages/`;
 
@@ -220,31 +130,7 @@ class Card {
     return imagePath;
   }
 
-  //Allow soft hand if there is an Ace - so the change is done
-  //with the Ace card (maybe technically incorrect but easier)
-  //Logic of changing this to be implemented in the game itself
-  setSoft() {
-
-    if( this.isHard === true ) {
-
-      console.log("This Ace set to soft");
-      this.points = 1;
-
-    }
-    else {
-
-      if( this.isAce === true ) {
-        console.log("This Ace is already soft");
-      }
-      else {
-        console.log("This Card is not an ace - can't set soft");
-      }
-
-
-    }
-
-  }
-
+  /*  Console display only */
   display() {
 
     console.log(`${this.shortName}`);
@@ -252,14 +138,13 @@ class Card {
   }
 
   showCardImage() {
+
     let cardImage = this.imagePath;
-
-
     let cardDiv = document.getElementById("card");
-
     let currentCardHTML = cardDiv.innerHTML;
 
     cardDiv.innerHTML += `<img src=${this.imagePath} alt=${this.shortName} />`
+
   }
 
 }
@@ -336,7 +221,7 @@ class Deck {
 
   }
 
-
+  /*  Console display only */
   display() {
 
     let output = "";
@@ -408,34 +293,32 @@ class Deck {
 
 
 ///////////////////////////////////////////////////////////////////////////////
+/////////Webpage demo code-----------------------------------------------------
 
-let currentPoints = 0;
-let numHardAces = 0;
+/*  Set up gamedeck with as many decks as needed
+    -NOTE: this only needs to be done once, as it will automatically
+    re-shuffle after it reaches the last card
+*/
 let gameDeck = new Deck(8);
 gameDeck.shuffle();
 
-let playerHand = [];
+let cardDisplayDelay = 700; //for animation, don't show card immediately
+
+let playerPoints = 0;
+let numFullPointsAces = 0;  //how many Aces we have, that are worth 11 points
+let playerHands = [];  //will hold an array of player hands
 let numPlayerHands = 0;
 
 let dealersHand = [];
-let dealerHardAces = 0;
+let dealerFullPointsAces = 0;
 let dealerPoints = 0;
-let holeCardShown = false;
-let hitDisabled = false;
+let hiddenCardShown = false;  //hide the dealer's first card
 
-function getDealerCards() {
-  let dealerCard1 = gameDeck.getNextCard();
-  dealersHand.push( dealerCard1 );
-  if(dealerCard1.isAce) {
-    dealerHardAces++;
-  }
 
-  let dealerCard2 = gameDeck.getNextCard();
-  dealersHand.push( dealerCard2 );
-  if(dealerCard2.isAce) {
-    dealerHardAces++;
-  }
-}
+
+let gameOver = false;
+let playerWon = false;  //if the player beat the dealer
+let push = false; //if there was a draw (tie)
 
 function dealCards() {
   /*  Store player cards in nested array to allow
@@ -443,215 +326,259 @@ function dealCards() {
   */
   playerFirstHand = [];
 
-  /*  Deal cards in alternating order */
+  /*  Deal cards in alternating order - dealer card, then player card */
   let dealerCard1 = gameDeck.getNextCard();
   let playerCard1 = gameDeck.getNextCard();
-  if(playerCard1.isAce) {
-    numHardAces++;
+  if(playerCard1.isAce) { //need to track aces to change points if over 21
+    numFullPointsAces++;
   }
 
   let dealerCard2 = gameDeck.getNextCard();
   let playerCard2 = gameDeck.getNextCard();
   if(playerCard2.isAce) {
-      numHardAces++;
+      numFullPointsAces++;
     }
 
-
+  /* Add cards to dealer deck and player single hand deck */
   dealersHand.push( dealerCard1 );
   dealersHand.push( dealerCard2 );
 
   playerFirstHand.push( playerCard1 );
   playerFirstHand.push( playerCard1 );
 
-/*  Add first hand to array as array  i.e.
+/*  Add player's first hand to array as another array  i.e.
   [
     [card1, card2]
   ];
 */
-  playerHand.push( playerFirstHand );
+  playerHands.push( playerFirstHand );
 }
 
+/*  Show the players dealt cards at the start */
 function showFirstPlayerCards() {
-  let card1 = playerHand[0][0];
-  let card2 = playerHand[0][1];
+  let card1 = playerHands[0][0];
+  let card2 = playerHands[0][1];
 
-  currentPoints = card1.points + card2.points;
+  playerPoints = card1.points + card2.points;
 
   /*  If both first cards are aces, set one hard*/
-  if(card1.points + card2.points > 21) {
-    currentPoints -= 10;
-    numHardAces--;
+  if(card1.isAce && card2.isAce) {
+    playerPoints -= 10;
+    numFullPointsAces--;
   }
 
-
-
+  /*  Add the HTML for each card image
+      -imagePath is stored as part of the card and is the image file location
+      -alt is the text to show if the picture doesn't load, etc
+  */
   card1image = `<img src=${card1.imagePath} alt=${card1.shortName} />`;
   card2image = `<img src=${card2.imagePath} alt=${card2.shortName} />`;
 
+  /*  Render the cards & points on the webpage */
   document.getElementById("card").innerHTML = card1image + card2image;
-  document.getElementById("points").innerHTML = currentPoints;
+  document.getElementById("points").innerHTML = `Player: ${playerPoints}`;
 
 }
 
+/*  Show the dealers cards at the start */
+function showFirstDealerCards() {
 
-function showDealerCards() {
-  /* Show the card back to reveal one card later */
-
+  /* This is the hidden card image - just a back of a card picture */
   let cardBack = `<img src="./cardImages/200px-Card_back_05.svg.png"
     alt="card back" />`;
 
-    /*Show the SECOND card for easier reveal logic */
+  /*  Show the SECOND card for easier reveal logic */
   let card2 = dealersHand[1];
   dealerPoints = card2.points;
 
+  /*  HTML to show the card we can see's image*/
   let visibleCard = `<img src="${card2.imagePath}"
     alt=""/>`
 
   let dealerHTML = cardBack + visibleCard;
 
-  document.getElementById("dealerPoints").innerHTML =
-    `Dealer: ${dealerPoints}`;
-
-
+  /*  Render cards & points on the page */
   document.getElementById("dealerCards").innerHTML =
     cardBack + visibleCard;
-
+  document.getElementById("dealerPoints").innerHTML =
+    `Dealer: ${dealerPoints}`;
 }
 
-
-function revealFirstCard() {
-  let hiddenCard = dealersHand[1];
+/*  Stand - when the player stands, disable other buttons
+    & show the dealer's cards and total points
+*/
+function stand() {
+  let hiddenCard = dealersHand[0];
 
   let card1 = dealersHand[0];
   let card2 = dealersHand[1];
 
-
-
+  /*  Update the dealer's points to add the previously hidden card */
   dealerPoints = card1.points + card2.points;
 
+  /*  Reload dealer card HTML to show both cards and remove the card back
+      and update points
+      - this would be nice to animate, later
+  */
   document.getElementById("dealerCards").innerHTML =
     `<img src="${card1.imagePath}" alt="${card1.shortName}" />
       <img src="${card2.imagePath}" alt="${card2.shortName}" />
-
     `;
 
     document.getElementById("dealerPoints").innerHTML =
       `Dealer: ${dealerPoints}`;
 
-    holeCardShown = true;
+    /*  Disable the buttons as the player has no more gameplay options
+        left for this round
+    */
+    document.getElementById("standButton").disabled = true;
+    document.getElementById("doubleButton").disabled = true;
+    document.getElementById("hitButton").disabled = true;
+
+    /*  If the hidden card was shown, we don't need to run this function
+        again
+    */
+    hiddenCardShown = true;
 }
 
+/*  Get a new card for the player. */
 function playerHit() {
   let nextCard = gameDeck.getNextCard();
 
-  if(nextCard.isAce) {
-    numHardAces++;
+  if(nextCard.isAce) {  //  track this to reduce points by changing the
+                        //  ace points, if needed
+    numFullPointsAces++;
   }
 
-  while(numHardAces > 0 && currentPoints + nextCard.points > 21) {
-    currentPoints -= 10;
-    numHardAces--;
+  /*  If the score will go OVER 21, try to reduce it by changing the point
+      value given by any aces in the deck, as far as possible
+  */
+  while(numFullPointsAces > 0 && playerPoints + nextCard.points > 21) {
+    playerPoints -= 10;  //ace is set to default to 11 points
+    numFullPointsAces--;
   }
-  currentPoints += nextCard.points;
+  playerPoints += nextCard.points;
 
+
+
+  /*  Render new card & player points */
   let playerHTML = document.getElementById("card").innerHTML;
 
   playerHTML += `<img src="${nextCard.imagePath}" alt=${nextCard.shortName} />`;
 
   document.getElementById("card").innerHTML = playerHTML;
-  document.getElementById("points").innerHTML = currentPoints;
+  document.getElementById("points").innerHTML = `Player: ${playerPoints}`;
+
+  /*  If the player is BUST, finish the game */
+  if(playerPoints > 21) {
+    checkWhoWon();
+  }
 
 }
-
+/*  TESTING function - in real gameplay, this will be implemented
+    as fully automatic logic. Here we click to give a new card to the dealer.
+*/
 function dealerHit() {
 
-  document.getElementById("showDealerCardsBtn").disabled = true;
-
-  if(!holeCardShown) {
-    revealFirstCard();
-    setTimeout( function() {dealerHit()}, 700);
+  /*  If the player didn't press stand, we will do it automatically here.
+      This is just for Testing.
+  */
+  if(hiddenCardShown === false) {
+    stand();
+    /*  This adds a nice delay to the display when a new card is added */
+    setTimeout( function() {dealerHit()}, cardDisplayDelay);
   }
   else {
 
+    /* Get a new card for the dealer */
     let nextCard = gameDeck.getNextCard();
 
-    if(nextCard.isAce) {
-      dealerHardAces++;
+    dealersHand.push( nextCard );
+
+    if(nextCard.isAce) {  // Track number of aces to adjust scores correctly
+      dealerFullPointsAces++;
     }
     /* Try to convert ace points to 1 if we go over 21,
       for as many hard aces as there are left in the deck.
     */
-    while(dealerHardAces > 0 && dealerPoints + nextCard.points > 21) {
+    while(dealerFullPointsAces > 0 && dealerPoints + nextCard.points > 21) {
       dealerPoints -= 10;
-      dealerHardAces--;
+      dealerFullPointsAces--;
     }
+    /*  After trying to get the score below 21, if necessary,
+        we can set the dealer's points.
+    */
     dealerPoints += nextCard.points;
 
+    /*  Save the current HTML which includes the cards already shown. */
     let dealerHTML = document.getElementById("dealerCards").innerHTML;
 
+    /*  Add the new card image to it. */
     dealerHTML += `<img src="${nextCard.imagePath}" alt="${nextCard.shortName}" />
     `;
 
+    /*  Render the card image and points */
     document.getElementById("dealerCards").innerHTML = dealerHTML;
 
     document.getElementById("dealerPoints").innerHTML =
       `Dealer: ${dealerPoints}`;
+
+
+  }
+  /*  If the dealer is BUST, finish the game */
+  if(dealerPoints > 21) {
+    checkWhoWon();
   }
 }
 
-
-
-
-function getCardShowImage() {
-
-  let next = gameDeck.getNextCard();
-  next.showCardImage();
-  /*  Alternative logic to checking the card itself
-      - we just track the total number of aces shown first
-  */
-  if(next.isAce) {
-    numHardAces++;
-  }
-  /*  If the next card's points will make the score go over
-      21, we try to change any ace points to 1 until we can't
-      anymore.
-  */
-  while(numHardAces > 0 && currentPoints + next.points > 21) {
-    currentPoints -= 10;
-    numHardAces--;
-  }
-  currentPoints += next.points;
-
-  document.getElementById("points").innerHTML = `You: ${currentPoints}`;
-}
-
-function resetShowImage() {
-  currentPoints = 0;
-  numHardAces = 0;
-  playerHand = [];
+function newGame() {
+  /*  Reset player & dealer "state" variables*/
+  playerPoints = 0;
+  numFullPointsAces = 0;
+  playerHands = [];
   numPlayerHands = 0;
 
-  document.getElementById("card").innerHTML = "";
-  document.getElementById("points").innerHTML = `You: ${currentPoints}`;
+  dealersHand = [];
+  dealerFullPointsAces = 0;
+  dealerPoints = 0;
+  hiddenCardShown = false;
 
+  gameOver = false;
+  playerWon = false;
+  push = false; //reset the game "tied" condition
+
+  /*  Clear the HTML displays*/
+  document.getElementById("card").innerHTML = "";
+  document.getElementById("points").innerHTML = `You: ${playerPoints}`;
+
+  document.getElementById("dealerPoints").innerHTML = `Dealer: ${dealerPoints}`;
+
+  document.getElementById("status").innerHTML = "";
+
+  /*  Re-activate gameplay buttons in case they were disabled */
   document.getElementById("hitButton").disabled = false;
   document.getElementById("standButton").disabled = false;
   document.getElementById("doubleButton").disabled = false;
-  document.getElementById("showDealerCardsBtn").disabled = false;
 
-  dealersHand = [];
-  dealerHardAces = 0;
-  dealerPoints = 0;
-  holeCardShown = false;
-  document.getElementById("dealerPoints").innerHTML = `Dealer: ${dealerPoints}`;
   playRound();
 }
 
 function double() {
   let nextCard = gameDeck.getNextCard();
 
+  /*  Hit exactly one card */
   playerHit();
 
+  /*  Reveal the dealer's cards after a wait period (for drama)
+      -this is handled in stand() but maybe better to put somewhere else
+   */
+   if(gameOver === false) {
+      setTimeout( function() {stand()}, cardDisplayDelay);
+   }
+
+  /*  Disable all player gameplay buttons as none are valid because a double
+      means exactly one extra hit for the player.
+  */
   document.getElementById("hitButton").disabled = true;
   document.getElementById("standButton").disabled = true;
   document.getElementById("doubleButton").disabled = true;
@@ -659,15 +586,132 @@ function double() {
 }
 
 
+/*  Check for a win after the player stands, and the dealer also stands
+    - and also during regular gameplay for the player and dealer if their
+    total goes over 21.
+*/
+function checkWhoWon() {
+
+  let winMessage = "";
+
+  //condition 1: player is bust
+  if(playerPoints > 21) {
+    playerWon = false;
+    winMessage = "Player bust! ";
+  }
+  //condition 2: player NOT bust, but dealer bust
+  // (player win because player points must be under 21 if the first
+  //  "if" check passed)
+  else if(dealerPoints > 21) {
+    playerWon = true;
+    winMessage = "Dealer bust! ";
+  }
+  //condition 3: neither bust, player beats dealer
+  else if(playerPoints > dealerPoints) {
+    playerWon = true;
+  }
+  //condition 4: no bust but dealer beats player
+  else if(playerPoints < dealerPoints) {
+    playerWon = false;
+  }
+  //condition 5: scores are equal - further check required
+  else {
+    let pHand = playerHands[0];
+    //condition 5a: player has a perfect Blackjack (ace and face)
+    if(checkPerfectBlackjack(pHand) === true ) {
+        //5a-I: dealer doesn't have a blackjack (player win)
+        if(checkPerfectBlackjack(dealersHand) === false) {
+          playerWon = true;
+          winMessage = "Blackjack! ";
+        }
+        //5a-II: dealer also has a blackjack ("push" i.e. draw)
+        else {
+          playerWon = false;
+          push = true;
+          winMessage = "Blackjacks for everyone! ";
+        }
+    }
+    else if(checkPerfectBlackjack(dealersHand) === true) {
+    //condition 5b: dealer has a perfect Blackjack
+    //  (& player doesn't - checked above already)
+      playerWon = false;
+      winMessage = "Blackjack. ";
+    }
+    //condition 5c: no blackjacks for anyone, but the same points
+    else {
+      playerWon = false;
+      push = true;
+      winMessage = "Push. ";
+    }
+  }
+  gameOver = true;
+
+  if(playerWon === true) {
+    winMessage += "Player wins!";
+  }
+  else if(push === true) {
+    winMessage += "No winner.";
+  }
+  else {
+    winMessage += "Dealer wins.";
+  }
+  document.getElementById("status").innerHTML = winMessage;
+
+  document.getElementById("hitButton").disabled = true;
+  document.getElementById("standButton").disabled = true;
+  document.getElementById("doubleButton").disabled = true;
+
+
+}
+
+/*  Check for a perfect blackjack - 2 cards, one ace and one face card
+    Returns a boolean.
+    NB - A perfect blackjack doesn't automatically finish the game
+    - the dealer might have one too.
+*/
+function checkPerfectBlackjack(hand) {
+  //More than two cards don't count as a natural blackjack
+  if(hand.length > 2) {
+    return false;
+  }
+
+  //If the first of the two cards is an ace
+  if(hand[0].isAce) {
+    //the second card's points are 10, but it's NOT the Number 10 card
+    if(hand[1].points === 10 && hand[1].value !== "10") {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+  //Same logic for card 2
+  else if(hand[1].isAce) {
+    if(hand[0].points === 10 && hand[0].value !== "10") {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+  //No aces - impossible
+  else {
+    return false;
+  }
+}
+
+
+/*  Basically, function to finish the round */
+function dealerStand() {
+  checkWhoWon();
+}
 
 function playRound() {
   dealCards();
-  showDealerCards();
+  showFirstDealerCards();
   showFirstPlayerCards();
-  // getDealerCards();
-  // getCardShowImage();
-  // getCardShowImage();
-  // showDealerCards();
 }
 
-playRound();
+/////////MAIN------------------------------------------------------------------
+
+newGame();
