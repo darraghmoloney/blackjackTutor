@@ -414,9 +414,13 @@ let numHardAces = 0;
 let gameDeck = new Deck(8);
 gameDeck.shuffle();
 
+let playerHand = [];
+let numPlayerHands = 0;
+
 let dealersHand = [];
 let dealerHardAces = 0;
 let dealerPoints = 0;
+let holeCardShown = false;
 
 function getDealerCards() {
   let dealerCard1 = gameDeck.getNextCard();
@@ -431,6 +435,25 @@ function getDealerCards() {
     dealerHardAces++;
   }
 }
+
+function dealCards() {
+  /*  Store player cards in nested array to allow
+      multiple hands in "split" scenarios
+  */
+  playerHand1 = [];
+
+/*  Deal cards in alternating order */
+  dealersHand.push( gameDeck.getNextCard() );
+  playerHand1.push( gameDeck.getNextCard() );
+
+  dealersHand.push( gameDeck.getNextCard() );
+  playerHand1.push( gameDeck.getNextCard() );
+}
+
+function showFirstPlayerCards() {
+  // currentPoints =
+}
+
 
 function showDealerCards() {
   /* Show the card back to reveal one card later */
@@ -456,8 +479,6 @@ function showDealerCards() {
 
 }
 
-getDealerCards();
-showDealerCards();
 
 function revealFirstCard() {
   let hiddenCard = dealersHand[1];
@@ -478,33 +499,41 @@ function revealFirstCard() {
     document.getElementById("dealerPoints").innerHTML =
       `Dealer: ${dealerPoints}`;
 
+    holeCardShown = true;
 }
 
 function dealerHit() {
-  let nextCard = gameDeck.getNextCard();
 
-  if(nextCard.isAce) {
-    dealerHardAces++;
+  if(!holeCardShown) {
+    revealFirstCard();
+    setTimeout( function() {dealerHit()}, 700);
   }
-  /* Try to convert ace points to 1 if we go over 21,
-    for as many hard aces as there are left in the deck.
-  */
-  while(dealerHardAces > 0 && dealerPoints + nextCard.points > 21) {
-    dealerPoints -= 10;
-    dealerHardAces--;
+  else {
+
+    let nextCard = gameDeck.getNextCard();
+
+    if(nextCard.isAce) {
+      dealerHardAces++;
+    }
+    /* Try to convert ace points to 1 if we go over 21,
+      for as many hard aces as there are left in the deck.
+    */
+    while(dealerHardAces > 0 && dealerPoints + nextCard.points > 21) {
+      dealerPoints -= 10;
+      dealerHardAces--;
+    }
+    dealerPoints += nextCard.points;
+
+    let dealerHTML = document.getElementById("dealerCards").innerHTML;
+
+    dealerHTML += `<img src="${nextCard.imagePath}" alt="${nextCard.shortName}" />
+    `;
+
+    document.getElementById("dealerCards").innerHTML = dealerHTML;
+
+    document.getElementById("dealerPoints").innerHTML =
+      `Dealer: ${dealerPoints}`;
   }
-  dealerPoints += nextCard.points;
-
-  let dealerHTML = document.getElementById("dealerCards").innerHTML;
-
-  dealerHTML += `<img src="${nextCard.imagePath}" alt="${nextCard.shortName}" />
-  `;
-
-  document.getElementById("dealerCards").innerHTML = dealerHTML;
-
-  document.getElementById("dealerPoints").innerHTML =
-    `Dealer: ${dealerPoints}`;
-
 }
 
 function getCardShowImage() {
@@ -539,66 +568,16 @@ function resetShowImage() {
   dealersHand = [];
   dealerHardAces = 0;
   dealerPoints = 0;
+  holeCardShown = false;
   document.getElementById("dealerPoints").innerHTML = `Dealer: ${dealerPoints}`;
+  playRound();
+}
+
+function playRound() {
   getDealerCards();
+  getCardShowImage();
+  getCardShowImage();
   showDealerCards();
 }
 
-///deck class test
-/*
-console.log("\nSINGLE DECK TEST==============================\n")
-
-let myDeck = new Deck(1);
-myDeck.display();
-myDeck.shuffle();
-console.log("\nShuffled----------------------------------\n");
-myDeck.display();
-
-console.log("\n");
-*/
-
-// Creating an eight-deck pack, like in a Blackjack game
-/*
-console.log("\nEIGHT DECKS TEST==============================\n")
-
-let gameDeck = new Deck(8);
-// gameDeck.display();
-gameDeck.shuffle();
-console.log("\nShuffled----------------------------------\n");
-gameDeck.display();
-
-
-console.log("\nGETTING NEXT CARD TEST=========================\n");
-
-for(let i = 0; i < ((52 * 8)+1); i++) {
-  let nextCard = gameDeck.getNextCard();
-  console.log("card " + (i+1) + " (" + nextCard.value + " of " + nextCard.suit +
-    "), points: "+ nextCard.points + ": ");
-  if(nextCard.isAce === true) {
-    console.log("(it's an ace)");
-  }
-  if(nextCard.isHard === true) {
-    console.log("it's hard");
-  }
-  nextCard.display();
-}
-
-
-console.log("\nCARD - ACE TESTS++++++++++++++++++++++++++++++++++++");
-
-let aceNew = new Card("Spades", "A");
-aceNew.display();
-console.log("this is an ace? " + aceNew.isAce);
-console.log("hard: " + aceNew.isHard + ", pts: " + aceNew.points);
-aceNew.setSoft();
-console.log("hard: " + aceNew.isHard + ", pts: " + aceNew.points);
-
-console.log("\n");
-
-let cardNew = new Card("Diamonds", "10");
-cardNew.display();
-console.log("this is an ace? " + cardNew.isAce);
-console.log("hard: " + cardNew.isHard + ", pts: " + cardNew.points);
-cardNew.setSoft();
-console.log("hard: " + cardNew.isHard + ", pts: " + cardNew.points);
-*/
+playRound();
