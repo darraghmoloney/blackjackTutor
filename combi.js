@@ -20,6 +20,11 @@ class Card {
 
   }
 
+  /*  Check for non-Ace face card for Blackjack game */
+  get isFaceCard() {
+    return ( this.value==="K" || this.value ==="Q" || this.value === "J" ) ;
+  }
+
   // Gives us the Blackjack points for that card
   generatePoints() {
 
@@ -344,7 +349,7 @@ function dealCards() {
   dealersHand.push( dealerCard2 );
 
   playerFirstHand.push( playerCard1 );
-  playerFirstHand.push( playerCard1 );
+  playerFirstHand.push( playerCard2 );
 
 /*  Add player's first hand to array as another array  i.e.
   [
@@ -499,7 +504,7 @@ function dealerHit() {
       dealerFullPointsAces++;
     }
     /* Try to convert ace points to 1 if we go over 21,
-      for as many hard aces as there are left in the deck.
+      for as many full points aces as there are left in the deck.
     */
     while(dealerFullPointsAces > 0 && dealerPoints + nextCard.points > 21) {
       dealerPoints -= 10;
@@ -609,40 +614,46 @@ function checkWhoWon() {
   //condition 3: neither bust, player beats dealer
   else if(playerPoints > dealerPoints) {
     playerWon = true;
+    if(playerPoints === 21) {
+      winMessage = "Blackjack! ";
+    }
   }
   //condition 4: no bust but dealer beats player
   else if(playerPoints < dealerPoints) {
     playerWon = false;
+    if(playerPoints === 21) {
+      winMessage = "Blackjack. ";
+    }
   }
   //condition 5: scores are equal - further check required
   else {
     let pHand = playerHands[0];
     //condition 5a: player has a perfect Blackjack (ace and face)
-    if(checkPerfectBlackjack(pHand) === true ) {
-        //5a-I: dealer doesn't have a blackjack (player win)
-        if(checkPerfectBlackjack(dealersHand) === false) {
-          playerWon = true;
-          winMessage = "Blackjack! ";
-        }
-        //5a-II: dealer also has a blackjack ("push" i.e. draw)
-        else {
-          playerWon = false;
-          push = true;
-          winMessage = "Blackjacks for everyone! ";
-        }
-    }
-    else if(checkPerfectBlackjack(dealersHand) === true) {
-    //condition 5b: dealer has a perfect Blackjack
-    //  (& player doesn't - checked above already)
-      playerWon = false;
-      winMessage = "Blackjack. ";
-    }
-    //condition 5c: no blackjacks for anyone, but the same points
-    else {
-      playerWon = false;
-      push = true;
-      winMessage = "Push. ";
-    }
+      if(checkPerfectBlackjack(pHand) === true ) {
+          //5a-I: dealer doesn't have a blackjack (player win)
+          if(checkPerfectBlackjack(dealersHand) === false) {
+            playerWon = true;
+            winMessage = "Blackjack! ";
+          }
+          //5a-II: dealer also has a blackjack ("push" i.e. draw)
+          else {
+            playerWon = false;
+            push = true;
+            winMessage = "Blackjacks for everyone! ";
+          }
+      }
+      else if(checkPerfectBlackjack(dealersHand) === true) {
+      //condition 5b: dealer has a perfect Blackjack
+      //  (& player doesn't - checked above already)
+        playerWon = false;
+        winMessage = "Blackjack. ";
+      }
+      //condition 5c: no blackjacks for anyone, but the same points
+      else {
+        playerWon = false;
+        push = true;
+        winMessage = "Push. ";
+      }
   }
   gameOver = true;
 
@@ -678,7 +689,7 @@ function checkPerfectBlackjack(hand) {
   //If the first of the two cards is an ace
   if(hand[0].isAce) {
     //the second card's points are 10, but it's NOT the Number 10 card
-    if(hand[1].points === 10 && hand[1].value !== "10") {
+    if(hand[1].points === 10 && hand[1].isFaceCard) {
       return true;
     }
     else {
@@ -687,7 +698,7 @@ function checkPerfectBlackjack(hand) {
   }
   //Same logic for card 2
   else if(hand[1].isAce) {
-    if(hand[0].points === 10 && hand[0].value !== "10") {
+    if(hand[0].points === 10 && hand[0].isFaceCard) {
       return true;
     }
     else {
@@ -703,6 +714,9 @@ function checkPerfectBlackjack(hand) {
 
 /*  Basically, function to finish the round */
 function dealerStand() {
+  if(hiddenCardShown === false) {
+    stand();
+  }
   checkWhoWon();
 }
 
@@ -715,3 +729,18 @@ function playRound() {
 /////////MAIN------------------------------------------------------------------
 
 newGame();
+
+// let king = new Card("Hearts", "K");
+// let queen = new Card("Hearts", "Q");
+// let jack = new Card("Hearts", "J");
+// let ace = new Card("Hearts", "A");
+// let ten = new Card("Hearts", "10");
+
+// console.log(king.isFaceCard);
+// console.log(queen.isFaceCard);
+// console.log(jack.isFaceCard);
+// console.log(ace.isFaceCard);
+// console.log(ten.isFaceCard);
+//
+// cardHand = [jack, ace];
+// console.log(checkPerfectBlackjack(cardHand));
