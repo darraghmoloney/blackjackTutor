@@ -13,9 +13,11 @@
 
     <div id="dealerPoints"></div>
 
-    <button onClick="getCardShowImage()">hit</button>
-    <button onClick="revealFirstCard()">stand</button>
+    <button onClick="playerHit()" id="hitButton">hit</button>
+    <button onClick="revealFirstCard()" id="standButton">stand</button>
+    <button onClick="revealFirstCard()"id="showDealerCardsBtn">dealer show</button>
     <button onClick="dealerHit()">dealer hit</button>
+    <button onClick="double()" id="doubleButton">double</button>
     <button onClick="resetShowImage()">new game</button>
 
     <div id="points"></div>

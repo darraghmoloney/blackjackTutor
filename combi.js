@@ -421,6 +421,7 @@ let dealersHand = [];
 let dealerHardAces = 0;
 let dealerPoints = 0;
 let holeCardShown = false;
+let hitDisabled = false;
 
 function getDealerCards() {
   let dealerCard1 = gameDeck.getNextCard();
@@ -440,18 +441,56 @@ function dealCards() {
   /*  Store player cards in nested array to allow
       multiple hands in "split" scenarios
   */
-  playerHand1 = [];
+  playerFirstHand = [];
 
-/*  Deal cards in alternating order */
-  dealersHand.push( gameDeck.getNextCard() );
-  playerHand1.push( gameDeck.getNextCard() );
+  /*  Deal cards in alternating order */
+  let dealerCard1 = gameDeck.getNextCard();
+  let playerCard1 = gameDeck.getNextCard();
+  if(playerCard1.isAce) {
+    numHardAces++;
+  }
 
-  dealersHand.push( gameDeck.getNextCard() );
-  playerHand1.push( gameDeck.getNextCard() );
+  let dealerCard2 = gameDeck.getNextCard();
+  let playerCard2 = gameDeck.getNextCard();
+  if(playerCard2.isAce) {
+      numHardAces++;
+    }
+
+
+  dealersHand.push( dealerCard1 );
+  dealersHand.push( dealerCard2 );
+
+  playerFirstHand.push( playerCard1 );
+  playerFirstHand.push( playerCard1 );
+
+/*  Add first hand to array as array  i.e.
+  [
+    [card1, card2]
+  ];
+*/
+  playerHand.push( playerFirstHand );
 }
 
 function showFirstPlayerCards() {
-  // currentPoints =
+  let card1 = playerHand[0][0];
+  let card2 = playerHand[0][1];
+
+  currentPoints = card1.points + card2.points;
+
+  /*  If both first cards are aces, set one hard*/
+  if(card1.points + card2.points > 21) {
+    currentPoints -= 10;
+    numHardAces--;
+  }
+
+
+
+  card1image = `<img src=${card1.imagePath} alt=${card1.shortName} />`;
+  card2image = `<img src=${card2.imagePath} alt=${card2.shortName} />`;
+
+  document.getElementById("card").innerHTML = card1image + card2image;
+  document.getElementById("points").innerHTML = currentPoints;
+
 }
 
 
@@ -502,7 +541,31 @@ function revealFirstCard() {
     holeCardShown = true;
 }
 
+function playerHit() {
+  let nextCard = gameDeck.getNextCard();
+
+  if(nextCard.isAce) {
+    numHardAces++;
+  }
+
+  while(numHardAces > 0 && currentPoints + nextCard.points > 21) {
+    currentPoints -= 10;
+    numHardAces--;
+  }
+  currentPoints += nextCard.points;
+
+  let playerHTML = document.getElementById("card").innerHTML;
+
+  playerHTML += `<img src="${nextCard.imagePath}" alt=${nextCard.shortName} />`;
+
+  document.getElementById("card").innerHTML = playerHTML;
+  document.getElementById("points").innerHTML = currentPoints;
+
+}
+
 function dealerHit() {
+
+  document.getElementById("showDealerCardsBtn").disabled = true;
 
   if(!holeCardShown) {
     revealFirstCard();
@@ -536,6 +599,9 @@ function dealerHit() {
   }
 }
 
+
+
+
 function getCardShowImage() {
 
   let next = gameDeck.getNextCard();
@@ -562,8 +628,16 @@ function getCardShowImage() {
 function resetShowImage() {
   currentPoints = 0;
   numHardAces = 0;
+  playerHand = [];
+  numPlayerHands = 0;
+
   document.getElementById("card").innerHTML = "";
   document.getElementById("points").innerHTML = `You: ${currentPoints}`;
+
+  document.getElementById("hitButton").disabled = false;
+  document.getElementById("standButton").disabled = false;
+  document.getElementById("doubleButton").disabled = false;
+  document.getElementById("showDealerCardsBtn").disabled = false;
 
   dealersHand = [];
   dealerHardAces = 0;
@@ -573,11 +647,27 @@ function resetShowImage() {
   playRound();
 }
 
+function double() {
+  let nextCard = gameDeck.getNextCard();
+
+  playerHit();
+
+  document.getElementById("hitButton").disabled = true;
+  document.getElementById("standButton").disabled = true;
+  document.getElementById("doubleButton").disabled = true;
+
+}
+
+
+
 function playRound() {
-  getDealerCards();
-  getCardShowImage();
-  getCardShowImage();
+  dealCards();
   showDealerCards();
+  showFirstPlayerCards();
+  // getDealerCards();
+  // getCardShowImage();
+  // getCardShowImage();
+  // showDealerCards();
 }
 
 playRound();
