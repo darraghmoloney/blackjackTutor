@@ -676,9 +676,10 @@ function checkWhoWon() {
 }
 
 /*  Check for a perfect blackjack - 2 cards, one ace and one face card
-    Returns a boolean.
+    (i.e. not the number card 10)
     NB - A perfect blackjack doesn't automatically finish the game
     - the dealer might have one too.
+    BUT a perfect blackjack will beat a blackjack that has a 10 and an Ace in it.
 */
 function checkPerfectBlackjack(hand) {
   //More than two cards don't count as a natural blackjack
