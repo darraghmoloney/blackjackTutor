@@ -331,18 +331,21 @@ function dealCards() {
   */
   playerFirstHand = [];
 
-  /*  Deal cards in alternating order - dealer card, then player card */
-  let dealerCard1 = gameDeck.getNextCard();
+  /*  Deal cards in alternating order - player card, then dealer card */
+
   let playerCard1 = gameDeck.getNextCard();
   if(playerCard1.isAce) { //need to track aces to change points if over 21
     numFullPointsAces++;
   }
+  let dealerCard1 = gameDeck.getNextCard();
 
-  let dealerCard2 = gameDeck.getNextCard();
+
   let playerCard2 = gameDeck.getNextCard();
   if(playerCard2.isAce) {
       numFullPointsAces++;
-    }
+  }
+
+  let dealerCard2 = gameDeck.getNextCard();
 
   /* Add cards to dealer deck and player single hand deck */
   dealersHand.push( dealerCard1 );
@@ -421,6 +424,18 @@ function stand() {
   /*  Update the dealer's points to add the previously hidden card */
   dealerPoints = card1.points + card2.points;
 
+  if(card1.isAce) {
+    dealerFullPointsAces++;
+  }
+  if(card2.isAce) {
+    dealerFullPointsAces++;
+  }
+
+  if(card1.isAce && card2.isAce) {
+    dealerPoints -= 10;
+    dealerFullPointsAces--;
+  }
+
   /*  Reload dealer card HTML to show both cards and remove the card back
       and update points
       - this would be nice to animate, later
@@ -444,6 +459,7 @@ function stand() {
         again
     */
     hiddenCardShown = true;
+
 }
 
 /*  Get a new card for the player. */
