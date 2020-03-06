@@ -325,6 +325,8 @@ let gameOver = false;
 let playerWon = false;  //if the player beat the dealer
 let push = false; //if there was a draw (tie)
 
+let gameOverTextTimer; //to show win text when game ends, AFTER cards shown
+
 function dealCards() {
   /*  Store player cards in nested array to allow
       multiple hands in "split" scenarios
@@ -415,7 +417,7 @@ function showFirstDealerCards() {
 /*  Stand - when the player stands, disable other buttons
     & show the dealer's cards and total points
 */
-function stand() {
+function playerStand() {
   let hiddenCard = dealersHand[0];
 
   let card1 = dealersHand[0];
@@ -460,7 +462,17 @@ function stand() {
     */
     hiddenCardShown = true;
 
+    dealerPlay();
 }
+
+/*  Basically, function to finish the round */
+function dealerStand() {
+  if(hiddenCardShown === false) {
+    playerStand();
+  }
+  checkWhoWon();
+}
+
 
 /*  Get a new card for the player. */
 function playerHit() {
@@ -495,6 +507,8 @@ function playerHit() {
     checkWhoWon();
   }
 
+
+
 }
 /*  TESTING function - in real gameplay, this will be implemented
     as fully automatic logic. Here we click to give a new card to the dealer.
@@ -505,7 +519,7 @@ function dealerHit() {
       This is just for Testing.
   */
   if(hiddenCardShown === false) {
-    stand();
+    playerStand();
     /*  This adds a nice delay to the display when a new card is added */
     setTimeout( function() {dealerHit()}, cardDisplayDelay);
   }
@@ -538,17 +552,34 @@ function dealerHit() {
     dealerHTML += `<img src="${nextCard.imagePath}" alt="${nextCard.shortName}" />
     `;
 
+    setTimeout(function() {
+      document.getElementById("dealerCards").innerHTML = dealerHTML;
+      document.getElementById("dealerPoints").innerHTML =
+        `Dealer: ${dealerPoints}`;
+        /*  If the dealer is BUST, finish the game */
+
+    }, cardDisplayDelay);
     /*  Render the card image and points */
-    document.getElementById("dealerCards").innerHTML = dealerHTML;
-
-    document.getElementById("dealerPoints").innerHTML =
-      `Dealer: ${dealerPoints}`;
-
+    // document.getElementById("dealerCards").innerHTML = dealerHTML;
+    // document.getElementById("dealerPoints").innerHTML =
+    //   `Dealer: ${dealerPoints}`;
+    if(dealerPoints > 21) {
+      checkWhoWon();
+    }
 
   }
-  /*  If the dealer is BUST, finish the game */
-  if(dealerPoints > 21) {
-    checkWhoWon();
+
+}
+
+function dealerPlay() {
+  while(dealerPoints < 17) {
+    dealerHit();
+  }
+  if(dealerPoints === 17 && dealerFullPointsAces > 0) {
+    dealerHit();
+  }
+  else {
+    dealerStand();
   }
 }
 
@@ -564,9 +595,13 @@ function newGame() {
   dealerPoints = 0;
   hiddenCardShown = false;
 
+  hintShown = false;
+
   gameOver = false;
   playerWon = false;
   push = false; //reset the game "tied" condition
+
+  clearTimeout(gameOverTextTimer); //for safety / memory leaks
 
   /*  Clear the HTML displays*/
   document.getElementById("card").innerHTML = "";
@@ -594,7 +629,7 @@ function double() {
       -this is handled in stand() but maybe better to put somewhere else
    */
    if(gameOver === false) {
-      setTimeout( function() {stand()}, cardDisplayDelay);
+      setTimeout( function() {playerStand()}, cardDisplayDelay);
    }
 
   /*  Disable all player gameplay buttons as none are valid because a double
@@ -682,7 +717,11 @@ function checkWhoWon() {
   else {
     winMessage += "Dealer wins.";
   }
-  document.getElementById("status").innerHTML = winMessage;
+
+  gameOverTextTimer = setTimeout(function() {
+      document.getElementById("status").innerHTML = winMessage;
+  }, (cardDisplayDelay * (dealersHand.length-1)));
+
 
   document.getElementById("hitButton").disabled = true;
   document.getElementById("standButton").disabled = true;
@@ -729,12 +768,16 @@ function checkPerfectBlackjack(hand) {
 }
 
 
-/*  Basically, function to finish the round */
-function dealerStand() {
-  if(hiddenCardShown === false) {
-    stand();
+
+function getHint() {
+
+  if(!hintShown) {
+   document.getElementById("hint").innerHTML = "You should ????????";
   }
-  checkWhoWon();
+  else {
+   document.getElementById("hint").innerHTML = "";
+  }
+  hintShown = !hintShown;
 }
 
 function playRound() {
