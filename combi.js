@@ -309,8 +309,8 @@ gameDeck.shuffle();
 
 let cardDisplayDelay = 700; //for animation, don't show card immediately
 
-let playerPoints = 0;
-let numFullPointsAces = 0;  //how many Aces we have, that are worth 11 points
+let playerPoints = [];
+let numFullPointsAces = [];  //how many Aces we have, that are worth 11 points
 let playerHands = [];  //will hold an array of player hands
 let numPlayerHands = 0;
 let activePlayerHands = 0;
@@ -320,7 +320,7 @@ let dealerFullPointsAces = 0;
 let dealerPoints = 0;
 let hiddenCardShown = false;  //hide the dealer's first card
 
-
+let playerBestOverallScore;
 
 let gameOver = false;
 let playerWon = false;  //if the player beat the dealer
@@ -363,12 +363,12 @@ function dealCards() {
       multiple hands in "split" scenarios
   */
   playerNewHand = [];
-
+  numFullPointsAces = [0];
   /*  Deal cards in alternating order - player card, then dealer card */
 
   let playerCard1 = gameDeck.getNextCard();
   if(playerCard1.isAce) { //need to track aces to change points if over 21
-    numFullPointsAces++;
+    numFullPointsAces[0]++;
   }
 
   if(dealersHand.length === 0) {
@@ -380,7 +380,7 @@ function dealCards() {
 
   let playerCard2 = gameDeck.getNextCard();
   if(playerCard2.isAce) {
-      numFullPointsAces++;
+      numFullPointsAces[0]++;
   }
 
   if(dealersHand.length === 1) {
@@ -412,13 +412,25 @@ function showFirstPlayerCards() {
   let card1 = playerHands[0][0];
   let card2 = playerHands[0][1];
 
-  playerPoints = card1.points + card2.points;
+
+  let firstTotal = card1.points + card2.points;
+
+  if(card1.points === card2.points) {
+    document.getElementById("splitButton1").disabled = false;
+  }
+  else {
+    document.getElementById("splitButton1").disabled = true;
+  }
 
   /*  If both first cards are aces, set one hard*/
   if(card1.isAce && card2.isAce) {
-    playerPoints -= 10;
-    numFullPointsAces--;
+    firstTotal -= 10;
+    numFullPointsAces[0]--;
   }
+
+
+  playerPoints.push( firstTotal );
+
 
   /*  Add the HTML for each card image
       -imagePath is stored as part of the card and is the image file location
@@ -429,7 +441,7 @@ function showFirstPlayerCards() {
 
   /*  Render the cards & points on the webpage */
   document.getElementById("card1").innerHTML = card1image + card2image;
-  document.getElementById("points1").innerHTML = `Player: ${playerPoints}`;
+  document.getElementById("points1").innerHTML = `Player: ${playerPoints[0]}`;
 
 }
 
@@ -466,6 +478,16 @@ function playerStand(handNumber) {
   activePlayerHands--;
   console.log(`Active player hands: ${activePlayerHands}`);
 
+
+  /*  Disable the buttons as the player has no more gameplay options
+      left for this hand
+  */
+  document.getElementById(`standButton${handNumber}`).disabled = true;
+  document.getElementById(`doubleButton${handNumber}`).disabled = true;
+  document.getElementById(`hitButton${handNumber}`).disabled = true;
+  document.getElementById(`hintButton${handNumber}`).disabled = true;
+  document.getElementById(`splitButton${handNumber}`).disabled = true;
+
   if(activePlayerHands === 0) {
     let hiddenCard = dealersHand[0];
 
@@ -499,17 +521,14 @@ function playerStand(handNumber) {
       document.getElementById("dealerPoints").innerHTML =
         `Dealer: ${dealerPoints}`;
 
-      /*  Disable the buttons as the player has no more gameplay options
-          left for this round
-      */
-      document.getElementById(`standButton${handNumber}`).disabled = true;
-      document.getElementById(`doubleButton${handNumber}`).disabled = true;
-      document.getElementById(`hitButton${handNumber}`).disabled = true;
+
 
       /*  If the hidden card was shown, we don't need to run this function
           again
       */
       hiddenCardShown = true;
+
+
 
       dealerPlay();
     }
@@ -540,17 +559,17 @@ function playerHit(handNumber) {
 
   if(nextCard.isAce) {  //  track this to reduce points by changing the
                         //  ace points, if needed
-    numFullPointsAces++;
+    numFullPointsAces[handNumber-1]++;
   }
 
   /*  If the score will go OVER 21, try to reduce it by changing the point
       value given by any aces in the deck, as far as possible
   */
-  while(numFullPointsAces > 0 && playerPoints + nextCard.points > 21) {
-    playerPoints -= 10;  //ace is set to default to 11 points
-    numFullPointsAces--;
+  while(numFullPointsAces[handNumber-1] > 0 && playerPoints[handNumber-1] + nextCard.points > 21) {
+    playerPoints[handNumber-1] -= 10;  //ace is set to default to 11 points
+    numFullPointsAces[handNumber-1]--;
   }
-  playerPoints += nextCard.points;
+  playerPoints[handNumber-1] += nextCard.points;
 
 
 
@@ -563,12 +582,25 @@ function playerHit(handNumber) {
   let pointsHtmlId = `points${handNumber}`;
 
   document.getElementById(cardHtmlId).innerHTML = playerHTML;
-  document.getElementById(pointsHtmlId).innerHTML = `Player: ${playerPoints}`;
+  document.getElementById(pointsHtmlId).innerHTML = `Player: ${playerPoints[handNumber-1]}`;
 
   /*  If the player is BUST, finish the game */
-  if(playerPoints > 21 && activePlayerHands === 0) {
-    checkWhoWon();
+  if(playerPoints[handNumber-1] > 21) {
+
+    document.getElementById(`hitButton${handNumber}`).disabled = true;
+    document.getElementById(`standButton${handNumber}`).disabled = true;
+    document.getElementById(`doubleButton${handNumber}`).disabled = true;
+    document.getElementById(`hintButton${handNumber}`).disabled = true;
+    document.getElementById(`splitButton${handNumber}`).disabled = true;
+
+    activePlayerHands--;
+
+    if(activePlayerHands === 0) {
+      checkWhoWon();
+    }
   }
+
+
 
 
 
@@ -650,8 +682,8 @@ function dealerPlay() {
 
 function newGame() {
   /*  Reset player & dealer "state" variables*/
-  playerPoints = 0;
-  numFullPointsAces = 0;
+  playerPoints = [];
+  numFullPointsAces = [0];
   playerHands = [];
   numPlayerHands = 0;
   activePlayerHands = 0;
@@ -676,7 +708,7 @@ function newGame() {
 
   /*  Clear the HTML displays*/
   document.getElementById("card1").innerHTML = "";
-  document.getElementById("points1").innerHTML = `You: ${playerPoints}`;
+  document.getElementById("points1").innerHTML = `You: ${playerPoints[0]}`;
 
   document.getElementById("dealerPoints").innerHTML = `Dealer: ${dealerPoints}`;
 
@@ -686,6 +718,8 @@ function newGame() {
   document.getElementById("hitButton1").disabled = false;
   document.getElementById("standButton1").disabled = false;
   document.getElementById("doubleButton1").disabled = false;
+  document.getElementById(`hintButton1`).disabled = false;
+  document.getElementById(`splitButton1`).disabled = false;
 
   playRound();
 }
@@ -711,6 +745,8 @@ function double(handNumber) {
   document.getElementById(`hitButton${handNumber}`).disabled = true;
   document.getElementById(`standButton${handNumber}`).disabled = true;
   document.getElementById(`doubleButton${handNumber}`).disabled = true;
+  document.getElementById(`hintButton${handNumber}`).disabled = true;
+  document.getElementById(`splitButton${handNumber}`).disabled = true;
 
 }
 
@@ -722,25 +758,66 @@ function playerStandAll() {
 }
 
 function split(handNumber) {
+
+  let firstHand = handNumber-1;
+  let newHand = handNumber;
+
+  /*  Disallow split if different value cards */
+  if( playerHands[firstHand][0].points !== playerHands[firstHand][1].points ) {
+    return;
+  }
+
+
   numPlayerHands++;
   activePlayerHands++;
 
-  let movedCard = playerHands[handNumber-1].pop();
+  let movedCard = playerHands[firstHand].pop();
+  if(movedCard.isAce) {
+    numFullPointsAces[firstHand]--;
+  }
+  playerPoints[firstHand] -= movedCard.points;
+
+  let nextFirstHandCard = gameDeck.getNextCard();
+  if(nextFirstHandCard.isAce) {
+    numFullPointsAces[firstHand]++;
+  }
+  playerPoints[firstHand] += nextFirstHandCard.points;
 
   let nextHand = [];
-  nextHand.push(movedCard);
+  let nextOtherCard = gameDeck.getNextCard();
 
+  numFullPointsAces[newHand] = (movedCard.isAce ? 1: 0);
+  if(nextOtherCard.isAce) {
+    numFullPointsAces[newHand]++;
+  }
+
+  nextHand.push(movedCard);
+  nextHand.push(nextOtherCard);
+
+
+
+
+
+
+  playerPoints.push( movedCard.points + nextOtherCard.points );
   playerHands.push( nextHand );
 
-  let originalHandCard = playerHands[handNumber-1][0];
+  let originalHandCard = playerHands[firstHand][0];
   document.getElementById(`card${handNumber}`).innerHTML =
-    `<img src=${originalHandCard.imagePath} alt=${originalHandCard} />`;
+    `<img src=${originalHandCard.imagePath} alt=${originalHandCard} />
+    <img src=${nextFirstHandCard.imagePath} alt=${nextFirstHandCard} />`;
+
+  document.getElementById(`points${handNumber}`).innerHTML =
+      `Player: ${playerPoints[handNumber-1]}`;
 
   singleHandHTML(numPlayerHands);
 
   document.getElementById(`card${handNumber+1}`).innerHTML =
-    `<img src=${movedCard.imagePath} alt=${movedCard} />`;
+    `<img src=${movedCard.imagePath} alt=${movedCard} />
+    <img src=${nextOtherCard.imagePath} alt=${nextOtherCard} />`;
 
+  document.getElementById(`points${handNumber+1}`).innerHTML =
+    `Player: ${playerPoints[handNumber]}`;
 
 }
 
@@ -753,8 +830,22 @@ function checkWhoWon() {
 
   let winMessage = "";
 
+  playerBestOverallScore = 0;
+
+  for(let nextPoints of playerPoints) {
+      if(nextPoints === 21) {
+        playerBestOverallScore = nextPoints;
+        break;
+      }
+      else if( (nextPoints < 21) && (nextPoints > playerBestOverallScore) ) {
+        playerBestOverallScore = nextPoints;
+      }
+  }
+
+  console.log(playerBestOverallScore);
+
   //condition 1: player is bust
-  if(playerPoints > 21) {
+  if(playerBestOverallScore > 21) {
     playerWon = false;
     winMessage = "Player bust! ";
   }
@@ -766,24 +857,32 @@ function checkWhoWon() {
     winMessage = "Dealer bust! ";
   }
   //condition 3: neither bust, player beats dealer
-  else if(playerPoints > dealerPoints) {
+  else if(playerBestOverallScore > dealerPoints) {
     playerWon = true;
-    if(playerPoints === 21) {
+    if(playerBestOverallScore === 21) {
       winMessage = "Blackjack! ";
     }
   }
   //condition 4: no bust but dealer beats player
-  else if(playerPoints < dealerPoints) {
+  else if(playerBestOverallScore < dealerPoints) {
     playerWon = false;
-    if(playerPoints === 21) {
+    if(dealerPoints === 21) {
       winMessage = "Blackjack. ";
     }
   }
   //condition 5: scores are equal - further check required
   else {
-    let pHand = playerHands[0];
+    // let pHand = playerHands[0];
+
+    let playerHasPerfectHand = false;
+    for(let hand of playerHands) {
+      if( checkPerfectBlackjack(hand) === true ) {
+        playerHasPerfectHand = true;
+        break;
+      }
+    }
     //condition 5a: player has a perfect Blackjack (ace and face)
-      if(checkPerfectBlackjack(pHand) === true ) {
+      if(playerHasPerfectHand === true ) {
           //5a-I: dealer doesn't have a blackjack (player win)
           if(checkPerfectBlackjack(dealersHand) === false) {
             playerWon = true;
@@ -829,6 +928,8 @@ function checkWhoWon() {
     document.getElementById(`hitButton${i}`).disabled = true;
     document.getElementById(`standButton${i}`).disabled = true;
     document.getElementById(`doubleButton${i}`).disabled = true;
+    document.getElementById(`hintButton${i}`).disabled = true;
+    document.getElementById(`splitButton${i}`).disabled = true;
   }
 
 }
