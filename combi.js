@@ -313,6 +313,7 @@ let playerPoints = 0;
 let numFullPointsAces = 0;  //how many Aces we have, that are worth 11 points
 let playerHands = [];  //will hold an array of player hands
 let numPlayerHands = 0;
+let activePlayerHands = 0;
 
 let dealersHand = [];
 let dealerFullPointsAces = 0;
@@ -327,11 +328,41 @@ let push = false; //if there was a draw (tie)
 
 let gameOverTextTimer; //to show win text when game ends, AFTER cards shown
 
+
+
+const singleHandHTML = (handNumber) => {
+
+
+  let handToShow = `hand${handNumber}`;
+
+  // let currentPlayerHandsHTML = document.getElementById("playerHands").innerHTML;
+  document.getElementById("playerHands").innerHTML +=
+
+   `<br />
+    <div id="hand${handNumber}">
+
+       <div id="card${handNumber}"></div>
+       <div id="points${handNumber}"></div>
+
+      <button onClick="playerHit(${handNumber})" id="hitButton${handNumber}">hit</button>
+      <button onClick="playerStand(${handNumber})" id="standButton${handNumber}">stand</button>
+      <button onClick="double(${handNumber})" id="doubleButton${handNumber}">double</button>
+      <button onClick="getHint(${handNumber})" id="hintButton${handNumber}">hint</button>
+
+      <button onClick="split(${handNumber})" id="splitButton${handNumber}">split</button>
+
+      <div id="hint${handNumber}"></div>
+    </div>
+  `
+};
+
+
+
 function dealCards() {
   /*  Store player cards in nested array to allow
       multiple hands in "split" scenarios
   */
-  playerFirstHand = [];
+  playerNewHand = [];
 
   /*  Deal cards in alternating order - player card, then dealer card */
 
@@ -339,7 +370,12 @@ function dealCards() {
   if(playerCard1.isAce) { //need to track aces to change points if over 21
     numFullPointsAces++;
   }
-  let dealerCard1 = gameDeck.getNextCard();
+
+  if(dealersHand.length === 0) {
+      let dealerCard1 = gameDeck.getNextCard();
+      dealersHand.push( dealerCard1 );
+  }
+
 
 
   let playerCard2 = gameDeck.getNextCard();
@@ -347,21 +383,28 @@ function dealCards() {
       numFullPointsAces++;
   }
 
-  let dealerCard2 = gameDeck.getNextCard();
+  if(dealersHand.length === 1) {
+      let dealerCard2 = gameDeck.getNextCard();
+      dealersHand.push( dealerCard2 );
+  }
 
   /* Add cards to dealer deck and player single hand deck */
-  dealersHand.push( dealerCard1 );
-  dealersHand.push( dealerCard2 );
 
-  playerFirstHand.push( playerCard1 );
-  playerFirstHand.push( playerCard2 );
+
+
+  playerNewHand.push( playerCard1 );
+  playerNewHand.push( playerCard2 );
 
 /*  Add player's first hand to array as another array  i.e.
   [
     [card1, card2]
   ];
 */
-  playerHands.push( playerFirstHand );
+  playerHands.push( playerNewHand );
+
+  numPlayerHands++;
+  activePlayerHands++;
+  console.log(`Active player hands: ${activePlayerHands}`);
 }
 
 /*  Show the players dealt cards at the start */
@@ -385,8 +428,8 @@ function showFirstPlayerCards() {
   card2image = `<img src=${card2.imagePath} alt=${card2.shortName} />`;
 
   /*  Render the cards & points on the webpage */
-  document.getElementById("card").innerHTML = card1image + card2image;
-  document.getElementById("points").innerHTML = `Player: ${playerPoints}`;
+  document.getElementById("card1").innerHTML = card1image + card2image;
+  document.getElementById("points1").innerHTML = `Player: ${playerPoints}`;
 
 }
 
@@ -417,66 +460,83 @@ function showFirstDealerCards() {
 /*  Stand - when the player stands, disable other buttons
     & show the dealer's cards and total points
 */
-function playerStand() {
-  let hiddenCard = dealersHand[0];
+function playerStand(handNumber) {
 
-  let card1 = dealersHand[0];
-  let card2 = dealersHand[1];
+  console.log(`Player stands on hand ${handNumber}`);
+  activePlayerHands--;
+  console.log(`Active player hands: ${activePlayerHands}`);
 
-  /*  Update the dealer's points to add the previously hidden card */
-  dealerPoints = card1.points + card2.points;
+  if(activePlayerHands === 0) {
+    let hiddenCard = dealersHand[0];
 
-  if(card1.isAce) {
-    dealerFullPointsAces++;
-  }
-  if(card2.isAce) {
-    dealerFullPointsAces++;
-  }
+    let card1 = dealersHand[0];
+    let card2 = dealersHand[1];
 
-  if(card1.isAce && card2.isAce) {
-    dealerPoints -= 10;
-    dealerFullPointsAces--;
-  }
+    /*  Update the dealer's points to add the previously hidden card */
+    dealerPoints = card1.points + card2.points;
 
-  /*  Reload dealer card HTML to show both cards and remove the card back
-      and update points
-      - this would be nice to animate, later
-  */
-  document.getElementById("dealerCards").innerHTML =
-    `<img src="${card1.imagePath}" alt="${card1.shortName}" />
-      <img src="${card2.imagePath}" alt="${card2.shortName}" />
-    `;
+    if(card1.isAce) {
+      dealerFullPointsAces++;
+    }
+    if(card2.isAce) {
+      dealerFullPointsAces++;
+    }
 
-    document.getElementById("dealerPoints").innerHTML =
-      `Dealer: ${dealerPoints}`;
+    if(card1.isAce && card2.isAce) {
+      dealerPoints -= 10;
+      dealerFullPointsAces--;
+    }
 
-    /*  Disable the buttons as the player has no more gameplay options
-        left for this round
+    /*  Reload dealer card HTML to show both cards and remove the card back
+        and update points
+        - this would be nice to animate, later
     */
-    document.getElementById("standButton").disabled = true;
-    document.getElementById("doubleButton").disabled = true;
-    document.getElementById("hitButton").disabled = true;
+    document.getElementById("dealerCards").innerHTML =
+      `<img src="${card1.imagePath}" alt="${card1.shortName}" />
+        <img src="${card2.imagePath}" alt="${card2.shortName}" />
+      `;
 
-    /*  If the hidden card was shown, we don't need to run this function
-        again
-    */
-    hiddenCardShown = true;
+      document.getElementById("dealerPoints").innerHTML =
+        `Dealer: ${dealerPoints}`;
 
-    dealerPlay();
+      /*  Disable the buttons as the player has no more gameplay options
+          left for this round
+      */
+      document.getElementById(`standButton${handNumber}`).disabled = true;
+      document.getElementById(`doubleButton${handNumber}`).disabled = true;
+      document.getElementById(`hitButton${handNumber}`).disabled = true;
+
+      /*  If the hidden card was shown, we don't need to run this function
+          again
+      */
+      hiddenCardShown = true;
+
+      dealerPlay();
+    }
 }
 
 /*  Basically, function to finish the round */
 function dealerStand() {
   if(hiddenCardShown === false) {
-    playerStand();
+
+      playerStandAll();
+
   }
   checkWhoWon();
 }
 
 
 /*  Get a new card for the player. */
-function playerHit() {
+function playerHit(handNumber) {
   let nextCard = gameDeck.getNextCard();
+
+  //indexing starts at 0,  but we count
+  //from 1 for the HTML etc.
+  playerHands[handNumber-1].push(nextCard);
+
+  console.log(playerHands[handNumber-1]);
+
+  console.log(`Hit for hand ${handNumber}`);
 
   if(nextCard.isAce) {  //  track this to reduce points by changing the
                         //  ace points, if needed
@@ -495,15 +555,18 @@ function playerHit() {
 
 
   /*  Render new card & player points */
-  let playerHTML = document.getElementById("card").innerHTML;
+  let playerHTML = document.getElementById(`card${handNumber}`).innerHTML;
 
   playerHTML += `<img src="${nextCard.imagePath}" alt=${nextCard.shortName} />`;
 
-  document.getElementById("card").innerHTML = playerHTML;
-  document.getElementById("points").innerHTML = `Player: ${playerPoints}`;
+  let cardHtmlId = `card${handNumber}`;
+  let pointsHtmlId = `points${handNumber}`;
+
+  document.getElementById(cardHtmlId).innerHTML = playerHTML;
+  document.getElementById(pointsHtmlId).innerHTML = `Player: ${playerPoints}`;
 
   /*  If the player is BUST, finish the game */
-  if(playerPoints > 21) {
+  if(playerPoints > 21 && activePlayerHands === 0) {
     checkWhoWon();
   }
 
@@ -519,7 +582,9 @@ function dealerHit() {
       This is just for Testing.
   */
   if(hiddenCardShown === false) {
-    playerStand();
+
+      playerStandAll();
+
     /*  This adds a nice delay to the display when a new card is added */
     setTimeout( function() {dealerHit()}, cardDisplayDelay);
   }
@@ -589,6 +654,7 @@ function newGame() {
   numFullPointsAces = 0;
   playerHands = [];
   numPlayerHands = 0;
+  activePlayerHands = 0;
 
   dealersHand = [];
   dealerFullPointsAces = 0;
@@ -603,41 +669,78 @@ function newGame() {
 
   clearTimeout(gameOverTextTimer); //for safety / memory leaks
 
+  document.getElementById("playerHands").innerHTML = "";
+  singleHandHTML(1);
+  // singleHandHTML(2);
+  // singleHandHTML(3);
+
   /*  Clear the HTML displays*/
-  document.getElementById("card").innerHTML = "";
-  document.getElementById("points").innerHTML = `You: ${playerPoints}`;
+  document.getElementById("card1").innerHTML = "";
+  document.getElementById("points1").innerHTML = `You: ${playerPoints}`;
 
   document.getElementById("dealerPoints").innerHTML = `Dealer: ${dealerPoints}`;
 
   document.getElementById("status").innerHTML = "";
 
   /*  Re-activate gameplay buttons in case they were disabled */
-  document.getElementById("hitButton").disabled = false;
-  document.getElementById("standButton").disabled = false;
-  document.getElementById("doubleButton").disabled = false;
+  document.getElementById("hitButton1").disabled = false;
+  document.getElementById("standButton1").disabled = false;
+  document.getElementById("doubleButton1").disabled = false;
 
   playRound();
 }
 
-function double() {
+function double(handNumber) {
+
+  console.log(`Double for hand ${handNumber}`);
   let nextCard = gameDeck.getNextCard();
 
   /*  Hit exactly one card */
-  playerHit();
+  playerHit(handNumber);
 
   /*  Reveal the dealer's cards after a wait period (for drama)
       -this is handled in stand() but maybe better to put somewhere else
    */
    if(gameOver === false) {
-      setTimeout( function() {playerStand()}, cardDisplayDelay);
+      setTimeout( function() {playerStandAll()}, cardDisplayDelay);
    }
 
   /*  Disable all player gameplay buttons as none are valid because a double
       means exactly one extra hit for the player.
   */
-  document.getElementById("hitButton").disabled = true;
-  document.getElementById("standButton").disabled = true;
-  document.getElementById("doubleButton").disabled = true;
+  document.getElementById(`hitButton${handNumber}`).disabled = true;
+  document.getElementById(`standButton${handNumber}`).disabled = true;
+  document.getElementById(`doubleButton${handNumber}`).disabled = true;
+
+}
+
+function playerStandAll() {
+  activePlayerHands = 0;
+  for(let i=1; i<=numPlayerHands; i++) {
+    playerStand(i);
+  }
+}
+
+function split(handNumber) {
+  numPlayerHands++;
+  activePlayerHands++;
+
+  let movedCard = playerHands[handNumber-1].pop();
+
+  let nextHand = [];
+  nextHand.push(movedCard);
+
+  playerHands.push( nextHand );
+
+  let originalHandCard = playerHands[handNumber-1][0];
+  document.getElementById(`card${handNumber}`).innerHTML =
+    `<img src=${originalHandCard.imagePath} alt=${originalHandCard} />`;
+
+  singleHandHTML(numPlayerHands);
+
+  document.getElementById(`card${handNumber+1}`).innerHTML =
+    `<img src=${movedCard.imagePath} alt=${movedCard} />`;
+
 
 }
 
@@ -722,13 +825,14 @@ function checkWhoWon() {
       document.getElementById("status").innerHTML = winMessage;
   }, (cardDisplayDelay * (dealersHand.length-1)));
 
-
-  document.getElementById("hitButton").disabled = true;
-  document.getElementById("standButton").disabled = true;
-  document.getElementById("doubleButton").disabled = true;
-
+  for(let i=1; i<=numPlayerHands; i++) {
+    document.getElementById(`hitButton${i}`).disabled = true;
+    document.getElementById(`standButton${i}`).disabled = true;
+    document.getElementById(`doubleButton${i}`).disabled = true;
+  }
 
 }
+
 
 /*  Check for a perfect blackjack - 2 cards, one ace and one face card
     (i.e. not the number card 10)
@@ -769,13 +873,13 @@ function checkPerfectBlackjack(hand) {
 
 
 
-function getHint() {
+function getHint(handNumber) {
 
   if(!hintShown) {
-   document.getElementById("hint").innerHTML = "You should ????????";
+   document.getElementById(`hint${handNumber}`).innerHTML = "You should ????????";
   }
   else {
-   document.getElementById("hint").innerHTML = "";
+   document.getElementById(`hint${handNumber}`).innerHTML = "";
   }
   hintShown = !hintShown;
 }
