@@ -629,6 +629,7 @@ function dealerHit() {
 
     if(nextCard.isAce) {  // Track number of aces to adjust scores correctly
       dealerFullPointsAces++;
+      console.log(`Dealer has ${dealerFullPointsAces} aces`);
     }
     /* Try to convert ace points to 1 if we go over 21,
       for as many full points aces as there are left in the deck.
@@ -636,6 +637,7 @@ function dealerHit() {
     while(dealerFullPointsAces > 0 && dealerPoints + nextCard.points > 21) {
       dealerPoints -= 10;
       dealerFullPointsAces--;
+      console.log(`Dealer ace set to hard`);
     }
     /*  After trying to get the score below 21, if necessary,
         we can set the dealer's points.
@@ -669,11 +671,13 @@ function dealerHit() {
 }
 
 function dealerPlay() {
-  while(dealerPoints < 17) {
+  if(dealerPoints < 17) {
     dealerHit();
+    dealerPlay();
   }
   if(dealerPoints === 17 && dealerFullPointsAces > 0) {
     dealerHit();
+    dealerPlay();
   }
   else {
     dealerStand();
@@ -755,6 +759,51 @@ function playerStandAll() {
   for(let i=1; i<=numPlayerHands; i++) {
     playerStand(i);
   }
+
+
+    let hiddenCard = dealersHand[0];
+
+    let card1 = dealersHand[0];
+    let card2 = dealersHand[1];
+
+    /*  Update the dealer's points to add the previously hidden card */
+    dealerPoints = card1.points + card2.points;
+
+    if(card1.isAce) {
+      dealerFullPointsAces++;
+    }
+    if(card2.isAce) {
+      dealerFullPointsAces++;
+    }
+
+    if(card1.isAce && card2.isAce) {
+      dealerPoints -= 10;
+      dealerFullPointsAces--;
+    }
+
+    /*  Reload dealer card HTML to show both cards and remove the card back
+        and update points
+        - this would be nice to animate, later
+    */
+    document.getElementById("dealerCards").innerHTML =
+      `<img src="${card1.imagePath}" alt="${card1.shortName}" />
+        <img src="${card2.imagePath}" alt="${card2.shortName}" />
+      `;
+
+      document.getElementById("dealerPoints").innerHTML =
+        `Dealer: ${dealerPoints}`;
+
+
+
+      /*  If the hidden card was shown, we don't need to run this function
+          again
+      */
+      hiddenCardShown = true;
+
+
+
+      dealerPlay();
+    
 }
 
 function split(handNumber) {
