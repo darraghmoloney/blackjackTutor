@@ -1,26 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import HeaderBox from './HeaderBox';
+import Footer from './Footer';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+
+class App extends Component {
+  render() {
+    let links = [
+      { label: 'Home', link: '#home', active: true },
+      { label: 'About', link: '#about' },
+      { label: 'Tutor', link: '#tutor' },
+      { label: 'Quiz', link: '#quiz' },
+      { label: 'Contact Us', link: '#contact-us' },
+    ];
+
+    return (
+      <div className="app">
+        <HeaderBox links={links} />
+        
+      
+      <Footer />
+      </div>
+    );
+  }
 }
 
 export default App;

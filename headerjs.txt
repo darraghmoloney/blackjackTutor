@@ -1,0 +1,128 @@
+import React, { Component } from 'react';
+
+class Header extends React.Component {
+	render() {
+    return (
+      <body>
+      <header>
+        <nav id="header-nav" className ="navbar navbar-default">
+          
+          <div className="container">
+          
+            <div className="navbar-header">
+                <a href="index.html" className="pull-left visible-md visible-lg">
+                  <div id="logo-img" alt="Logo image"></div>
+                </a> 
+
+                <div className="navbar-brand">
+                  <a href="index.html"><h1>BlackJack Tutor</h1></a>
+                  
+
+                  <p> 
+
+                    <span> 6ix Certified</span>
+                  </p>
+                </div>
+
+                <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#collapsable-nav" aria-expanded="false">
+                  <span className="sr-only">Toggle navigation</span>
+                  <span className="icon-bar"></span>
+                  <span className="icon-bar"></span>
+                  <span className="icon-bar"></span>
+                </button>
+            </div> 
+
+            <ul id="nav-list" className="nav navbar-nav navbar-right">
+            <li className="visible-xs active">
+              <a href="index.html">
+                <span className="glyphicon glyphicon-home"></span><br className="hidden-xs"></br> Home</a>
+            </li>
+
+            <li>
+              <a href="menu-categories.html">
+                <span className="glyphicon glyphicon-cutlery"></span><br className="hidden-xs"></br> About</a>
+            </li>
+            <li>
+              <a href="#">
+                <span className="glyphicon glyphicon-glass"></span><br className="hidden-xs"></br> Tutor</a>
+            </li>
+            <li>
+              <a href="#">
+                <span className="glyphicon glyphicon-fire"></span><br className="hidden-xs"></br> Quiz</a>
+            </li>
+            <li>
+              <a href="#">
+                <span className="glyphicon glyphicon-tree-conifer"></span><br className="hidden-xs"></br> Contact</a>
+            </li>
+            
+            <li id="phone" className="hidden-xs">
+              <a href="tel:083-042-3869">
+                <span>083-042-4869</span></a><div>* Call for Consultation</div>
+            </li>
+            </ul>
+            
+
+            
+
+          </div>
+        </nav>
+      </header> 
+
+
+      <div id="main-content" className="container">
+        <div className="jumbotron">
+        </div>
+
+        <div id="home-tiles" className="row">
+          <div className="col-md-4 col-sm-6 col-xs-12">
+            <a href="menu-categories.html"> <div id="menu-tile"><span>About</span></div></a>
+          </div>
+          
+          <div className="col-md-4 col-sm-6 col-xs-12">
+            <a href="Single-categories.html"><div id="specials-tile"><span>Tutor</span></div></a>
+          </div>
+          
+          <div className="col-md-4 col-sm-6 col-xs-12">
+            <a href="Single-categories.html"><div id="quiz-tile"><span>Quiz</span></div></a>
+          </div>
+
+        </div>
+      </div>  
+
+      <footer className="panel-footer">
+        <div className="container">
+          <div className ="row">
+            <section id="hours" className="col-sm-4">
+              <span>Hours:</span><br></br>
+              Monday-Friday: 12:00 - 04:00 <br></br>
+              Saturday: 12:00 - 06:00<br></br>
+              Sunday Closed 
+              <hr className="visible-xs"></hr>
+            </section>
+        
+            <section id="address" className="col-sm-4">
+              <span>Address: </span><br></br>
+              123 Casino Lane<br></br>
+              Maynooth Co.Kildare
+              <p>* Availbable for Consulation throughout Leinster</p>
+              <hr className="visible-xs"></hr>
+            </section>
+
+            <section id="testimonials" className="col-sm-4">
+          
+              <p>"The best BlackJack App out there"</p>
+              <p>"I became a millionaire in 4 minutes"</p>
+              <p>"I lost my wife and kids using this app!"</p>
+              <hr className="visible-xs"></hr>
+            </section>
+          </div>
+          
+          <div className="text-center"> &copy; Copyright BlackJack Tutor 2020</div>
+        </div>
+      </footer>
+    </body>
+    )
+  }
+};
+
+export default Header;
