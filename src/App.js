@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import HeaderBox from './HeaderBox';
 import Footer from './Footer';
+import Tutor from './Tutor';
 
 
 
@@ -17,8 +18,9 @@ class App extends Component {
     return (
       <div className="app">
         <HeaderBox links={links} />
-        
-      
+
+        <Tutor />
+
       <Footer />
       </div>
     );
