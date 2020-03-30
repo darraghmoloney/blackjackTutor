@@ -287,7 +287,7 @@ class Game extends React.Component {
       <img
         key={index}
         className=
-        { (index > 2) ?
+        { (index > 1) ?
           "cardDisplay  w3-center w3-animate-right" :
           "cardDisplay"
         }
