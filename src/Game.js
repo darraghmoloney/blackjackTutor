@@ -228,7 +228,7 @@ class Game extends React.Component {
 
 
         {hand.cards.map( (card, index) => (
-            <img key={index} className="cardDisplay w3-center w3-animate-right" src={card.imagePath} alt={card.shortName} />
+            <img key={index} className="cardDisplay  w3-center w3-animate-right" src={card.imagePath} alt={card.shortName} />
         ))}
 
 
@@ -276,14 +276,52 @@ class Game extends React.Component {
       and not bust for every hand
    */
   displayWholeDealerHand() {
+
+    /*  Use map to make Array of cards with JSX to display each one.
+        Note the first two cards are not given animation, to give a
+        "dealing card" effect when new cards enter the hand.
+    */
     let cards =
     this.state.dealerHand.cards.map( (card, index) => (
-      <img key={index} className="cardDisplay w3-center w3-animate-right" src={card.imagePath} alt={card.shortName} />
+
+      <img
+        key={index}
+        className=
+        { (index > 2) ?
+          "cardDisplay  w3-center w3-animate-right" :
+          "cardDisplay"
+        }
+        src={card.imagePath}
+        alt={card.shortName}
+      />
     )
     );
 
+    // console.log(cards)
+    /*
+    let cards = '';
+
+    this.state.dealerHand.cards.forEach((card, i) => {
+      let index = `dealerCard${i}`;
+      if(i < 2) {
+        cards +=
+          <img key={index} className="cardDisplay  w3-center w3-animate-right" src={card.imagePath} alt={card.shortName} />
+      }
+      else {
+        cards +=
+          <img key={index} className="cardDisplay  w3-center w3-animate-right" src={card.imagePath} alt={card.shortName} />
+      }
+    });
+    */
+
     let displayHTML =
-      <div id="dealerHand" className="dealerShow w3-container">{cards}<div id="dealerPoints">Dealer Points: {this.state.dealerHand.points} {this.state.dealerHand.gameOverMessage}</div></div>
+      <div id="dealerHand" className="dealerShow w3-container">
+        {cards}
+        <div id="dealerPoints">
+          Dealer Points: {this.state.dealerHand.points}&nbsp;
+          {this.state.dealerHand.gameOverMessage}
+        </div>
+      </div>
 
     return displayHTML;
   }
@@ -618,7 +656,7 @@ class Game extends React.Component {
         currentIndex = i;
       }
     });
-    
+
 
     /*  Reverse whether the hint is shown - i.e. change true to false and
         vice versa

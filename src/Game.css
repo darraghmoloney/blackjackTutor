@@ -3,9 +3,10 @@
   opacity: 1;
   border: 5px solid black;
   border-radius: 7%;
-  transition: opacity 0.25s ease-in-out;
+
 
 }
+
 
 #gameContainer {
   text-align: center;
@@ -14,5 +15,5 @@
   align-items: center;
   justify-content: center; */
 
-  
+
 }
