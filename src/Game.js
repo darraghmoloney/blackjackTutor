@@ -1,8 +1,8 @@
 import React from 'react';
-import {cardDeck} from './Card.js';
+import {cardDeck, makeMultiDecks, shuffleDeck} from './Card.js';
 import './Game.css';
 
-const deckForGame = cardDeck;
+let deckForGame = cardDeck;
 const blankCard =  "./cardImages/200px-Card_back_05.svg.png";
 
 
@@ -19,7 +19,7 @@ class Game extends React.Component {
 
           optionsChosen: false,
 
-          gameDeck: this.shuffleDeck(cardDeck),
+          gameDeck: shuffleDeck(cardDeck),
 
           playerHands: [firstHands.player], //stored in Array to add hands later
 
@@ -58,38 +58,21 @@ class Game extends React.Component {
     console.log(`Player perfectBlackjack: ${this.state.playerHands[0].perfectBlackjack}`);
   }
 
-  /*  Shuffle the game's card deck, which is provided in unshuffled state by
-      the card component.
-      NB shuffle function moved here to handle situations where all the cards
-      have been used and a new deck is needed
-  */
-  shuffleDeck(deck) {
-    /*  Loop through the deck & find a swap place within the unswapped zone
-        for each card
-        There might be a better algorithm for this...
-    */
-    for(let i=0; i<deck.length; i++) {
-
-      let randomSwapPlace = i + parseInt(Math.random() * (deck.length - i));
-
-      /*  Standard swap with temp variable technique */
-      let temp = deck[i];
-      deck[i] = deck[randomSwapPlace];
-      deck[randomSwapPlace] = temp;
-
-    }
-  }
 
   /*  Get a card from the game deck */
   getCard() {
 
-    /*  Remove the first card from the array */
-    if(deckForGame.length > 0) {
-      let nextCard = deckForGame.shift();
-      return nextCard;
+
+    /* Make a new deck if the end is reached */
+    if(deckForGame.length <= 0) {
+      deckForGame = makeMultiDecks(8);
+      shuffleDeck(deckForGame);
     }
 
-    // TODO: handle the card deck being empty
+    /*  Remove the first card from the array */
+    let nextCard = deckForGame.shift();
+    return nextCard;
+
   }
 
   /* Calculate the points of a hand by looping through all cards and
