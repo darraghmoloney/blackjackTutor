@@ -239,6 +239,7 @@ class Game extends React.Component {
             }
             <button disabled={hand.hintDisabled} onClick={() => {this.toggleHint(hand.number)}}>Hint</button>
           </div>
+          <br />
         </div>
       ));
 
@@ -760,12 +761,12 @@ class Game extends React.Component {
                 so player wins
              */
             if(dHand.perfectBlackjack === false) {
-              hand.gameOverMessage = "Perfect Blackjack! Hand Won!";
+              hand.gameOverMessage = "Hand Won! Perfect Blackjack!";
               console.log( `Player hand ${hand.number} wins with Perfect Blackjack` );
             }
             /*  2a-2 dealer also has a Perfect Blackjack, so no winner */
             else {
-            hand.gameOverMessage = "Perfect Blackjacks. Push.";
+            hand.gameOverMessage = "Push. Perfect Blackjacks.";
             console.log( `Player hand ${hand.number} push on Perfect Blackjack` );
             }
 
@@ -795,7 +796,7 @@ class Game extends React.Component {
             (player hand was already checked for not being bust)
         */
         else {
-          hand.gameOverMessage = "Dealer Bust! Hand Won!";
+          hand.gameOverMessage = "Hand Won! Dealer Bust!";
         }
       }
     }});
@@ -944,11 +945,10 @@ class Game extends React.Component {
           <div id="game">
 
             <div id="gameOptions">
-              <button onClick={newGameClick}>New Game</button>&nbsp;
+              <button onClick={newGameClick}>New Game</button>
               <button onClick={optionsClick}>Options</button>
             </div>
 
-            <br />
 
             <div id="dealerGame">
               {this.state.showDealerCards === true &&
