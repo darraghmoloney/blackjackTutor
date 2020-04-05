@@ -873,8 +873,9 @@ class Game extends React.Component {
     /*  Render the game after gameplay options were set (Surrender allowed etc) */
     start() {
       console.log(`Showing the game`);
-      console.log(`Split allowed: ${this.state.splitAllowed}`);
+      // console.log(`Split allowed: ${this.state.splitAllowed}`);
       console.log(`Double allowed: ${this.state.doubleAllowed}`);
+      console.log(`Double after Split allowed: ${this.state.doubleAfterSplitAllowed}`);
       console.log(`Surrender allowed: ${this.state.surrenderAllowed}`);
 
       // let choice = true;
