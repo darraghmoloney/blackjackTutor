@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './HeaderBox.css';
-import searchIcon from './search-icon.png';
 import {BrowserRouter as Router, Link} from 'react-router-dom';
 import Route from 'react-router-dom/Route';
 import AboutTest from './AboutTest';
