@@ -920,9 +920,9 @@ class Game extends React.Component {
             />
               <label>Surrender Allowed</label>
 
-            <br />
             {this.state.doubleAllowed === true&&
               <>
+              <br />
               <input type="checkbox" id="doubleSplitChoice"
                 checked={this.state.doubleAfterSplitAllowed}
                 onChange={this.selectDoubleAfterSplit}
