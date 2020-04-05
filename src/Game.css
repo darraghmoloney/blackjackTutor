@@ -7,6 +7,17 @@
 
 }
 
+.dealerShow {
+  background-color: green;
+  padding: 2%;
+  border: 3px dashed white;
+  color: white;
+}
+
+#playerGame {
+  padding-top: 2%;
+  border: 3px dashed red;
+}
 
 #gameContainer {
   text-align: center;
@@ -16,4 +27,8 @@
   justify-content: center; */
 
 
+}
+
+#gameOptions {
+  padding: 0.5%;
 }

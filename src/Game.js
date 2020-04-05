@@ -927,13 +927,14 @@ class Game extends React.Component {
     return(
       <div id="gameContainer">
 
-        <h1>Game</h1>
+
 
         <div id="gameInterface">
 
         {this.state.optionsChosen === false &&
           <div id="settings">
 
+            <h2>Game Options</h2>
 
             <input type="checkbox" id="doubleChoice"
               checked={this.state.doubleAllowed}
@@ -982,9 +983,10 @@ class Game extends React.Component {
                   this.displayHiddenDealerHand()
                 }
               </div>
-              <br />
-              {this.displayAllPlayerHands()}
 
+              <div id="playerGame">
+                {this.displayAllPlayerHands()}
+              </div>
               Active hands: {this.state.activeHands}
               Total hands: {this.state.totalHands}
               </>
