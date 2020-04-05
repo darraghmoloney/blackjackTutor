@@ -1,59 +1,35 @@
 import React, { Component } from 'react';
 import './HeaderBox.css';
 import searchIcon from './search-icon.png';
-
+import {BrowserRouter as Router, Link} from 'react-router-dom';
+import Route from 'react-router-dom/Route';
+import AboutTest from './AboutTest';
+import Tutor from './Tutor';
+import Quiz from './Quiz';
+import ContactUs from './ContactUs';
 
 class HeaderBox extends Component {
-    constructor() {
-        super();
+    
 
-        this.state = {
-            showForm: false
-        };
-    }
-
-    showForm() {
-        this.setState({
-            showForm: !this.state.showForm
-        });
-    }
+   
 
     render() {
-        let searchForm = this.state.showForm ? (
-            <form className="menu__search-form" method="POST">
-                <input className="menu__search-input" placeholder="Type and hit enter" />
-            </form>
-        ) : '';
-
-        let linksMarkup = this.props.links.map((link, index) => {
-            let linkMarkup = link.active ? (
-                <a className="menu__link menu__link--active" href={link.link}>{link.label}</a>
-            ) : (
-                <a className="menu__link" href={link.link}>{link.label}</a>
-            );
-
-            return (
-                <li key={index} className="menu__list-item">
-                    {linkMarkup}
-                </li>
-            );
-        });
-
+    
         return (
             <nav className="menu">
                 <h1 className="menu__Title">BlackJack Tutor</h1>
 
-                <div className="menu__right active">
-                    <ul className="menu__list active">
-                        {linksMarkup}
-                    </ul>
 
-                    <button onClick={this.showForm.bind(this)} style={{
-                    backgroundImage: 'url(' + searchIcon + ')'
-                    }} className="menu__search-button"></button>
-
-                    {searchForm}
-                </div>
+                <ul className="menu__link">
+         <li><Link className="individual_item" to='/'>Home</Link></li>
+         <li> <Link className="individual_item" to='/aboutTest'>About</Link></li>
+         <li><Link className="individual_item" to='/tutor'>Tutor</Link></li>
+         <li> <Link className="individual_item" to='/quiz'>Quiz</Link></li>
+         <li> <Link className="individual_item" to='/contactUs'>Contact Us</Link></li>
+        </ul>
+        
+        
+                
                 
             </nav>
         );
