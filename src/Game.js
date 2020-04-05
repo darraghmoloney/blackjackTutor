@@ -35,7 +35,7 @@ class Game extends React.Component {
 
 
           splitAllowed: true, //this is not really an option in blackjack!
-          
+
           doubleAllowed: false,
           surrenderAllowed: false,
           doubleAfterSplitAllowed: false,
@@ -99,7 +99,7 @@ class Game extends React.Component {
       NB This function should only be called if the hand has only
       two cards in it
   */
-  checkPerfectBlackjack(card1, card2) {
+  checkNaturalBlackjack(card1, card2) {
     if( (card1.points + card2.points) !== 21 ) {
       return false; //blackjack must be exactly 21 points
     }
@@ -164,8 +164,8 @@ class Game extends React.Component {
    }
 
     /*  Check if either hand is a perfect blackjack (Ace & Face card) */
-   let dealerPerfectBlackjack = this.checkPerfectBlackjack(dealerCard1, dealerCard2);
-   let playerPerfectBlackjack = this.checkPerfectBlackjack(playerCard1, playerCard2);
+   let dealerNaturalBlackjack = this.checkNaturalBlackjack(dealerCard1, dealerCard2);
+   let playerNaturalBlackjack = this.checkNaturalBlackjack(playerCard1, playerCard2);
 
    /*  Disable the split button if the two cards have different pts */
    let disabledSplit = (playerCard1.points !== playerCard2.points);
@@ -178,7 +178,7 @@ class Game extends React.Component {
      "shownPoints": dealerFirstPoints,
      "bust": false,
      "gameOverMessage": "",
-     "perfectBlackjack": dealerPerfectBlackjack,
+     "naturalBlackjack": dealerNaturalBlackjack,
    }
 
    let playerFirstHand = {
@@ -197,7 +197,7 @@ class Game extends React.Component {
      "doubleDisabled": false,
      "hintDisabled": false,
      "surrenderDisabled": false,
-     "perfectBlackjack": playerPerfectBlackjack,
+     "naturalBlackjack": playerNaturalBlackjack,
    }
 
    firstHands.dealer = dealerFirstHand;
@@ -344,7 +344,7 @@ class Game extends React.Component {
     /*  Get the next card from the game deck */
     let newCard = this.getCard();
 
-    hand.perfectBlackjack = false; //Cannot be a perfect blackjack with 2+ cards
+    hand.naturalBlackjack = false; //Cannot be a perfect blackjack with 2+ cards
     hand.points += newCard.points;
 
     /* Check for Ace for points changing reasons */
@@ -420,7 +420,7 @@ class Game extends React.Component {
     hand.splitDisabled = true; //Cannot split with 3 cards
     hand.hintDisabled = true; //Hint no longer needed as final card played
     hand.surrenderDisabled = true;
-    hand.perfectBlackjack = false; //No perfect blackjack with more than 2 cards
+    hand.naturalBlackjack = false; //No perfect blackjack with more than 2 cards
     fullHand[handIndex] = hand;
     this.setState({playerHands: fullHand});
 
@@ -479,7 +479,7 @@ class Game extends React.Component {
       handToChange.doubleDisabled = true;
     }
 
-    handToChange.perfectBlackjack = this.checkPerfectBlackjack(handToChange.cards[0], firstReplacementCard);
+    handToChange.naturalBlackjack = this.checkNaturalBlackjack(handToChange.cards[0], firstReplacementCard);
 
 
     /*  Update the original hand Ace count if the card just dealt was an Ace */
@@ -508,7 +508,7 @@ class Game extends React.Component {
 
     let newHandDisabledDouble = !this.state.doubleAfterSplitAllowed;
 
-    let newPerfectBlackjack = this.checkPerfectBlackjack(cardToMove, newHandOtherCard);
+    let newNaturalBlackjack = this.checkNaturalBlackjack(cardToMove, newHandOtherCard);
 
     /*  Create a new hand object */
     let newHand = {
@@ -527,7 +527,7 @@ class Game extends React.Component {
       "doubleDisabled": newHandDisabledDouble,
       "hintDisabled": false,
       "surrenderDisabled": false,
-      "perfectBlackjack": newPerfectBlackjack,
+      "naturalBlackjack": newNaturalBlackjack,
     };
 
     /* Fix the points for the Original Hand */
@@ -761,11 +761,11 @@ class Game extends React.Component {
         else if(hand.points === dealerPts ) {
 
           /*  2a: player has a Perfect Blackjack */
-          if(hand.perfectBlackjack === true) {
+          if(hand.naturalBlackjack === true) {
             /*  2a-1 dealer doesn't also have a Perfect Blackjack,
                 so player wins
              */
-            if(dHand.perfectBlackjack === false) {
+            if(dHand.naturalBlackjack === false) {
               hand.gameOverMessage = "Hand Won! Perfect Blackjack!";
               console.log( `Player hand ${hand.number} wins with Perfect Blackjack` );
             }
@@ -779,7 +779,7 @@ class Game extends React.Component {
           /*  2b: player doesn't have a Perfect Blackjack */
           else {
             /*  2b-1 dealer has a Perfect Blackjack, so dealer wins */
-            if(dHand.perfectBlackjack === true) {
+            if(dHand.naturalBlackjack === true) {
               hand.gameOverMessage = "Hand Lost. Dealer wins with Perfect Blackjack";
               console.log( `Player hand ${hand.number} lost with dealer Perfect Blackjack` );
             }
@@ -844,8 +844,8 @@ class Game extends React.Component {
 
     console.log(`Player has ${firstHands.player.softAces} soft aces`);
 
-    console.log(`Dealer perfectBlackjack: ${firstHands.dealer.perfectBlackjack}`);
-    console.log(`Player perfectBlackjack: ${firstHands.player.perfectBlackjack}`);
+    console.log(`Dealer naturalBlackjack: ${firstHands.dealer.naturalBlackjack}`);
+    console.log(`Player naturalBlackjack: ${firstHands.player.naturalBlackjack}`);
 
     }
 
