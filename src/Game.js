@@ -2,7 +2,7 @@ import React from 'react';
 import {cardDeck, makeMultiDecks, shuffleDeck} from './Card.js';
 import './Game.css';
 
-let deckForGame = cardDeck;
+// let deckForGame = cardDeck;
 const blankCard =  "./cardImages/200px-Card_back_05.svg.png";
 
 let handsPlayerDealt = [];
@@ -20,7 +20,7 @@ class Game extends React.Component {
 
           optionsChosen: false,
 
-          gameDeck: shuffleDeck(cardDeck),
+          gameDeck: cardDeck,
 
           // playerHands: [firstHands.player], //stored in Array to add hands later
           playerHands: [],
@@ -69,6 +69,7 @@ class Game extends React.Component {
   /*  Get a card from the game deck */
   getCard() {
 
+    let deckForGame = this.state.gameDeck;
 
     /* Make a new deck if the end is reached */
     if(deckForGame.length <= 0) {
@@ -78,6 +79,8 @@ class Game extends React.Component {
 
     /*  Remove the first card from the array */
     let nextCard = deckForGame.shift();
+
+    this.setState({gameDeck: deckForGame});
     return nextCard;
 
   }
