@@ -12,7 +12,7 @@ class Game extends React.Component {
 
     super(props);
 
-    let firstHands = this.makeFirstHands();
+    // let firstHands = this.makeFirstHands();
 
 
     this.state = {
@@ -21,12 +21,13 @@ class Game extends React.Component {
 
           gameDeck: shuffleDeck(cardDeck),
 
-          playerHands: [firstHands.player], //stored in Array to add hands later
+          // playerHands: [firstHands.player], //stored in Array to add hands later
+          playerHands: [],
+          // dealerHand: firstHands.dealer,
+          dealerHand: '',
 
-          dealerHand: firstHands.dealer,
-
-          activeHands: 1,
-          totalHands: 1,
+          activeHands: 0,
+          totalHands: 0,
           bustHands: 0,
 
           showDealerCards: false, //hide one card for the dealer
@@ -37,6 +38,8 @@ class Game extends React.Component {
           surrenderAllowed: false,
           doubleAfterSplitAllowed: false,
 
+          gameStarted: false,
+
     }
 
     this.start = this.start.bind(this);
@@ -46,18 +49,18 @@ class Game extends React.Component {
     this.selectDoubleAfterSplit = this.selectDoubleAfterSplit.bind(this);
 
 
-    console.log(`Dealer dealt: [ ? ` +
-      `, ${this.state.dealerHand.cards[1].shortName}] Pts shown: ${this.state.dealerHand.shownPoints}`);
+    // console.log(`Dealer dealt: [ ? ` +
+      // `, ${this.state.dealerHand.cards[1].shortName}] Pts shown: ${this.state.dealerHand.shownPoints}`);
 
-    console.log(`Dealer has ${this.state.dealerHand.softAces} soft aces`);
+    // console.log(`Dealer has ${this.state.dealerHand.softAces} soft aces`);
 
-    console.log(`Player dealt: [${this.state.playerHands[0].cards[0].shortName}` +
-      `, ${this.state.playerHands[0].cards[1].shortName}] Pts: ${this.state.playerHands[0].points}`);
+    // console.log(`Player dealt: [${this.state.playerHands[0].cards[0].shortName}` +
+      // `, ${this.state.playerHands[0].cards[1].shortName}] Pts: ${this.state.playerHands[0].points}`);
 
-    console.log(`Player has ${this.state.playerHands[0].softAces} soft aces`);
+    // console.log(`Player has ${this.state.playerHands[0].softAces} soft aces`);
 
-    console.log(`Dealer perfectBlackjack: ${this.state.dealerHand.perfectBlackjack}`);
-    console.log(`Player perfectBlackjack: ${this.state.playerHands[0].perfectBlackjack}`);
+    // console.log(`Dealer perfectBlackjack: ${this.state.dealerHand.perfectBlackjack}`);
+    // console.log(`Player perfectBlackjack: ${this.state.playerHands[0].perfectBlackjack}`);
   }
 
 
@@ -813,6 +816,10 @@ class Game extends React.Component {
 
     let firstHands = this.makeFirstHands(); //Deal new hands
 
+    if(this.state.gameStarted === false) {
+      this.setState({gameStarted: true});
+    }
+
     /*  Player hand stored as an array so more hands can be added later */
     this.setState ({playerHands: [firstHands.player]});
     this.setState ({dealerHand: firstHands.dealer});
@@ -883,6 +890,10 @@ class Game extends React.Component {
 
       // let choice = true;
       this.setState({optionsChosen: true});
+
+      if(this.state.gameStarted === false) {
+        this.newGame();
+      }
     }
 
     /*  For changing Options during the game
@@ -949,21 +960,23 @@ class Game extends React.Component {
               <button onClick={optionsClick}>Options</button>
             </div>
 
+            {this.state.gameStarted === true &&
+              <>
+              <div id="dealerGame">
+                {this.state.showDealerCards === true &&
+                  this.displayWholeDealerHand()
+                }
+                {this.state.showDealerCards === false &&
+                  this.displayHiddenDealerHand()
+                }
+              </div>
+              <br />
+              {this.displayAllPlayerHands()}
 
-            <div id="dealerGame">
-              {this.state.showDealerCards === true &&
-                this.displayWholeDealerHand()
-              }
-              {this.state.showDealerCards === false &&
-                this.displayHiddenDealerHand()
-              }
-            </div>
-            <br />
-            {this.displayAllPlayerHands()}
-
-            Active hands: {this.state.activeHands}
-            Total hands: {this.state.totalHands}
-
+              Active hands: {this.state.activeHands}
+              Total hands: {this.state.totalHands}
+              </>
+            }
           </div>
         }
 
