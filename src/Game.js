@@ -599,6 +599,8 @@ class Game extends React.Component {
 
     let bust = this.state.bustHands;
 
+    console.log(`Player stands on Hand ${handNumber} (Pts: ${currentHand.points})`);
+
     /*  Dealer should play if no hands are active */
     if((active === 0) && (bust < this.state.totalHands)) {
       // this.setState({showDealerCards: true});
@@ -698,7 +700,7 @@ class Game extends React.Component {
       + `Pts: ${dealerPts}`
     );
     console.log(`Dealer has ${softAces} soft Aces`);
-
+    console.log(`Dealer naturalBlackjack: ${hand.naturalBlackjack}`);
 
       while((dealerPts < 17) || (dealerPts === 17 && softAces > 0)) {
 
@@ -728,6 +730,7 @@ class Game extends React.Component {
       if(dealerPts > 21) {
         hand.bust = true;
         hand.gameOverMessage = "Bust!";
+        console.log(`Dealer is bust with ${dealerPts} pts`);
         this.setState({dealerHand: hand});
       }
 
@@ -847,7 +850,7 @@ class Game extends React.Component {
 
     console.log(`Player has ${firstHands.player.softAces} soft aces`);
 
-    console.log(`Dealer naturalBlackjack: ${firstHands.dealer.naturalBlackjack}`);
+
     console.log(`Player naturalBlackjack: ${firstHands.player.naturalBlackjack}`);
 
     }
