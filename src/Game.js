@@ -32,9 +32,10 @@ class Game extends React.Component {
           showDealerCards: false, //hide one card for the dealer
 
 
-          splitAllowed: false,
+          splitAllowed: true,
           doubleAllowed: false,
           surrenderAllowed: false,
+          doubleAfterSplitAllowed: false,
 
     }
 
@@ -42,6 +43,7 @@ class Game extends React.Component {
     this.selectSplits = this.selectSplits.bind(this);
     this.selectDoubles = this.selectDoubles.bind(this);
     this.selectSurrenders = this.selectSurrenders.bind(this);
+    this.selectDoubleAfterSplit = this.selectDoubleAfterSplit.bind(this);
 
 
     console.log(`Dealer dealt: [ ? ` +
@@ -464,6 +466,12 @@ class Game extends React.Component {
 
     /*  Check if the original hand should allow split (2 cards with same points)*/
     handToChange.splitDisabled = (handToChange.cards[0].points !== firstReplacementCard.points);
+
+    /*  Disable double after split if necessary */
+    if(!this.state.doubleAfterSplitAllowed) {
+      handToChange.doubleDisabled = true;
+    }
+
     handToChange.perfectBlackjack = this.checkPerfectBlackjack(handToChange.cards[0], firstReplacementCard);
 
 
@@ -491,6 +499,8 @@ class Game extends React.Component {
     /* Disable split if the points values of both cards are different */
     let newHandDisabledSplit = (cardToMove.points !== newHandOtherCard.points);
 
+    let newHandDisabledDouble = !this.state.doubleAfterSplitAllowed;
+
     let newPerfectBlackjack = this.checkPerfectBlackjack(cardToMove, newHandOtherCard);
 
     /*  Create a new hand object */
@@ -507,7 +517,7 @@ class Game extends React.Component {
       "splitDisabled": newHandDisabledSplit,
       "hitDisabled": false,
       "standDisabled": false,
-      "doubleDisabled": false,
+      "doubleDisabled": newHandDisabledDouble,
       "hintDisabled": false,
       "surrenderDisabled": false,
       "perfectBlackjack": newPerfectBlackjack,
@@ -852,6 +862,13 @@ class Game extends React.Component {
       this.setState({splitAllowed: currentSplitAllowed});
     }
 
+    selectDoubleAfterSplit() {
+      let currentDblAfterSplitAllowed = this.state.doubleAfterSplitAllowed;
+
+      currentDblAfterSplitAllowed = !currentDblAfterSplitAllowed;
+      this.setState({doubleAfterSplitAllowed: currentDblAfterSplitAllowed});
+    }
+
     /*  Render the game after gameplay options were set (Surrender allowed etc) */
     start() {
       console.log(`Showing the game`);
@@ -888,17 +905,20 @@ class Game extends React.Component {
           <div id="settings">
             <p>Choose your gameplay options</p>
 
-            <input type="checkbox" id="splitChoice"
-              checked={this.state.splitAllowed}
-              onChange={this.selectSplits}
-            />
-              <label>Split Allowed</label>&nbsp;
-
             <input type="checkbox" id="doubleChoice"
               checked={this.state.doubleAllowed}
               onChange={this.selectDoubles}
             />
               <label>Double Allowed</label>&nbsp;
+              {this.state.doubleAllowed === true&&
+                <>
+                <input type="checkbox" id="doubleSplitChoice"
+                  checked={this.state.doubleAfterSplitAllowed}
+                  onChange={this.selectDoubleAfterSplit}
+                />
+                  <label>Double After Split</label>&nbsp;
+                </>
+              }
 
             <input type="checkbox" id="surrenderChoice"
               checked={this.state.surrenderAllowed}
