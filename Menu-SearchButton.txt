@@ -1,3 +1,33 @@
+.menu__search-button {
+    height: 42px;
+    width: 42px;
+    border-radius: 50%;
+    border: 1px solid #c8c9ce;
+    background-color: transparent;
+    outline: none;
+    cursor: pointer;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.menu__search-form {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    padding: 10px;
+    background-color: white;
+}
+
+.menu__search-input {
+    outline: none;
+    border: 1px solid #c8c9ce;
+    font-size: 18px;
+    padding: 5px;
+    font-weight: 300;
+}
+
+
+HTML
 import React, { Component } from 'react';
 import './HeaderBox.css';
 import searchIcon from './search-icon.png';
@@ -9,12 +39,29 @@ import Quiz from './Quiz';
 import ContactUs from './ContactUs';
 
 class HeaderBox extends Component {
-    
+    constructor() {
+        super();
 
-   
+        this.state = {
+            showForm: false
+        };
+    }
+
+    showForm() {
+        this.setState({
+            showForm: !this.state.showForm
+        });
+    }
 
     render() {
+        let searchForm = this.state.showForm ? (
+            <form className="menu__search-form" method="POST">
+                <input className="menu__search-input" placeholder="Type and hit enter" />
+            </form>
+        ) : '';
+
     
+
         return (
             <nav className="menu">
                 <h1 className="menu__Title">BlackJack Tutor</h1>
