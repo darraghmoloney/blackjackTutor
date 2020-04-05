@@ -226,13 +226,14 @@ class Game extends React.Component {
 
           <div id="playerButtons">
             <button disabled={hand.hitDisabled} onClick={() => {this.hit(hand.number)}}>Hit</button>
+            <button disabled={hand.standDisabled} onClick={() => {this.stand(hand.number)}}>Stand</button>
             { this.state.doubleAllowed &&
               <button disabled={hand.doubleDisabled} onClick={() => {this.double(hand.number)}}>Double</button>
             }
             {this.state.splitAllowed &&
               <button disabled={hand.splitDisabled} onClick={() => {this.split(hand.number)}}>Split</button>
             }
-              <button disabled={hand.standDisabled} onClick={() => {this.stand(hand.number)}}>Stand</button>
+
             {this.state.surrenderAllowed &&
               <button disabled={hand.surrenderDisabled} onClick={() => {this.surrender(hand.number)}}>Surrender</button>
             }
