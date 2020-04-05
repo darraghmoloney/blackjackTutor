@@ -5,6 +5,7 @@ import './Game.css';
 let deckForGame = cardDeck;
 const blankCard =  "./cardImages/200px-Card_back_05.svg.png";
 
+let handsPlayerDealt = [];
 
 class Game extends React.Component {
 
@@ -33,12 +34,13 @@ class Game extends React.Component {
           showDealerCards: false, //hide one card for the dealer
 
 
-          splitAllowed: true,
+          splitAllowed: true, //this is not really an option in blackjack!
+          
           doubleAllowed: false,
           surrenderAllowed: false,
           doubleAfterSplitAllowed: false,
 
-          gameStarted: false,
+          gameStarted: false, //show cards only after game is started
 
     }
 
@@ -815,6 +817,10 @@ class Game extends React.Component {
   newGame() {
 
     let firstHands = this.makeFirstHands(); //Deal new hands
+
+//////TRACK INITIAL HANDS FOR PLAYER
+    handsPlayerDealt.push(firstHands.player);
+    console.log(handsPlayerDealt)
 
     if(this.state.gameStarted === false) {
       this.setState({gameStarted: true});
