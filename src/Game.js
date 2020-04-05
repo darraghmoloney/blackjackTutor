@@ -895,6 +895,8 @@ class Game extends React.Component {
 
   render() {
 
+    const newGameClick = () => {this.newGame()};
+    const optionsClick = () => {this.optionsChange()};
 
     return(
       <div id="gameContainer">
@@ -940,8 +942,8 @@ class Game extends React.Component {
           <div id="game">
 
             <div id="gameOptions">
-              <button onClick={() => {this.newGame()}}>New Game</button>&nbsp;
-              <button onClick={() => {this.optionsChange()}}>Options</button>
+              <button onClick={newGameClick}>New Game</button>&nbsp;
+              <button onClick={optionsClick}>Options</button>
             </div>
 
             <div id="dealerGame">
