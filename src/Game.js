@@ -912,15 +912,7 @@ class Game extends React.Component {
               onChange={this.selectDoubles}
             />
               <label>Double Allowed</label>&nbsp;
-              {this.state.doubleAllowed === true&&
-                <>
-                <input type="checkbox" id="doubleSplitChoice"
-                  checked={this.state.doubleAfterSplitAllowed}
-                  onChange={this.selectDoubleAfterSplit}
-                />
-                  <label>Double After Split</label>&nbsp;
-                </>
-              }
+
 
             <input type="checkbox" id="surrenderChoice"
               checked={this.state.surrenderAllowed}
@@ -928,6 +920,16 @@ class Game extends React.Component {
             />
               <label>Surrender Allowed</label>
 
+            <br />
+            {this.state.doubleAllowed === true&&
+              <>
+              <input type="checkbox" id="doubleSplitChoice"
+                checked={this.state.doubleAfterSplitAllowed}
+                onChange={this.selectDoubleAfterSplit}
+              />
+                <label>Double After Split</label>&nbsp;
+              </>
+            }
             <br />
 
             <button id="gameChoiceBtn" onClick={this.start}>Play</button>
