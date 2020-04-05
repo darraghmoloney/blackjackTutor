@@ -250,9 +250,9 @@ class Game extends React.Component {
     let shownCard = this.state.dealerHand.cards[1];
     return (
       <div id="dealerCards" className="dealerShow">
+      <div id="dealerPoints">Dealer Points: {this.state.dealerHand.shownPoints}</div>
         <img className="cardDisplay" src={blankCard} alt="back of card" />
         <img className="cardDisplay" src={shownCard.imagePath} alt={shownCard.shortName} />
-        <div id="dealerPoints">Dealer Points: {this.state.dealerHand.shownPoints}</div>
       </div>
     );
   }
@@ -302,11 +302,11 @@ class Game extends React.Component {
 
     let displayHTML =
       <div id="dealerHand" className="dealerShow w3-container">
-        {cards}
         <div id="dealerPoints">
           Dealer Points: {this.state.dealerHand.points}&nbsp;
           {this.state.dealerHand.gameOverMessage}
         </div>
+        {cards}
       </div>
 
     return displayHTML;
@@ -588,8 +588,10 @@ class Game extends React.Component {
     this.setState({playerHands: hands});
     this.setState({activeHands: active});
 
+    let bust = this.state.bustHands;
+
     /*  Dealer should play if no hands are active */
-    if(active === 0) {
+    if((active === 0) && (bust < this.state.totalHands)) {
       // this.setState({showDealerCards: true});
       this.dealerPlay();
     }
@@ -907,7 +909,7 @@ class Game extends React.Component {
 
         {this.state.optionsChosen === false &&
           <div id="settings">
-            <p>Choose your gameplay options</p>
+
 
             <input type="checkbox" id="doubleChoice"
               checked={this.state.doubleAllowed}
@@ -946,6 +948,8 @@ class Game extends React.Component {
               <button onClick={optionsClick}>Options</button>
             </div>
 
+            <br />
+
             <div id="dealerGame">
               {this.state.showDealerCards === true &&
                 this.displayWholeDealerHand()
@@ -954,7 +958,7 @@ class Game extends React.Component {
                 this.displayHiddenDealerHand()
               }
             </div>
-
+            <br />
             {this.displayAllPlayerHands()}
 
             Active hands: {this.state.activeHands}
