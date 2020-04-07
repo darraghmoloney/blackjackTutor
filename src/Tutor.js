@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import Gameplay from './Gameplay.js';
 
 class Tutor extends Component {
 
@@ -7,8 +7,8 @@ class Tutor extends Component {
 
         return (
             <div className="Tutor">
-            Hello World This is the Tutor section 
-        </div>
+              <Gameplay />
+            </div>
         )
     }
 }
