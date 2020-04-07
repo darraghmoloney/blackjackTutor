@@ -1,11 +1,12 @@
 .menu {
-    background-color:green;
+    background-color:rgb(29, 44, 29);
     box-shadow: 0px 2px 24px 0px rgba(0, 0, 0, 0.15);
     border-radius: 8px;
     width: 1250px;
     height: 100px;
     display: flex;
     justify-content: space-between;
+    background-image: url("https:/www.transparenttextures.com/patterns/felt.png");
     padding: 0 40px;
     position: relative;
 }
@@ -22,7 +23,7 @@
 .individual_item{
     margin-right: 10px;
     text-decoration: none;
-    color: #ffaa3b;
+    color: rgb(226, 219, 219);
     font-family:'Lora', serif;
 }
 
@@ -39,7 +40,7 @@
 
 .menu__Title {
     font-family:'Lora', serif;
-	color: #ffaa3b;
+    color: rgb(226, 219, 219);
 	font-size: 2.5em;
 	text-transform: uppercase;
     font-weight:bold;
