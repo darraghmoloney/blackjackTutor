@@ -78,3 +78,16 @@
   background: rgb(233, 211, 87);
   border-color:rgb(233, 211, 87);
 }
+
+#hintBtn {
+  border-radius: 2px;
+  background-color: #424242;
+  color: goldenrod;
+  border: solid 1px  #919191;
+
+}
+
+#hintBtn:hover{
+  background:  rgb(255, 217, 0);
+  color: black;
+}

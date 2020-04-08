@@ -230,7 +230,7 @@ class Gameplay extends React.Component {
           </div>
 
           <div id="playerButtons">
-          
+
             {hand.hitDisabled === false &&
               <button
                 className="gameplayBtn"
@@ -279,6 +279,7 @@ class Gameplay extends React.Component {
             {hand.hintDisabled === false &&
               <button
                 className="gameplayBtn"
+                id="hintBtn"
                 disabled={hand.hintDisabled}
                 onClick={() => {this.toggleHint(hand.number)}}>
                   Hint
