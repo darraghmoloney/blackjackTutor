@@ -8,15 +8,16 @@
 }
 
 .dealerShow {
- 
+
   padding: 2%;
   border: 3px dashed white;
-  color: white;
+  color: lightgrey;
 }
 
 #playerGame {
   padding-top: 2%;
   border: 3px dashed red;
+  color: lightgrey;
 }
 
 #gameContainer {
@@ -33,4 +34,13 @@
 
 #gameOptions {
   padding: 0.5%;
+}
+
+#settings {
+  color: white;
+}
+
+#handStats {
+  font-size: small;
+  color: #aaa;
 }

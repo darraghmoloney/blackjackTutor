@@ -987,8 +987,11 @@ class Gameplay extends React.Component {
               <div id="playerGame">
                 {this.displayAllPlayerHands()}
               </div>
-              Active hands: {this.state.activeHands}
-              Total hands: {this.state.totalHands}
+
+              <div id="handStats">
+                Active hands: {this.state.activeHands}&nbsp;
+                Total hands: {this.state.totalHands}
+              </div>
               </>
             }
           </div>
