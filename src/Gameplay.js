@@ -227,23 +227,29 @@ class Gameplay extends React.Component {
           <div className="handStatus">
             <span id="playerPoints">Player Points: {hand.points}</span>
             <span id="handStatus"> &nbsp; {hand.gameOverMessage}</span>
-            <span id="hint"> &nbsp; {hand.hintMessage}</span>
           </div>
 
           <div id="playerButtons">
-            <button
-              className="gameplayBtn"
-              disabled={hand.hitDisabled}
-              onClick={() => {this.hit(hand.number)}}>
-                Hit
-            </button>
-            <button
-              className="gameplayBtn"
-              disabled={hand.standDisabled}
-              onClick={() => {this.stand(hand.number)}}>
-                Stand
-            </button>
-            { this.state.doubleAllowed &&
+          
+            {hand.hitDisabled === false &&
+              <button
+                className="gameplayBtn"
+                disabled={hand.hitDisabled}
+                onClick={() => {this.hit(hand.number)}}>
+                  Hit
+              </button>
+            }
+
+            {hand.standDisabled === false &&
+              <button
+                className="gameplayBtn"
+                disabled={hand.standDisabled}
+                onClick={() => {this.stand(hand.number)}}>
+                  Stand
+              </button>
+            }
+
+            { this.state.doubleAllowed && hand.doubleDisabled === false &&
               <button
                 className="gameplayBtn"
                 disabled={hand.doubleDisabled}
@@ -251,7 +257,8 @@ class Gameplay extends React.Component {
                   Double
               </button>
             }
-            {this.state.splitAllowed &&
+
+            {this.state.splitAllowed && hand.splitDisabled === false &&
               <button
                 className="gameplayBtn"
                 disabled={hand.splitDisabled}
@@ -260,7 +267,7 @@ class Gameplay extends React.Component {
               </button>
             }
 
-            {this.state.surrenderAllowed &&
+            {this.state.surrenderAllowed && hand.surrenderDisabled === false &&
               <button
                 className="gameplayBtn"
                 disabled={hand.surrenderDisabled}
@@ -268,13 +275,20 @@ class Gameplay extends React.Component {
                   Surrender
               </button>
             }
-            <button
-              className="gameplayBtn"
-              disabled={hand.hintDisabled}
-              onClick={() => {this.toggleHint(hand.number)}}>
-                Hint
+
+            {hand.hintDisabled === false &&
+              <button
+                className="gameplayBtn"
+                disabled={hand.hintDisabled}
+                onClick={() => {this.toggleHint(hand.number)}}>
+                  Hint
               </button>
+            }
+
           </div>
+
+          <div id="hint" className="handStatus">{hand.hintMessage}</div>
+
           <br />
         </div>
       ));
