@@ -940,7 +940,7 @@ class Gameplay extends React.Component {
               checked={this.state.doubleAllowed}
               onChange={this.selectDoubles}
             />
-              <label>Double Allowed</label>&nbsp;
+              <label>Double Allowed</label>&nbsp;&nbsp;
 
 
             <input type="checkbox" id="surrenderChoice"
