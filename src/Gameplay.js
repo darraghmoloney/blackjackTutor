@@ -224,8 +224,6 @@ class Gameplay extends React.Component {
             <img key={index} className="cardDisplay  w3-center w3-animate-right" src={card.imagePath} alt={card.shortName} />
         ))}
 
-
-
           <div className="handStatus">
             <span id="playerPoints">Player Points: {hand.points}</span>
             <span id="handStatus"> &nbsp; {hand.gameOverMessage}</span>
@@ -233,19 +231,49 @@ class Gameplay extends React.Component {
           </div>
 
           <div id="playerButtons">
-            <button disabled={hand.hitDisabled} onClick={() => {this.hit(hand.number)}}>Hit</button>
-            <button disabled={hand.standDisabled} onClick={() => {this.stand(hand.number)}}>Stand</button>
+            <button
+              className="gameplayBtn"
+              disabled={hand.hitDisabled}
+              onClick={() => {this.hit(hand.number)}}>
+                Hit
+            </button>
+            <button
+              className="gameplayBtn"
+              disabled={hand.standDisabled}
+              onClick={() => {this.stand(hand.number)}}>
+                Stand
+            </button>
             { this.state.doubleAllowed &&
-              <button disabled={hand.doubleDisabled} onClick={() => {this.double(hand.number)}}>Double</button>
+              <button
+                className="gameplayBtn"
+                disabled={hand.doubleDisabled}
+                onClick={() => {this.double(hand.number)}}>
+                  Double
+              </button>
             }
             {this.state.splitAllowed &&
-              <button disabled={hand.splitDisabled} onClick={() => {this.split(hand.number)}}>Split</button>
+              <button
+                className="gameplayBtn"
+                disabled={hand.splitDisabled}
+                onClick={() => {this.split(hand.number)}}>
+                  Split
+              </button>
             }
 
             {this.state.surrenderAllowed &&
-              <button disabled={hand.surrenderDisabled} onClick={() => {this.surrender(hand.number)}}>Surrender</button>
+              <button
+                className="gameplayBtn"
+                disabled={hand.surrenderDisabled}
+                onClick={() => {this.surrender(hand.number)}}>
+                  Surrender
+              </button>
             }
-            <button disabled={hand.hintDisabled} onClick={() => {this.toggleHint(hand.number)}}>Hint</button>
+            <button
+              className="gameplayBtn"
+              disabled={hand.hintDisabled}
+              onClick={() => {this.toggleHint(hand.number)}}>
+                Hint
+              </button>
           </div>
           <br />
         </div>
@@ -961,7 +989,7 @@ class Gameplay extends React.Component {
             }
             <br />
 
-            <button id="gameChoiceBtn" onClick={this.start}>Play</button>
+            <button id="gameChoiceBtn" className="gameplayBtn" onClick={this.start}>Play</button>
           </div>
         }
 
@@ -969,8 +997,8 @@ class Gameplay extends React.Component {
           <div id="game">
 
             <div id="gameOptions">
-              <button onClick={newGameClick}>New Game</button>
-              <button onClick={optionsClick}>Options</button>
+              <button className="gameplayBtn" onClick={newGameClick}>New Game</button>
+              <button className="gameplayBtn" onClick={optionsClick}>Options</button>
             </div>
 
             {this.state.gameStarted === true &&
