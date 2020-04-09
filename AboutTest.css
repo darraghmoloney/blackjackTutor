@@ -1,0 +1,159 @@
+@import url("https://fonts.googleapis.com/css2?family=Notable&display=swap" rel="stylesheet");
+@import url('https://fonts.googleapis.com/css?family=Josefin+Sans');
+
+.AboutTest{
+    margin-top:30px;
+    padding-top: 35px;
+    color: #aaa; 
+    background-color: #064408;
+    background-image: url("https:/www.transparenttextures.com/patterns/felt.png");
+    height: 3000px;
+    border-radius: 8px;
+}
+#logo-img {
+    background-repeat: round;
+    position: relative;
+    left:600px;
+    top:100px;
+    
+
+}
+#pageTitle{
+    text-align: center;
+    font-size: 4em;
+    font-family: 'Notable', sans-serif;
+
+}
+
+#intro{
+    position: relative; Right: 400px; Bottom:250px;
+    overflow: hidden;
+    width: 400px;
+    height: 400px;
+    text-align: center;
+    font-size: 1.5em;
+    margin: 0 auto 15px;
+    font-family: 'Notable', sans-serif;
+
+}
+
+#warningTitle{
+    position: relative; left: 400px; bottom:200px;
+    overflow: hidden;
+    color: black; 
+    width: 400px;
+    height: 400px;
+    text-align: center;
+    font-size: 3em;
+    margin: 0 auto 15px;
+    font-family: 'Notable', sans-serif;
+
+}
+#warningPara{
+    position: relative; left: 400px;bottom:500px;
+    overflow: hidden;
+    width: 400px;
+    height: 400px;
+    text-align: center;
+    font-size: 1.5em;
+    margin: 0 auto 15px;
+    font-family: 'Notable', sans-serif;
+
+}
+
+#headTitle{
+    position: relative;
+    bottom: 1000px;
+    left : 30px;
+    overflow: hidden;
+    font-size: 2em;
+    margin: 0 auto 15px;
+    font-family: 'Notable', sans-serif;
+}
+
+#h4{
+    font-family: 'Notable', sans-serif;
+    font-size: 1.5em;
+}
+#term{
+    position: relative;
+    bottom: 1000px;
+    right:300px;
+    width: 400px;
+    height: 500px;
+    overflow: hidden;
+    font-size: .8em;
+    margin: 0 auto 15px;
+    font-family: 'Notable', sans-serif;
+}
+
+#howToPlay{
+    position: relative;
+    bottom:1000px;
+    width: 800px;
+    height: 500px;
+    overflow: hidden;
+    margin: 0 auto 
+}
+
+#htpTitle{
+    font-size: 1.5em;
+    font-family: 'Notable', sans-serif;
+
+}
+
+#htpPara{
+    position: relative;
+    font-size: .8em;
+    font-family: 'Notable', sans-serif;
+
+    
+}
+
+#playerOptions{
+    position: relative;
+    bottom:1200px;
+    width: 800px;
+    height: 500px;
+    overflow: hidden;
+    margin: 0 auto 
+}
+
+#playerOpTitle, #dealerOpTitle, #winCondTitle, #whatIsTitle{
+    font-size: 1.5em;
+    font-family: 'Notable', sans-serif;
+}
+
+#playerOpPara, #dealerOpPara, #winConPara, #whatIsPara{
+    position: relative;
+    font-size: .8em;
+    font-family: 'Notable', sans-serif;
+
+}
+
+#dealerOption{
+    position: relative;
+    bottom:1200px;
+    width: 800px;
+    height: 500px;
+    overflow: hidden;
+    margin: 0 auto 
+}
+
+#winCond{
+    position: relative;
+    bottom:1450px;
+    width: 800px;
+    height: 500px;
+    overflow: hidden;
+    margin: 0 auto 
+}
+
+#whatIs{
+    position: relative;
+    bottom:1700px;
+    width: 800px;
+    height: 500px;
+    overflow: hidden;
+    margin: 0 auto 
+}

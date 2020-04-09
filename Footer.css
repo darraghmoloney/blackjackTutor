@@ -1,0 +1,39 @@
+.panel-footer{
+    
+	margin-top:30px;
+    padding-top: 35px;
+    box-shadow: 0px 2px 24px 0px rgba(0, 0, 0, 0.15);
+    padding-bottom:30px;
+	border-radius: 8px;
+	background-image: url("https:/www.transparenttextures.com/patterns/felt.png");
+    display: flex;
+	background-color:#222;
+	border-top:0;
+	color: #aaa;
+}
+
+.panel-footer div.row{
+	margin-bottom: 35px;
+}
+
+#hours, #address {
+	line-height:2;
+}
+
+#hours > span, #address > span{
+	font-size:1.3em;
+}
+
+#address p {
+	color:#557c3e;
+	font-size: .8em;
+	line-height:1.8;
+}
+
+#testimonials{
+	font-style: italic;
+}
+
+#testimonils p:nth-child(2) {
+	margin-top:25px;
+}
