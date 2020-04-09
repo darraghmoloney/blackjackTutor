@@ -1,6 +1,6 @@
 import React from 'react';
 import {cardDeck} from './card.js';
-import './Game.css';
+
 
 const deckForGame = cardDeck;
 const blankCard =  "./cardImages/200px-Card_back_05.svg.png";
