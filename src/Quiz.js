@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-
+import App2 from './App2';
 
 class Quiz extends Component {
 
     render () {
 
         return (
-            <div className="Quiz">
-            Hello World This is the Quiz section 
+            <div className="Quiz"> 
+            <App2 />
         </div>
         )
     }
