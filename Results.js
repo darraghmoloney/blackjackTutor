@@ -35,7 +35,7 @@ seeAnswers(){
   render() {
 const {setHighScore, highScore} = this.props;
 var averageScore = (this.props.totalScore/this.props.numGames);
-    var percentage = (this.props.score / this.props.questions.length * 100);
+    var percentage = (this.props.score / 4* 100);
     var comment = '';
 if(percentage === 100){
         comment = "Congratulations, you are ready to win big!" ;
@@ -58,7 +58,7 @@ else if (percentage > 80) {
        
     return (
       <div className = "results">
-        <h4>You got {this.props.score} out of {this.props.questions.length} correct!</h4>
+        <h4>You got {this.props.score} out of 4 correct!</h4>
           <h4>{percentage}% - {comment}</h4>
           <h4>Your high score is : {highScore}</h4>
           <h4>Your average score is: {averageScore} </h4>

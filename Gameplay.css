@@ -1,0 +1,80 @@
+.cardDisplay {
+  max-width: 10%;
+  opacity: 1;
+  border: 5px solid black;
+  border-radius: 7%;
+
+
+}
+
+
+.dealerShow {
+  margin-right: 2%;
+  margin-left: 2%;
+  padding: 2%;
+  /* border: 3px solid #aaa; */
+  color: lightgrey;
+  margin-bottom: 0.05rem;
+}
+
+#playerGame {
+  padding-top: 2%;
+  margin-right: 2%;
+  margin-left: 2%;
+  border: 2px solid #ffaa3b;
+  color: lightgrey;
+}
+
+#gameContainer {
+  text-align: center;
+  margin-top: 30px;
+  padding-top: 35px;
+  /* display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; */
+  background-color: #064408;
+  background-image: url("https:/www.transparenttextures.com/patterns/felt.png");
+
+
+}
+
+#gameOptions {
+  padding: 0.5%;
+}
+
+#settings {
+  color: white;
+  padding: 17%;
+}
+
+#handStats {
+  font-size: small;
+  color: #aaa;
+}
+
+.gameplayBtn{
+  background-color: goldenrod;
+  border-radius: 2px;
+  font-size: 0.9rem;
+  margin-left: 0.2rem;
+  margin-right: 0.25rem;
+  padding: 6px 12px;
+  -mox-box-shadow: inset 0 1 px 0 10  rgb(241, 207, 11);
+  -webkit-box-shadow: inset 0 1 px 0 10 rgb(241, 207, 11);
+  box-shadow: inset 0 1 px 0 10  rgb(241, 207, 11);
+  border: solid 1px  rgb(241, 207, 11);
+  color: black;
+  text-shadow: 0 1px 0  rgb(241, 207, 11);
+  font-family: 'Alegreya Sans SC', sans-serif;
+
+}
+
+.gameplayBtn:hover{
+  background:  rgb(255, 217, 0);
+}
+
+.gameplayBtn:active{
+  background: rgb(233, 211, 87);
+  border-color:rgb(233, 211, 87);
+}

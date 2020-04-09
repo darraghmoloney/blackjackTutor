@@ -7,7 +7,7 @@ class QuestionCount extends React.Component {
  var questions = this.props.questions;
     return(
       <div className = "questionCount">
-       <h4> Question {currentQ} / {questions.length}</h4>
+       <h4> Question {currentQ} / 4</h4>
       </div>
     );
   }

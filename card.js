@@ -117,11 +117,13 @@ function makeSingleDeck() {
 
   }
 
+
   return deck;
 }
 
-
-function makeMultiDecks(number) {
+//EXPORT function also used in Game.js
+/*  Make a deck combined of many decks to be used in the game */
+export function makeMultiDecks(number) {
   let bigDeck = makeSingleDeck();
   for(let i=0; i<number-1; i++) {
     let nextDeck = makeSingleDeck();
@@ -135,10 +137,19 @@ function makeMultiDecks(number) {
   return bigDeck;
 }
 
-function shuffleDeck(deck) {
+//EXPORT function also used in Game.js
+/*  General card deck Shuffle function */
+export function shuffleDeck(deck) {
+
+  /*  Loop through the deck & find a swap place within the unswapped zone
+      for each card
+      There might be a better algorithm for this...
+  */
   for(let i=0; i<deck.length; i++) {
+
     let randomSwapPlace = i + parseInt(Math.random() * (deck.length - i));
 
+    /*  Standard swap with temp variable technique */
     let temp = deck[i];
     deck[i] = deck[randomSwapPlace];
     deck[randomSwapPlace] = temp;
@@ -146,6 +157,14 @@ function shuffleDeck(deck) {
   }
 }
 
+
 let gameDeck = makeMultiDecks(8);
 shuffleDeck(gameDeck);
+
+//EXPORT variable used in Game.js
+/*  The FIRST card deck is exported to Game.js after being shuffled.
+
+    If the game card deck runs out of cards, the Game.js file will use the
+    exported makeMultiDecks() shuffleDeck() functions to make a new deck later.
+ */
 export const cardDeck = gameDeck;

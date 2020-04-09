@@ -3,19 +3,19 @@ import QuestionCount from './QuestionCount.js';
 //import QuestionList from './QuestionList.js';
 import Results from './Results.js';
 //import Question from './Question.js';
-import {QuestionSheet} from './QuestionSheet';
+//import {QuestionSheet} from './QuestionSheet';
 import Welcome from './Welcome';
 import Game from './Game.js';
-import css from './App.css';
+import css from './Quiz.css';
 //import Game2 from './Game2.js';
 //import $ from 'jquery';
-const questions = QuestionSheet;
+//const questions = QuestionSheet;
 
 class App2 extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      questions: questions,
+      
       score: 0,
       currentQ: 0,
       choice: "",
@@ -99,7 +99,7 @@ this.setState({highScore});
  var welcome = <Welcome setCurrentQ ={this.setCurrentQ.bind(this)}{...this.state} />
  }
 
-    else if ((this.state.currentQ !== 0) && (this.state.currentQ <= this.state.questions.length)){
+    else if ((this.state.currentQ !== 0) && (this.state.currentQ <= 4)){
 questionCount = <QuestionCount{...this.state}/>
 var results = '';
 welcome = '';
@@ -110,7 +110,7 @@ setCurrentQ ={this.setCurrentQ.bind(this)}
 setGames= {this.setGames.bind(this)}
 {...this.state}/>
 
-}else if (this.state.currentQ === this.state.questions.length+1) {
+}else if (this.state.currentQ === 5) {
 questionCount ='';
 welcome = '';
 game = '';
