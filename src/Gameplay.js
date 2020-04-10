@@ -539,6 +539,9 @@ class Gameplay extends React.Component {
       handToChange.doubleDisabled = true;
     }
 
+    /* Reset the hint for the original hand */
+    handToChange.hintMessage = "";
+
     handToChange.naturalBlackjack = this.checkNaturalBlackjack(handToChange.cards[0],
                                       firstReplacementCard);
 
