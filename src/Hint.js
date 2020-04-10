@@ -1,3 +1,11 @@
+/*  Make a hint for the player.
+
+    Uses
+      - the player and dealer hand objects
+      - the game options (double allowed, double after split allowed, surrender
+          allowed)
+          -- NB these options are not yet fully implemented
+*/
 export function getHint(dblOK, dblAfterSplitOK, surrenderOK,
   dealerHand, playerHand) {
 
