@@ -1,5 +1,5 @@
 import React from 'react';
-import {cardDeck, makeMultiDecks, shuffleDeck} from './Card.js';
+import {cardDeck, makeMultiDecks, shuffleDeck} from './card.js';
 import {getHint} from './Hint.js';
 import './Gameplay.css';
 
