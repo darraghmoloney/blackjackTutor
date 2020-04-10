@@ -118,97 +118,103 @@ class Gameplay extends React.Component {
 
 
 //______________________________________________________________________________
+/*  Make a generic hand object for with 2 given cards in an array,
+    the hand number and a boolean to toggle a dealer/player hand.
+
+    A dealer card doesn't need a handNumber because it's not used since there
+    is always only one dealer hand. When calling this function -1 will be used as
+    a placeholder for this.
+ */
+  makeSingleHand(cards, handNumber) {
+
+    /* A dealer hand is given the number -1, so any positive hand number
+      means a player's hand. This is important to check because the hands
+      have slightly different Object properties
+    */
+    let forPlayer = (handNumber >= 0);
+
+    /*  Check how many Aces in the hand */
+    let aceTotal = 0;
+    if(cards[0].value === "A") {
+      aceTotal++;
+    }
+    if(cards[1].value === "A") {
+      aceTotal++;
+    }
+
+    /*  Get the points for the first hand
+        and change them if there are 2 Aces
+    */
+    let handPoints = this.getCardPoints([cards[0], cards[1]]);
+    if(handPoints > 21) {
+        handPoints -= 10;
+        aceTotal--;
+    }
+
+    /*  Check fo a natural blackjack - Ace & Face card */
+    let naturalBlackjack = this.checkNaturalBlackjack(cards[0], cards[1]);
+
+    /*  Disable the split button if the two cards have different pts */
+    let disabledSplit = (cards[0].points !== cards[1].points);
+
+    /*  Create generic hand object (player or dealer) */
+    let hand = {
+     "cards": [cards[0], cards[1]],
+     "softAces": aceTotal,
+     "points": handPoints,
+     "bust": false,
+     "gameOverMessage": "",
+     "naturalBlackjack": naturalBlackjack,
+    }
+
+    /* Add player-specific properties if needed */
+    if(forPlayer) {
+      hand.number = handNumber;
+      hand.hintMessage = "";
+      hand.hintShown = false;
+      hand.surrendered = false;
+      hand.splitDisabled = disabledSplit;
+      hand.hitDisabled =  false;
+      hand.standDisabled = false;
+      hand.doubleDisabled = false;
+      hand.hintDisabled = false;
+      hand.surrenderDisabled = false;
+    }
+    /*  Or for the dealer, an extra shownPoints property without
+        the other extra ones
+        - an points value for the dealer card that is visible, not including the
+          hidden card's points
+     */
+    else {
+      hand.shownPoints = cards[1].points;
+    }
+
+   return hand;
+
+  }
+
+
+//______________________________________________________________________________
 /*  Deal first hands for the player and dealer */
   makeFirstHands() {
 
     let firstHands = [];
 
     /*  Deal cards for Player & Dealer */
-   let playerCard1 = this.getCard();
-   let dealerCard1 = this.getCard();
+    let playerCard1 = this.getCard();
+    let dealerCard1 = this.getCard();
 
-   let playerCard2 = this.getCard();
-   let dealerCard2 = this.getCard();
+     let playerCard2 = this.getCard();
+     let dealerCard2 = this.getCard();
 
-   /*  Check how many Aces the player has */
-   let playerAceTotal = 0;
-   if(playerCard1.value === "A") {
-     playerAceTotal++;
-   }
-   if(playerCard2.value === "A") {
-     playerAceTotal++;
-   }
+     /* Use function to make the start hands for both */
+    let playerFirstHand = this.makeSingleHand( [playerCard1, playerCard2], 0);
+    let dealerFirstHand = this.makeSingleHand( [dealerCard1, dealerCard2], -1)
 
-   /*  Get the points for the first player hand
-       and change them if there are 2 Aces
-   */
-   let playerFirstPoints = this.getCardPoints([playerCard1, playerCard2]);
-   if(playerFirstPoints > 21) {
-       playerFirstPoints -= 10;
-       playerAceTotal--;
-   }
+    firstHands.dealer = dealerFirstHand;
+    firstHands.player = playerFirstHand;
 
-   /*  Points for dealer */
-   let dealerFirstPoints = dealerCard2.points;
-   let dealerTotalPoints = dealerCard1.points + dealerCard2.points;
-
-   let dealerAceTotal = 0;
-   if(dealerCard1.value === "A") {
-     dealerAceTotal++;
-   }
-   if (dealerCard2.value === "A") {
-     dealerAceTotal++;
-   }
-
-   if(dealerTotalPoints > 21) {
-     dealerTotalPoints -= 10;
-     dealerAceTotal--;
-   }
-
-    /*  Check if either hand is a perfect blackjack (Ace & Face card) */
-   let dealerNaturalBlackjack = this.checkNaturalBlackjack(dealerCard1, dealerCard2);
-   let playerNaturalBlackjack = this.checkNaturalBlackjack(playerCard1, playerCard2);
-
-   /*  Disable the split button if the two cards have different pts */
-   let disabledSplit = (playerCard1.points !== playerCard2.points);
-
-
-
-    /*  Create hands as JavaScript objects */
-   let dealerFirstHand = {
-     "cards": [dealerCard1, dealerCard2],
-     "softAces": dealerAceTotal,
-     "points": dealerTotalPoints,
-     "shownPoints": dealerFirstPoints,
-     "bust": false,
-     "gameOverMessage": "",
-     "naturalBlackjack": dealerNaturalBlackjack,
-   }
-
-   let playerFirstHand = {
-     "number": 0,
-     "cards": [playerCard1, playerCard2],
-     "softAces": playerAceTotal,
-     "points": playerFirstPoints,
-     "bust": false,
-     "surrendered": false,
-     "gameOverMessage": "",
-     "hintMessage": "",
-     "hintShown": false,
-     "splitDisabled": disabledSplit,
-     "hitDisabled": false,
-     "standDisabled": false,
-     "doubleDisabled": false,
-     "hintDisabled": false,
-     "surrenderDisabled": false,
-     "naturalBlackjack": playerNaturalBlackjack,
-   }
-
-
-   firstHands.dealer = dealerFirstHand;
-   firstHands.player = playerFirstHand;
-
-   return firstHands; //Returns an array of JS objects containing the hand info
+    return firstHands; //Returns an array of JS objects containing the hand info
   }
 
 
@@ -487,7 +493,6 @@ class Gameplay extends React.Component {
   }
 
 
-
 //______________________________________________________________________________
 /*  Split - if both of the first cards have the same points, make
     a new hand from the second card of the original hand.
@@ -498,14 +503,20 @@ class Gameplay extends React.Component {
   split(handNumber) {
 
     let currentHands = this.state.playerHands;
+    let currentIndex;
+
     /* Get the hand object to change from the state variables */
     let handToChange;
 
     currentHands.forEach((item, i) => {
       if(item.number === handNumber) {
         handToChange = item;
+        currentIndex = i;
       }
     });
+
+    console.log(`Hand ${handNumber} split [${handToChange.cards[0].shortName},`
+      + ` ${handToChange.cards[1].shortName}]`);
 
     /*  Disallow change if hand has more than 2 cards */
     if(handToChange.cards.length > 2) {
@@ -513,102 +524,40 @@ class Gameplay extends React.Component {
     }
 
     /*  Remove the SECOND card from the original hand
-        and if it's an Ace, set the new hand aces to 1
     */
     let cardToMove = handToChange.cards.pop();
-    let newHandSoftAces = (cardToMove.value === "A") ? 1: 0;
-
-    console.log(cardToMove.value);
-    console.log(handToChange.softAces);
-    /*  Update the no. of Aces in the original hand if necessary */
-    if(cardToMove.value === "A") {
-      handToChange.softAces--;
-
-      console.log(handToChange.softAces);
-    }
 
     /*  Get a new card for the original hand */
     let firstReplacementCard = this.getCard();
-    handToChange.cards.push(firstReplacementCard);
 
-    /*  Check if the original hand should allow split (2 cards with same points)*/
-    handToChange.splitDisabled = (handToChange.cards[0].points !== firstReplacementCard.points);
+    /*  Re-make the first hand, with the new card replacement */
+    handToChange = this.makeSingleHand( [handToChange.cards[0], firstReplacementCard],
+      handNumber);
+
+      console.log(`Hand ${handNumber} set to [${handToChange.cards[0].shortName},`
+        + ` ${handToChange.cards[1].shortName}]`);
 
     /*  Disable double after split if necessary */
-    if(!this.state.doubleAfterSplitAllowed) {
-      handToChange.doubleDisabled = true;
-    }
+    handToChange.doubleDisabled = !this.state.doubleAfterSplitAllowed;
 
-    /* Reset the hint for the original hand */
-    handToChange.hintMessage = "";
-
-    handToChange.naturalBlackjack = this.checkNaturalBlackjack(handToChange.cards[0],
-                                      firstReplacementCard);
-
-
-    /*  Update the original hand Ace count if the card just dealt was an Ace */
-    if(firstReplacementCard === "A") {
-      handToChange.softAces++;
-    }
-    /*  Deal new card for the new hand & check for Ace*/
+    /*  Generate new hand for split card */
     let newHandOtherCard = this.getCard();
-    if(newHandOtherCard.value === "A") {
-      newHandSoftAces++;
-    }
-
-
-    /* Calculate points for new hand*/
-    let newHandPoints = cardToMove.points + newHandOtherCard.points;
-    if(newHandPoints > 21) {
-      newHandPoints -= 10;
-      newHandSoftAces--;
-      console.log(newHandSoftAces);
-    }
-
     let newHandNumber = (this.state.totalHands) + 1;
+    let newHand = this.makeSingleHand( [cardToMove, newHandOtherCard], newHandNumber);
 
-    /* Disable split if the points values of both cards are different */
-    let newHandDisabledSplit = (cardToMove.points !== newHandOtherCard.points);
+    /*  Change allowing doubles for the new hand, depending on game options */
+    newHand.doubleDisabled = !this.state.doubleAfterSplitAllowed;
 
-    let newHandDisabledDouble = !this.state.doubleAfterSplitAllowed;
 
-    let newNaturalBlackjack = this.checkNaturalBlackjack(cardToMove, newHandOtherCard);
-
-    /*  Create a new hand object */
-    let newHand = {
-      "number": newHandNumber,
-      "cards": [cardToMove, newHandOtherCard],
-      "softAces": newHandSoftAces,
-      "points": newHandPoints,
-      "bust": false,
-      "surrendered": false,
-      "gameOverMessage": "",
-      "hintMessage": "",
-      "hintShown": false,
-      "splitDisabled": newHandDisabledSplit,
-      "hitDisabled": false,
-      "standDisabled": false,
-      "doubleDisabled": newHandDisabledDouble,
-      "hintDisabled": false,
-      "surrenderDisabled": false,
-      "naturalBlackjack": newNaturalBlackjack,
-    };
-
-    /* Fix the points for the Original Hand */
-    handToChange.points = handToChange.cards[0].points +
-      firstReplacementCard.points;
-
-    /* Reduce pts if 2 Aces in hand */
-    if(handToChange.points > 21) {
-      handToChange.points -= 10;
-      handToChange.softAces--;
-    }
-
-    /* Add new hand array to Hands object */
+    /* Add new hand & updated original hand to total Hands object */
     currentHands.push(newHand);
+    currentHands[currentIndex] = handToChange;
+
 
     console.log(`New hand added [${newHand.cards[0].shortName}, ${newHand.cards[1].shortName}] `
       + `Pts: ${newHand.points}`);
+    console.log(`New hand naturalBlackjack: ${newHand.naturalBlackjack} `);
+
 
     let currentActiveHands = (this.state.activeHands) + 1;
 
@@ -616,6 +565,7 @@ class Gameplay extends React.Component {
     this.setState({totalHands: newHandNumber});
     this.setState({activeHands: currentActiveHands});
 
+    console.log(this.state.playerHands)
   }
 
 
