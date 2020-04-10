@@ -182,7 +182,7 @@ class Gameplay extends React.Component {
     }
     /*  Or for the dealer, an extra shownPoints property without
         the other extra ones
-        - an points value for the dealer card that is visible, not including the
+        - a points value for the dealer card that is visible, not including the
           hidden card's points
      */
     else {
