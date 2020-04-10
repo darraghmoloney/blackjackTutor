@@ -723,7 +723,7 @@ class Gameplay extends React.Component {
 //______________________________________________________________________________
 /*  Play the game as the dealer after the player finished and has
        some hands which didn't go bust
-   */
+*/
   dealerPlay() {
     this.setState({showDealerCards: true});
 
@@ -999,10 +999,10 @@ class Gameplay extends React.Component {
       if(hintVisible === true) {
 
        /* Get a hint message for the hand */
-       let playerHintMessage = getHint(this.state.doubleAllowed, this.state.doubleAfterSplitAllowed,
+       let playerHint = getHint(this.state.doubleAllowed, this.state.doubleAfterSplitAllowed,
         this.state.surrenderAllowed, this.state.dealerHand, currentHand);
 
-        currentHand.hintMessage = playerHintMessage;
+        currentHand.hintMessage = playerHint.hintMessage;
 
       }
       else {

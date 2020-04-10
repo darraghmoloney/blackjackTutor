@@ -5,50 +5,65 @@ export function getHint(dblOK, dblAfterSplitOK, surrenderOK,
     let player = playerHand.points;
     let playerHandIsSoft = (playerHand.softAces > 0);
 
-    let hint = "";
+    /* Store more detailed info for quiz as well as gameplay */
+    let hint = {
+      hintMessage: "",
+      hit: false,
+      stand: true, //in if checks, stand is the most common, so true by default
+      split: false,
+      double: false,
+      surrender: false,
+    };
 
     /*  Error checking */
     if((dealer<2 && player<2) ||(dealer<2 && player>21) ||
       (dealer >11 && player<2) ||(dealer >11 && player>21))
     {
-      hint = "Invalid for both dealer and player";  //should deal when both values are invalid
+      hint.hintMessage = "Invalid for both dealer and player";  //should deal when both values are invalid
+      hint.stand = false;
     }
     else if(dealer<2 || dealer >11) {
-      hint = "Invalid for dealer";  //deals with when dealer has invalid score
+      hint.hintMessage = "Invalid for dealer";  //deals with when dealer has invalid score
+      hint.stand = false;
     }
     else if( player<2 || player>21)
     {
-      hint = "Invalid for player"; //deals with when player has invalid score
+      hint.hintMessage = "Invalid for player"; //deals with when player has invalid score
+      hint.stand = false;
     }
     /*  Hints for valid total points */
     else if(dealer==2 && (player>=13 && player<=21))
     {
-      hint = "You should stand";
+      hint.hintMessage = "You should stand";
     }
     else if(dealer==3 && (player>=13 && player<=21))
     {
-      hint = "You should stand";
+      hint.hintMessage = "You should stand";
     }
     else if(dealer==4 && (player>=12 && player<=21))
     {
-      hint = "You should stand";
+      hint.hintMessage = "You should stand";
     }
     else if(dealer==5 && (player>=12 && player<=21))
     {
-      hint = "You should stand";
+      hint.hintMessage = "You should stand";
     }
     else if(dealer==6 && (player>=12 && player<=21))
     {
-      hint = "You should stand";
+      hint.hintMessage = "You should stand";
     }
     else if(dealer>=7 && (player>=17 && player<=21))  //needs equivalent for jack, queen,king
     {
-      hint = "You should stand";
+      hint.hintMessage = "You should stand";
     }
     else
     {
-      hint = "You should hit";
+      hint.hintMessage = "You should hit";
+      hint.stand = false;
+      hint.hit = true;
     }
+
+
     /*final notes
     make a table for soft totals by incorporating the ace ruling properly, this is only for hard totals
     make a table for split conditions
