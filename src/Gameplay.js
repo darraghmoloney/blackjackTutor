@@ -414,6 +414,7 @@ class Gameplay extends React.Component {
     hand.cards.push(newCard);
 
     hand.splitDisabled = true; //Cannot split with more than 2 cards in hand
+    hand.hintMessage = ""; //new hint will be needed for new situation, so reset
 
     /* Handle a bust hand */
     if(hand.points > 21) {
@@ -425,7 +426,8 @@ class Gameplay extends React.Component {
       hand.doubleDisabled = true;
       hand.hintDisabled = true;
       hand.surrenderDisabled = true;
-      hand.hintMessage = "";
+      // hand.hintMessage = "";
+
 
       let active = this.state.activeHands - 1; //Track when dealer should play
       this.setState({activeHands: active});
