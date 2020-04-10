@@ -1,11 +1,12 @@
 import React from 'react';
-import {cardDeck, makeMultiDecks, shuffleDeck} from './card.js';
+import {cardDeck, makeMultiDecks, shuffleDeck} from './Card.js';
+import {getHint} from './Hint.js';
 import './Gameplay.css';
 
 // let deckForGame = cardDeck;
 const blankCard =  "./cardImages/200px-Card_back_05.svg.png";
 
-let handsPlayerDealt = [];
+// let handsPlayerDealt = [];
 
 class Gameplay extends React.Component {
 
@@ -173,6 +174,8 @@ class Gameplay extends React.Component {
    /*  Disable the split button if the two cards have different pts */
    let disabledSplit = (playerCard1.points !== playerCard2.points);
 
+
+
     /*  Create hands as JavaScript objects */
    let dealerFirstHand = {
      "cards": [dealerCard1, dealerCard2],
@@ -203,6 +206,7 @@ class Gameplay extends React.Component {
      "naturalBlackjack": playerNaturalBlackjack,
    }
 
+
    firstHands.dealer = dealerFirstHand;
    firstHands.player = playerFirstHand;
 
@@ -230,7 +234,7 @@ class Gameplay extends React.Component {
           </div>
 
           <div id="playerButtons">
-          
+
             {hand.hitDisabled === false &&
               <button
                 className="gameplayBtn"
@@ -718,7 +722,14 @@ class Gameplay extends React.Component {
 
     /*  Show the hint or hide it by just making a blank string */
     if(hintVisible === true) {
-      currentHand.hintMessage = "You should hit. No wait... stand. Or double. Maybe split??";
+
+     /* Get a hint message for the hand */
+     let playerHintMessage = getHint(this.state.doubleAllowed, this.state.doubleAfterSplitAllowed,
+      this.state.surrenderAllowed, this.state.dealerHand, currentHand);
+
+      currentHand.hintMessage = playerHintMessage;
+
+      // currentHand.hintMessage = "You should hit. No wait... stand. Or double. Maybe split??";
     }
     else {
       currentHand.hintMessage = "";
@@ -867,8 +878,8 @@ class Gameplay extends React.Component {
     let firstHands = this.makeFirstHands(); //Deal new hands
 
 //////TRACK INITIAL HANDS FOR PLAYER
-    handsPlayerDealt.push(firstHands.player);
-    console.log(handsPlayerDealt)
+    // handsPlayerDealt.push(firstHands.player);
+    // console.log(handsPlayerDealt)
 
     if(this.state.gameStarted === false) {
       this.setState({gameStarted: true});
