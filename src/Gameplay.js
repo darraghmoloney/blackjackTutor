@@ -243,7 +243,7 @@ class Gameplay extends React.Component {
 
           <div className="handStatus">
             <span id="playerPoints">Player Points: {hand.points}</span>
-            <span id="handStatus"> &nbsp; {hand.gameOverMessage}</span>
+            <span id="handGameOverMsg"> &nbsp; {hand.gameOverMessage}</span>
           </div>
 
           <div id="playerButtons">
@@ -788,8 +788,6 @@ class Gameplay extends React.Component {
 
     console.log(`Dealer dealt: [ ? ` +
       `, ${firstHands.dealer.cards[1].shortName}] Pts shown: ${firstHands.dealer.shownPoints}`);
-
-    console.log(`Dealer has ${firstHands.dealer.softAces} soft aces`);
 
     console.log(`Player dealt: [${firstHands.player.cards[0].shortName}` +
       `, ${firstHands.player.cards[1].shortName}] Pts: ${firstHands.player.points}`);
