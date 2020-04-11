@@ -479,13 +479,13 @@ class Gameplay extends React.Component {
 
     NB - Only a 2 card hand may be split  */
 //______________________________________________________________________________
-  split(changeIndex) {
+  split(handIndex) {
 
     let hands = this.state.playerHands;
-    let handToChange = hands[changeIndex];
+    let handToChange = hands[handIndex];
 
 
-    console.log(`Hand ${changeIndex} split [${handToChange.cards[0].shortName},`
+    console.log(`Hand ${handIndex} split [${handToChange.cards[0].shortName},`
       + ` ${handToChange.cards[1].shortName}]`);
 
     /*  Disallow change if hand has more than 2 cards */
@@ -502,10 +502,10 @@ class Gameplay extends React.Component {
 
     /*  Re-make the first hand, with the new card replacement */
     handToChange = this.makeSingleHand( [handToChange.cards[0], firstReplacementCard],
-      changeIndex);
+      handIndex);
 
-      console.log(`Hand ${changeIndex} set to [${handToChange.cards[0].shortName},`
-        + ` ${handToChange.cards[1].shortName}]`);
+      console.log(`Hand ${handIndex} set to [${handToChange.cards[0].shortName},`
+        + ` ${handToChange.cards[1].shortName}], Pts: ${handToChange.points}`);
 
     /*  Disable double after split if necessary */
     handToChange.doubleDisabled = !this.state.doubleAfterSplitAllowed;
@@ -521,7 +521,7 @@ class Gameplay extends React.Component {
 
     /* Add new hand & updated original hand to total Hands object */
     hands.push(newHand);
-    hands[changeIndex] = handToChange;
+    hands[handIndex] = handToChange;
 
 
     console.log(`Added Hand ${newHandNumber}, [${newHand.cards[0].shortName}, `
