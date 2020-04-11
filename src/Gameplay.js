@@ -58,8 +58,8 @@ class Gameplay extends React.Component {
 
 /******************************************************************************/
 
-//______________________________________________________________________________
 /*  Get a card from the game deck */
+//______________________________________________________________________________
   getCard() {
 
     let deckForGame = this.state.gameDeck;
@@ -79,10 +79,9 @@ class Gameplay extends React.Component {
   }
 
 
-//______________________________________________________________________________
 /* Calculate the points of a hand by looping through all cards and
-  getting the total points. Should probably use .reduce() function
-  */
+  getting the total points. Should probably use .reduce() function  */
+//______________________________________________________________________________
   getCardPoints(hand) {
     let total = 0;
     for(let card of hand) {
@@ -92,13 +91,12 @@ class Gameplay extends React.Component {
   }
 
 
-//______________________________________________________________________________
 /*  Check if 2 cards are a perfect Blackjack
     i.e. an Ace and a Face card
     - A perfect Blackjack will win over another 21 point hand
     NB This function should only be called if the hand has only
-    two cards in it
-*/
+    two cards in it */
+//______________________________________________________________________________
   checkNaturalBlackjack(card1, card2) {
     if( (card1.points + card2.points) !== 21 ) {
       return false; //blackjack must be exactly 21 points
@@ -117,14 +115,14 @@ class Gameplay extends React.Component {
   }
 
 
-//______________________________________________________________________________
+
 /*  Make a generic hand object for with 2 given cards in an array,
     the hand number and a boolean to toggle a dealer/player hand.
 
     A dealer card doesn't need a handNumber because it's not used since there
     is always only one dealer hand. When calling this function -1 will be used as
-    a placeholder for this.
- */
+    a placeholder for this. */
+ //______________________________________________________________________________
   makeSingleHand(cards, handNumber) {
 
     /* A dealer hand is given the number -1, so any positive hand number
@@ -194,8 +192,8 @@ class Gameplay extends React.Component {
   }
 
 
-//______________________________________________________________________________
 /*  Deal first hands for the player and dealer */
+//______________________________________________________________________________
   makeFirstHands() {
 
     let firstHands = [];
@@ -226,8 +224,8 @@ class Gameplay extends React.Component {
 
 /******************************************************************************/
 
-//______________________________________________________________________________
 /*  Show every player hand using the .map() function */
+//______________________________________________________________________________
   displayAllPlayerHands() {
 
     let hands =
@@ -317,8 +315,8 @@ class Gameplay extends React.Component {
   }
 
 
-//______________________________________________________________________________
 /*  Show the first dealer hand in the game, with one card hidden */
+//______________________________________________________________________________
   displayHiddenDealerHand() {
     let shownCard = this.state.dealerHand.cards[1];
     return (
@@ -331,10 +329,9 @@ class Gameplay extends React.Component {
   }
 
 
-//______________________________________________________________________________
 /*  Show both of the first 2 cards of the dealer, if the player is finished
-    and not bust for every hand
- */
+    and not bust for every hand */
+//______________________________________________________________________________
   displayWholeDealerHand() {
 
     /*  Use map to make Array of cards with JSX to display each one.
@@ -378,8 +375,8 @@ class Gameplay extends React.Component {
 
 /******************************************************************************/
 
-//______________________________________________________________________________
 /*  Hit - Get a new card for the player hand, add it, and update the points, etc */
+//______________________________________________________________________________
   hit(handIndex) {
 
     /*  Get the current hand & the combined player hands */
@@ -456,8 +453,8 @@ class Gameplay extends React.Component {
   }
 
 
-//______________________________________________________________________________
 /*  Double - get one more card, and stand (if not bust) */
+//______________________________________________________________________________
   double(handIndex) {
 
     /* Get the correct hand by searching all the player hands for it */
@@ -477,13 +474,12 @@ class Gameplay extends React.Component {
   }
 
 
-//______________________________________________________________________________
 /*  Split - if both of the first cards have the same points, make
     a new hand from the second card of the original hand.
     Then deal new cards and add them to both hands.
 
-    NB - Only a 2 card hand may be split
-*/
+    NB - Only a 2 card hand may be split  */
+//______________________________________________________________________________
   split(changeIndex) {
 
     let hands = this.state.playerHands;
@@ -544,11 +540,10 @@ class Gameplay extends React.Component {
   }
 
 
-//______________________________________________________________________________
 /*  Stand - stop playing for a specific hand.
     If all hands are not active, and some are not bust, the dealer should
-    start playing, too.
-*/
+    start playing, too. */
+//______________________________________________________________________________
   stand(handIndex) {
 
     /* Get current hand from hands list */
@@ -590,8 +585,8 @@ class Gameplay extends React.Component {
   }
 
 
-//______________________________________________________________________________
 /*  Surrender - give up on a hand */
+//______________________________________________________________________________
   surrender(handIndex) {
 
     /*  Loop through all hands to find the hand that surrender was clicked on */
@@ -632,10 +627,9 @@ class Gameplay extends React.Component {
 
 /******************************************************************************/
 
-//______________________________________________________________________________
 /*  Play the game as the dealer after the player finished and has
-       some hands which didn't go bust
-*/
+       some hands which didn't go bust  */
+//______________________________________________________________________________
   dealerPlay() {
 
     this.setState({showDealerCards: true});
@@ -688,8 +682,8 @@ class Gameplay extends React.Component {
   }
 
 
-//______________________________________________________________________________
 /*  Check which hands won, if some hands are not already bust */
+//______________________________________________________________________________
   checkWinningHands() {
 
     /*  Get the dealer hand */
@@ -775,8 +769,8 @@ class Gameplay extends React.Component {
 
 /******************************************************************************/
 
-//______________________________________________________________________________
 /*  Reset & restart the game */
+//_____________________________________________________________________________
   newGame() {
 
     let firstHands = this.makeFirstHands(); //Deal new hands
@@ -809,8 +803,8 @@ class Gameplay extends React.Component {
     }
 
 
-//______________________________________________________________________________
 /*  Choose whether Doubles are allowed in the game */
+//______________________________________________________________________________
     selectDoubles() {
       let currentDoubleAllowed = this.state.doubleAllowed;
 
@@ -823,8 +817,8 @@ class Gameplay extends React.Component {
     }
 
 
-//______________________________________________________________________________
 /*  Choose whether Surrenders are allowed in the game */
+//______________________________________________________________________________
     selectSurrenders() {
       let currentSurrenderAllowed = this.state.surrenderAllowed;
 
@@ -834,8 +828,8 @@ class Gameplay extends React.Component {
     }
 
 
-//______________________________________________________________________________
 /*  Choose whether Splits are allowed in the game */
+//______________________________________________________________________________
     selectSplits() {
       let currentSplitAllowed = this.state.splitAllowed;
 
@@ -845,8 +839,8 @@ class Gameplay extends React.Component {
     }
 
 
-//______________________________________________________________________________
 /*  Choose whether Double after Split is allowed in the game */
+//______________________________________________________________________________
     selectDoubleAfterSplit() {
       let currentDblAfterSplitAllowed = this.state.doubleAfterSplitAllowed;
 
@@ -855,8 +849,8 @@ class Gameplay extends React.Component {
     }
 
 
-//______________________________________________________________________________
 /*  Render the game after gameplay options were set (Surrender allowed etc) */
+//______________________________________________________________________________
     start() {
       console.log(`Showing the game`);
       // console.log(`Split allowed: ${this.state.splitAllowed}`);
@@ -873,18 +867,17 @@ class Gameplay extends React.Component {
     }
 
 
-//______________________________________________________________________________
 /*  For changing Options during the game
     - sets optionsChosen to false which makes the options choice
-    checkboxes be shown again and the game itself hidden
-*/
+    checkboxes be shown again and the game itself hidden  */
+//______________________________________________________________________________
     optionsChange() {
       this.setState({optionsChosen: false});
     }
 
 
-//______________________________________________________________________________
 /*  Show or hide a hint for a hand.  */
+//______________________________________________________________________________
     toggleHint(handIndex) {
 
       /*  Find the current hand */
