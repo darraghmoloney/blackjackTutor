@@ -379,21 +379,34 @@ class Gameplay extends React.Component {
 /******************************************************************************/
 
 //______________________________________________________________________________
+/*  Find the hand in the list of hands so it can be changed.
+    This is used because trying to access the hand directly with hands[0] etc
+    causes crashes on Split hands for some reason
+ */
+  // findHand(handNumber) {
+  //   let fullHand = this.state.playerHands;
+  //   let hand;
+  //   let handIndex = 0;
+  //
+  //   fullHand.forEach((item, i) => {
+  //     if(item.number === handNumber) {
+  //       hand = item;
+  //       handIndex = i;
+  //     }
+  //   });
+  //
+  //   const handObject = {"hand" : hand, "handIndex": handIndex};
+  //   return handObject;
+  // }
+
+
+//______________________________________________________________________________
 /*  Hit - Get a new card for the player hand, add it, and update the points, etc */
-  hit(handNumber) {
+  hit(handIndex) {
 
-    /*  Get the current hand */
+    /*  Get the current hand & the combined player hands */
     let fullHand = this.state.playerHands;
-    let hand;
-    let handIndex = 0;
-
-    fullHand.forEach((item, i) => {
-      if(item.number === handNumber) {
-        hand = item;
-        handIndex = i;
-      }
-    });
-
+    let hand = fullHand[handIndex];
 
     /*  A bust hand cannot get a new card, so we stop the function here by returning
       if this hand is bust
@@ -413,13 +426,13 @@ class Gameplay extends React.Component {
       hand.softAces ++;
     }
 
-    console.log(`Hit for Hand ${handNumber}. Added ${newCard.shortName}, Pts: ${hand.points} `);
+    console.log(`Hit for Hand ${handIndex}. Added ${newCard.shortName}, Pts: ${hand.points} `);
 
     /* Reduce pts of Aces if necessary */
     while(hand.points > 21 && hand.softAces > 0) {
       hand.points -= 10;
       hand.softAces --;
-      console.log(`Hardened Ace for Hand ${handNumber}, Pts: ${hand.points}`);
+      console.log(`Hardened Ace for Hand ${handIndex}, Pts: ${hand.points}`);
     }
 
     /* Add the actual card object */
@@ -432,7 +445,7 @@ class Gameplay extends React.Component {
     if(hand.points > 21) {
       hand.bust = true;
       hand.gameOverMessage = "Bust!";
-      console.log(`Hand ${handNumber} is bust`);
+      console.log(`Hand ${handIndex} is bust`);
       hand.hitDisabled = true;  //Disable buttons
       hand.standDisabled = true;
       hand.doubleDisabled = true;
@@ -467,29 +480,22 @@ class Gameplay extends React.Component {
 
 //______________________________________________________________________________
 /*  Double - get one more card, and stand (if not bust) */
-  double(handNumber) {
+  double(handIndex) {
+    
     /* Get the correct hand by searching all the player hands for it */
-    let fullHand = this.state.playerHands;
-    let hand;
-    let handIndex = 0;
-
-    fullHand.forEach((item, i) => {
-      if(item.number === handNumber) {
-        hand = item;
-        handIndex = i;
-      }
-    });
+    let hands = this.state.playerHands;
+    let hand = hands[handIndex];
 
     hand.doubleDisabled = true; //Can only double once
     hand.splitDisabled = true; //Cannot split with 3 cards
     hand.hintDisabled = true; //Hint no longer needed as final card played
     hand.surrenderDisabled = true;
     hand.naturalBlackjack = false; //No perfect blackjack with more than 2 cards
-    fullHand[handIndex] = hand;
-    this.setState({playerHands: fullHand});
+    hands[handIndex] = hand;
+    this.setState({playerHands: hands});
 
-    this.hit(handNumber);
-    this.stand(handNumber);
+    this.hit(handIndex);
+    this.stand(handIndex);
   }
 
 
@@ -500,22 +506,13 @@ class Gameplay extends React.Component {
 
     NB - Only a 2 card hand may be split
 */
-  split(handNumber) {
+  split(changeIndex) {
 
-    let currentHands = this.state.playerHands;
-    let currentIndex;
+    let hands = this.state.playerHands;
+    let handToChange = hands[changeIndex];
 
-    /* Get the hand object to change from the state variables */
-    let handToChange;
 
-    currentHands.forEach((item, i) => {
-      if(item.number === handNumber) {
-        handToChange = item;
-        currentIndex = i;
-      }
-    });
-
-    console.log(`Hand ${handNumber} split [${handToChange.cards[0].shortName},`
+    console.log(`Hand ${changeIndex} split [${handToChange.cards[0].shortName},`
       + ` ${handToChange.cards[1].shortName}]`);
 
     /*  Disallow change if hand has more than 2 cards */
@@ -532,9 +529,9 @@ class Gameplay extends React.Component {
 
     /*  Re-make the first hand, with the new card replacement */
     handToChange = this.makeSingleHand( [handToChange.cards[0], firstReplacementCard],
-      handNumber);
+      changeIndex);
 
-      console.log(`Hand ${handNumber} set to [${handToChange.cards[0].shortName},`
+      console.log(`Hand ${changeIndex} set to [${handToChange.cards[0].shortName},`
         + ` ${handToChange.cards[1].shortName}]`);
 
     /*  Disable double after split if necessary */
@@ -542,7 +539,7 @@ class Gameplay extends React.Component {
 
     /*  Generate new hand for split card */
     let newHandOtherCard = this.getCard();
-    let newHandNumber = (this.state.totalHands) + 1;
+    let newHandNumber = (this.state.totalHands);
     let newHand = this.makeSingleHand( [cardToMove, newHandOtherCard], newHandNumber);
 
     /*  Change allowing doubles for the new hand, depending on game options */
@@ -550,22 +547,22 @@ class Gameplay extends React.Component {
 
 
     /* Add new hand & updated original hand to total Hands object */
-    currentHands.push(newHand);
-    currentHands[currentIndex] = handToChange;
+    hands.push(newHand);
+    hands[changeIndex] = handToChange;
 
 
-    console.log(`New hand added [${newHand.cards[0].shortName}, ${newHand.cards[1].shortName}] `
+    console.log(`Added Hand ${newHandNumber}, [${newHand.cards[0].shortName}, `
+      + `${newHand.cards[1].shortName}] `
       + `Pts: ${newHand.points}`);
     console.log(`New hand naturalBlackjack: ${newHand.naturalBlackjack} `);
 
+    let newTotalHands = (this.state.totalHands) + 1;
+    let newActiveHands = (this.state.activeHands) + 1;
 
-    let currentActiveHands = (this.state.activeHands) + 1;
+    this.setState({playerHands: hands});
+    this.setState({totalHands: newTotalHands});
+    this.setState({activeHands: newActiveHands});
 
-    this.setState({playerHands: currentHands});
-    this.setState({totalHands: newHandNumber});
-    this.setState({activeHands: currentActiveHands});
-
-    console.log(this.state.playerHands)
   }
 
 
@@ -574,45 +571,38 @@ class Gameplay extends React.Component {
     If all hands are not active, and some are not bust, the dealer should
     start playing, too.
 */
-  stand(handNumber) {
+  stand(handIndex) {
+
     /* Get current hand from hands list */
     let hands = this.state.playerHands;
-    let currentHand;
-    let currentIndex;
-
-    hands.forEach((item, i) => {
-      if(item.number === handNumber) {
-        currentHand = item;
-        currentIndex = i;
-      }
-    });
+    let hand = hands[handIndex];
 
     /* No stand allowed if the hand is bust
       (button should be disabled anyway)
     */
-    if(currentHand.bust === true) {
+    if(hand.bust === true) {
       return;
     }
 
-    currentHand.hitDisabled = true;
-    currentHand.splitDisabled = true;
-    currentHand.standDisabled = true;
-    currentHand.doubleDisabled = true;
-    currentHand.hintDisabled = true;
-    currentHand.surrenderDisabled = true;
-    currentHand.hintMessage = "";
+    hand.hitDisabled = true;
+    hand.splitDisabled = true;
+    hand.standDisabled = true;
+    hand.doubleDisabled = true;
+    hand.hintDisabled = true;
+    hand.surrenderDisabled = true;
+    hand.hintMessage = "";
 
     let active = this.state.activeHands;
     active--;
 
-    hands[currentIndex] = currentHand;
+    hands[handIndex] = hand;
 
     this.setState({playerHands: hands});
     this.setState({activeHands: active});
 
     let bust = this.state.bustHands;
 
-    console.log(`Player stands on Hand ${handNumber} (Pts: ${currentHand.points})`);
+    console.log(`Player stands on Hand ${handIndex}, Pts: ${hand.points}`);
 
     /*  Dealer should play if no hands are active */
     if((active === 0) && (bust < this.state.totalHands)) {
@@ -624,17 +614,11 @@ class Gameplay extends React.Component {
 
 //______________________________________________________________________________
 /*  Surrender - give up on a hand */
-  surrender(handNumber) {
+  surrender(handIndex) {
+
     /*  Loop through all hands to find the hand that surrender was clicked on */
     let hands = this.state.playerHands;
-    let hand;
-    let handIndex;
-    hands.forEach((item, i) => {
-      if(item.number === handNumber) {
-        hand = item;
-        handIndex = i;
-      }
-    });
+    let hand = hands[handIndex];
 
     /*  Disable all the buttons */
     hand.hitDisabled = true;
@@ -658,7 +642,7 @@ class Gameplay extends React.Component {
     this.setState({playerHands: hands});
     this.setState({activeHands: active});
 
-    console.log(`Surrendered on Hand ${handNumber}`);
+    console.log(`Surrendered on Hand ${handIndex}, Pts: ${hand.points}`);
   }
 
 
@@ -675,8 +659,8 @@ class Gameplay extends React.Component {
        some hands which didn't go bust
 */
   dealerPlay() {
-    this.setState({showDealerCards: true});
 
+    this.setState({showDealerCards: true});
 
     let hand = this.state.dealerHand;
     let dealerPts = hand.points;
@@ -923,42 +907,35 @@ class Gameplay extends React.Component {
 
 //______________________________________________________________________________
 /*  Show or hide a hint for a hand.  */
-    toggleHint(handNumber) {
+    toggleHint(handIndex) {
 
       /*  Find the current hand */
       let hands = this.state.playerHands;
-      let currentHand;
-      let currentIndex;
-      hands.forEach((hand, i) => {
-        if(hand.number === handNumber) {
-          currentHand = hand;
-          currentIndex = i;
-        }
-      });
+      let hand = hands[handIndex];
 
       /*  Reverse whether the hint is shown - i.e. change true to false and
           vice versa
       */
-      let hintVisible = currentHand.hintShown;
+      let hintVisible = hand.hintShown;
       hintVisible = !hintVisible;
 
       /*  Store this hand's hint display choice */
-      currentHand.hintShown = hintVisible;
+      hand.hintShown = hintVisible;
 
       /*  Show the hint or hide it by just making a blank string */
       if(hintVisible === true) {
 
        /* Get a hint message for the hand */
        let playerHint = getHint(this.state.doubleAllowed, this.state.doubleAfterSplitAllowed,
-        this.state.surrenderAllowed, this.state.dealerHand, currentHand);
+        this.state.surrenderAllowed, this.state.dealerHand, hand);
 
-        currentHand.hintMessage = playerHint.hintMessage;
+        hand.hintMessage = playerHint.hintMessage;
 
       }
       else {
-        currentHand.hintMessage = "";
+        hand.hintMessage = "";
       }
-      hands[currentIndex] = currentHand;
+      hands[handIndex] = hand;
       this.setState({playerHands: hands});
     }
 
