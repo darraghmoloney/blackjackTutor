@@ -116,20 +116,17 @@ class Gameplay extends React.Component {
 
 
 
-/*  Make a generic hand object for with 2 given cards in an array,
-    the hand number and a boolean to toggle a dealer/player hand.
-
-    A dealer card doesn't need a handNumber because it's not used since there
-    is always only one dealer hand. When calling this function -1 will be used as
-    a placeholder for this. */
- //______________________________________________________________________________
+/*  Make a hand object for 2 cards in an array and the hand number. */
+//______________________________________________________________________________
   makeSingleHand(cards, handNumber) {
 
-    /* A dealer hand is given the number -1, so any positive hand number
-      means a player's hand. This is important to check because the hands
-      have slightly different Object properties
+    /* Player hands & the dealer hand has different properties,
+      i.e. no need for a hint message for the dealer, etc.
+      So this checks if it's a player hand (with a number)
+      or a dealer hand (no number)
     */
-    let forPlayer = (handNumber >= 0);
+    let forPlayer = !(handNumber === undefined);
+
 
     /*  Check how many Aces in the hand */
     let aceTotal = 0;
@@ -207,7 +204,7 @@ class Gameplay extends React.Component {
 
      /* Use function to make the start hands for both */
     let playerFirstHand = this.makeSingleHand( [playerCard1, playerCard2], 0);
-    let dealerFirstHand = this.makeSingleHand( [dealerCard1, dealerCard2], -1)
+    let dealerFirstHand = this.makeSingleHand( [dealerCard1, dealerCard2])
 
     firstHands.dealer = dealerFirstHand;
     firstHands.player = playerFirstHand;
