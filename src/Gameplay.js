@@ -656,7 +656,7 @@ class Gameplay extends React.Component {
         }
         dealerPts += nextCard.points;
         console.log(`Dealer dealt ${nextCard.shortName}, Hand pts: ${dealerPts}`);
-        while(dealerPts >= 17 && softAces > 0) {
+        while(dealerPts > 21 && softAces > 0) {
           dealerPts -= 10;
           softAces--;
           hand.softAces = softAces;
