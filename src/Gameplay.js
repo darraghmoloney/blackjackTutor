@@ -379,28 +379,6 @@ class Gameplay extends React.Component {
 /******************************************************************************/
 
 //______________________________________________________________________________
-/*  Find the hand in the list of hands so it can be changed.
-    This is used because trying to access the hand directly with hands[0] etc
-    causes crashes on Split hands for some reason
- */
-  // findHand(handNumber) {
-  //   let fullHand = this.state.playerHands;
-  //   let hand;
-  //   let handIndex = 0;
-  //
-  //   fullHand.forEach((item, i) => {
-  //     if(item.number === handNumber) {
-  //       hand = item;
-  //       handIndex = i;
-  //     }
-  //   });
-  //
-  //   const handObject = {"hand" : hand, "handIndex": handIndex};
-  //   return handObject;
-  // }
-
-
-//______________________________________________________________________________
 /*  Hit - Get a new card for the player hand, add it, and update the points, etc */
   hit(handIndex) {
 
@@ -481,7 +459,7 @@ class Gameplay extends React.Component {
 //______________________________________________________________________________
 /*  Double - get one more card, and stand (if not bust) */
   double(handIndex) {
-    
+
     /* Get the correct hand by searching all the player hands for it */
     let hands = this.state.playerHands;
     let hand = hands[handIndex];
