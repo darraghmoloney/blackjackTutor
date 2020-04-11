@@ -149,8 +149,6 @@ class Gameplay extends React.Component {
     /*  Check fo a natural blackjack - Ace & Face card */
     let naturalBlackjack = this.checkNaturalBlackjack(cards[0], cards[1]);
 
-    /*  Disable the split button if the two cards have different pts */
-    let disabledSplit = (cards[0].points !== cards[1].points);
 
     /*  Create generic hand object (player or dealer) */
     let hand = {
@@ -164,6 +162,10 @@ class Gameplay extends React.Component {
 
     /* Add player-specific properties if needed */
     if(forPlayer) {
+
+      /*  Disable the split button if the two cards have different pts */
+      let disabledSplit = (cards[0].points !== cards[1].points);
+
       hand.number = handNumber;
       hand.hintMessage = "";
       hand.hintShown = false;
