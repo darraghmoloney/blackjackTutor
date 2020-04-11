@@ -91,9 +91,9 @@ class Gameplay extends React.Component {
   }
 
 
-/*  Check if 2 cards are a perfect Blackjack
+/*  Check if 2 cards are a natural Blackjack
     i.e. an Ace and a Face card
-    - A perfect Blackjack will win over another 21 point hand
+    - A natural Blackjack will win over another 21 point hand
     NB This function should only be called if the hand has only
     two cards in it */
 //______________________________________________________________________________
@@ -393,7 +393,7 @@ class Gameplay extends React.Component {
     /*  Get the next card from the game deck */
     let newCard = this.getCard();
 
-    hand.naturalBlackjack = false; //Cannot be a perfect blackjack with 2+ cards
+    hand.naturalBlackjack = false; //Cannot be a natural blackjack with 2+ cards
     hand.points += newCard.points;
 
     /* Check for Ace for points changing reasons */
@@ -465,7 +465,7 @@ class Gameplay extends React.Component {
     hand.splitDisabled = true; //Cannot split with 3 cards
     hand.hintDisabled = true; //Hint no longer needed as final card played
     hand.surrenderDisabled = true;
-    hand.naturalBlackjack = false; //No perfect blackjack with more than 2 cards
+    hand.naturalBlackjack = false; //No natural blackjack with more than 2 cards
     hands[handIndex] = hand;
     this.setState({playerHands: hands});
 
@@ -710,30 +710,30 @@ class Gameplay extends React.Component {
         /*  Check case 2: same pts */
         else if(hand.points === dealerPts ) {
 
-          /*  2a: player has a Perfect Blackjack */
+          /*  2a: player has a Natural Blackjack */
           if(hand.naturalBlackjack === true) {
-            /*  2a-1 dealer doesn't also have a Perfect Blackjack,
+            /*  2a-1 dealer doesn't also have a Natural Blackjack,
                 so player wins
              */
             if(dHand.naturalBlackjack === false) {
-              hand.gameOverMessage = "Hand Won! Perfect Blackjack!";
-              console.log( `Player hand ${hand.number} wins with Perfect Blackjack` );
+              hand.gameOverMessage = "Hand Won! Natural Blackjack!";
+              console.log( `Player hand ${hand.number} wins with Natural Blackjack` );
             }
-            /*  2a-2 dealer also has a Perfect Blackjack, so no winner */
+            /*  2a-2 dealer also has a Natural Blackjack, so no winner */
             else {
-            hand.gameOverMessage = "Push. Perfect Blackjacks.";
-            console.log( `Player hand ${hand.number} push on Perfect Blackjack` );
+            hand.gameOverMessage = "Push. Natural Blackjacks.";
+            console.log( `Player hand ${hand.number} push on Natural Blackjack` );
             }
 
           }
-          /*  2b: player doesn't have a Perfect Blackjack */
+          /*  2b: player doesn't have a Natural Blackjack */
           else {
-            /*  2b-1 dealer has a Perfect Blackjack, so dealer wins */
+            /*  2b-1 dealer has a Natural Blackjack, so dealer wins */
             if(dHand.naturalBlackjack === true) {
-              hand.gameOverMessage = "Hand Lost. Dealer wins with Perfect Blackjack";
-              console.log( `Player hand ${hand.number} lost with dealer Perfect Blackjack` );
+              hand.gameOverMessage = "Hand Lost. Dealer wins with Natural Blackjack";
+              console.log( `Player hand ${hand.number} lost with dealer Natural Blackjack` );
             }
-            /*  2b-2 nobody has a Perfect Blackjack, no winner */
+            /*  2b-2 nobody has a Natural Blackjack, no winner */
             else {
               hand.gameOverMessage = "Push.";
               console.log( `Player hand ${hand.number} push with dealer` );
