@@ -125,7 +125,7 @@ class Gameplay extends React.Component {
       So this checks if it's a player hand (with a number)
       or a dealer hand (no number)
     */
-    let forPlayer = !(handNumber === undefined);
+    let forPlayer = (handNumber !== undefined);
 
 
     /*  Check how many Aces in the hand */
@@ -660,7 +660,7 @@ class Gameplay extends React.Component {
           dealerPts -= 10;
           softAces--;
           hand.softAces = softAces;
-          console.log(`Dealer Ace hardened, pts ${dealerPts}`);
+          console.log(`Dealer Ace hardened, pts ${dealerPts}, ${softAces} soft aces left`);
         }
 
         hand.points = dealerPts;
