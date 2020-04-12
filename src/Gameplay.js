@@ -230,6 +230,7 @@ class Gameplay extends React.Component {
 
     let hands =
     this.state.playerHands.map( (hand, index) => (
+
         <div id="allPlayerHands" key={index} className="playerShow w3-container">
 
 
@@ -490,8 +491,8 @@ class Gameplay extends React.Component {
     let handToChange = hands[handIndex];
 
 
-    console.log(`Hand ${handIndex} split [${handToChange.cards[0].shortName},`
-      + ` ${handToChange.cards[1].shortName}]`);
+    console.log(`Hand ${handIndex} split [${handToChange.cards[0].shortName}],`
+      + ` [${handToChange.cards[1].shortName}]`);
 
     /*  Disallow change if hand has more than 2 cards */
     if(handToChange.cards.length > 2) {
@@ -761,6 +762,7 @@ class Gameplay extends React.Component {
         else {
           hand.gameOverMessage = "Hand Won! Dealer Bust!";
           hand.won = true;
+          console.log( `Player hand ${hand.number} wins as dealer is bust` );
         }
       }
     }});
