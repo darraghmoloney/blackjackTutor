@@ -418,6 +418,7 @@ class Gameplay extends React.Component {
 
     hand.splitDisabled = true; //Cannot split with more than 2 cards in hand
     hand.hintMessage = ""; //new hint will be needed for new situation, so reset
+    hand.hintShown = false;
 
     /* Handle a bust hand */
     if(hand.points > 21) {
@@ -658,8 +659,10 @@ class Gameplay extends React.Component {
           hand.softAces = softAces;
           console.log(`Soft Ace added for dealer`);
         }
+
         dealerPts += nextCard.points;
         console.log(`Dealer dealt ${nextCard.shortName}, Hand pts: ${dealerPts}`);
+
         while(dealerPts > 21 && softAces > 0) {
           dealerPts -= 10;
           softAces--;
@@ -908,7 +911,7 @@ class Gameplay extends React.Component {
 
         hand.hintMessage = playerHint.hintMessage;
 
-        console.log(`Showing hint for Hand ${handIndex}`);
+        console.log(`Hint for Hand ${handIndex}: "${hand.hintMessage}"`);
 
       }
       else {
