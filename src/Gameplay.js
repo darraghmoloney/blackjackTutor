@@ -176,6 +176,7 @@ class Gameplay extends React.Component {
       hand.doubleDisabled = false;
       hand.hintDisabled = false;
       hand.surrenderDisabled = false;
+      hand.won = false;
     }
     /*  Or for the dealer, an extra shownPoints property without
         the other extra ones
@@ -320,9 +321,12 @@ class Gameplay extends React.Component {
     let shownCard = this.state.dealerHand.cards[1];
     return (
       <div id="dealerCards" className="dealerShow">
-      <div id="dealerPoints">Dealer Points: {this.state.dealerHand.shownPoints}</div>
+
+        <div id="dealerPoints">Dealer Points: {this.state.dealerHand.shownPoints}</div>
+
         <img className="cardDisplay" src={blankCard} alt="back of card" />
         <img className="cardDisplay" src={shownCard.imagePath} alt={shownCard.shortName} />
+
       </div>
     );
   }
@@ -703,6 +707,7 @@ class Gameplay extends React.Component {
         /*  Check case 1: player pts are better */
         if(hand.points > dealerPts) {
           hand.gameOverMessage = "Hand Won!";
+          hand.won = true;
           console.log( `Player hand ${hand.number} wins on points` );
         }
 
@@ -716,6 +721,7 @@ class Gameplay extends React.Component {
              */
             if(dHand.naturalBlackjack === false) {
               hand.gameOverMessage = "Hand Won! Natural Blackjack!";
+              hand.won = true;
               console.log( `Player hand ${hand.number} wins with Natural Blackjack` );
             }
             /*  2a-2 dealer also has a Natural Blackjack, so no winner */
@@ -751,6 +757,7 @@ class Gameplay extends React.Component {
         */
         else {
           hand.gameOverMessage = "Hand Won! Dealer Bust!";
+          hand.won = true;
         }
       }
     }});
@@ -786,7 +793,9 @@ class Gameplay extends React.Component {
     this.setState ({showDealerCards: false});
     this.setState ({bustHands: 0});
 
-    console.log(`Dealer dealt: [ ? ` +
+    console.log(`----------`);
+
+    console.log(`Dealer dealt: [? ` +
       `, ${firstHands.dealer.cards[1].shortName}] Pts shown: ${firstHands.dealer.shownPoints}`);
 
     console.log(`Player dealt: [${firstHands.player.cards[0].shortName}` +
@@ -849,11 +858,11 @@ class Gameplay extends React.Component {
 /*  Render the game after gameplay options were set (Surrender allowed etc) */
 //______________________________________________________________________________
     start() {
-      console.log(`Showing the game`);
+      console.log(`*** Showing the game`);
       // console.log(`Split allowed: ${this.state.splitAllowed}`);
-      console.log(`Double allowed: ${this.state.doubleAllowed}`);
-      console.log(`Double after Split allowed: ${this.state.doubleAfterSplitAllowed}`);
-      console.log(`Surrender allowed: ${this.state.surrenderAllowed}`);
+      console.log(`*** Double allowed: ${this.state.doubleAllowed}`);
+      console.log(`*** Double after Split allowed: ${this.state.doubleAfterSplitAllowed}`);
+      console.log(`*** Surrender allowed: ${this.state.surrenderAllowed}`);
 
       // let choice = true;
       this.setState({optionsChosen: true});
@@ -899,9 +908,13 @@ class Gameplay extends React.Component {
 
         hand.hintMessage = playerHint.hintMessage;
 
+        console.log(`Showing hint for Hand ${handIndex}`);
+
       }
       else {
         hand.hintMessage = "";
+
+        console.log(`Hiding hint for Hand ${handIndex}`);
       }
       hands[handIndex] = hand;
       this.setState({playerHands: hands});
