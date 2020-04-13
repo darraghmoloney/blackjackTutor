@@ -143,7 +143,7 @@ console.log(this.state.dealerHand);
 
     console.log(`Dealer perfectBlackjack: ${dealerPerfectBlackjack}`);
     console.log(`Player perfectBlackjack: ${playerPerfectBlackjack}`);
-    
+
   }
 
   /*  Get a card from the game deck */
@@ -171,7 +171,7 @@ console.log(this.state.dealerHand);
 
   /*  Check if 2 cards are a perfect Blackjack
       i.e. an Ace and a Face card
-      - A perfect Blackjack will win over another 21 point hand 
+      - A perfect Blackjack will win over another 21 point hand
       NB This function should only be called if the hand has only
       two cards in it
   */
@@ -196,15 +196,15 @@ console.log(this.state.dealerHand);
   displayAllPlayerHands() {
    // const currentQ = this.props.currentQ;
    // if(currentQ < 6){
- 
+
     let hands =
     this.state.playerHands.map( (hand, index) => (
-      
+
         <div key={index} className="playerShow w3-container">
 
 
         {hand.cards.map( (card, index) => (
-            <img key={index} className="card w3-center w3-animate-right" src={card.imagePath} alt={card.shortName} />
+            <img key={index} className="cardQuiz w3-center w3-animate-right" src={card.imagePath} alt={card.shortName} />
         ))}
 
 
@@ -214,7 +214,7 @@ console.log(this.state.dealerHand);
             <span id="handStatus"> &nbsp; {hand.gameOverMessage}</span>
             <span id="hint"> &nbsp; {hand.hintMessage}</span>
           </div>
-        
+
 
           <div id="playerButtons">
             <button  id = "start" disabled={hand.hitDisabled} onClick={() => {this.hit(hand.number)}}>Hit</button>
@@ -227,21 +227,21 @@ console.log(this.state.dealerHand);
             <button type = "radio" id = "start" disabled={hand.hintDisabled} onClick={() => {this.toggleHint(hand.number)}}>Hint</button>
           </div>
         </div>
-      
+
       ));
  console.log(hands);
       return hands;
         }
 
-  
+
 
   /*  Show the first dealer hand in the game, with one card hidden */
   displayHiddenDealerHand() {
     let shownCard = this.state.dealerHand.cards[1];
     return (
       <div id="dealerCards" className="dealerShow">
-        <img className="card" src={blankCard} alt="back of card" />
-        <img className="card" src={shownCard.imagePath} alt={shownCard.shortName} />
+        <img className="cardQuiz" src={blankCard} alt="back of card" />
+        <img className="cardQuiz" src={shownCard.imagePath} alt={shownCard.shortName} />
         <div id="dealerPoints">Dealer Points: {this.state.dealerHand.shownPoints}</div>
       </div>
     );
@@ -258,7 +258,7 @@ console.log(this.state.dealerHand);
   //  this.setState({dealerAnswers: dealerAnswers.push(this.state.dealerHand)});
     let cards =
     this.state.dealerHand.cards.map( (card, index) => (
-      <img key={index} className="card w3-center w3-animate-right" src={card.imagePath} alt={card.shortName} />
+      <img key={index} className="cardQuiz w3-center w3-animate-right" src={card.imagePath} alt={card.shortName} />
     )
     );
 
@@ -717,11 +717,11 @@ console.log(this.state.dealerHand);
     const handNum = this.props.handNum;
     const sethandNum = this.props.sethandNum;
     //if (this.props.currentQ > 9){
-      
+
     //    window['i'] = 0; // or window.a
     // }
-    
-    
+
+
     setCurrentQ(currentQ+1);
     console.log(this.props.currentQ);
     let playerCard1 = this.getCard();
@@ -793,10 +793,10 @@ console.log(this.state.dealerHand);
     }
 
     else{
-      
-       // 
-      
-      
+
+       //
+
+
       //this.setState ({playerHands: playerAnswers[i]});
       //this.setState ({dealerHand: dealerAnswers[i]});
       this.setState ({playerHands: playerAnswers[handNum]});
@@ -810,15 +810,15 @@ console.log(this.state.dealerHand);
       //this.setState(prevState => {
       //  return {handNum: prevState.handNum + 1}
      //})
-      
+
      // this.state.handNum = handNum+1;
       //i++;
       console.log(handNum);
-      
+
       }
-     
-    
-  
+
+
+
 
     console.log(`Dealer dealt: [ ? ` +
       `, ${dealerFirstHand.cards[1].shortName}] Pts shown: ${dealerFirstHand.shownPoints}`);
@@ -836,7 +836,7 @@ console.log(this.state.dealerHand);
     console.log(dealerAnswers);
 
     }
-  
+
 
 /*
     printResults(){
