@@ -1,39 +1,71 @@
-.App {
-  text-align: center;
-  
+.homePage{
+  background-color:rgb(29, 44, 29);
+  background-image: url("https:/www.transparenttextures.com/patterns/felt.png");
+  margin-top:30px;
+  color: #aaa; 
+  border-radius: 8px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
+.jumbotron {
+    background-image: url('./jumbo_background.png');
+    background-repeat: repeat;
+		height: 675px;
+		box-shadow: 0 0 50px #3F0C1F;
+    border: 2px solid #3F0C1F;
+    }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
+    #menu-tile, #specials-tile, #quiz-tile {
+      height: 246px;
+      width:356px;
+      margin-bottom: 15px;
+      position: relative;
+      border: 2px solid #3F0C1F;
+      overflow: hidden;
+      background-repeat: no-repeat;
+    }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
+    #menu-tile:hover, #specials-tile:hover, #quiz-tile:hover {
+      box-shadow: 0 1px 5px 1px #cccccc;
+    
+    }
+    
+    #quiz-tile {
+      background-image: url('./quizTime.png');
+      background-repeat: round;
+      background-position: center;
+      left:870px;
+      bottom:462px;
+    }
 
-.App-link {
-  color: #61dafb;
-}
+    #specials-tile {
+      background-image: url('./basicStrategy.png');
+      background-repeat: round;
+      background-position: center;
+      left:475px;
+      bottom:200px;
+    }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+    #menu-tile {
+      background-image: url('./whatisbj.png');
+      background-position: center;
+      background-repeat: round;
+      left: 75px;
+      top:60px;
+    }
+
+    #menu-tile span, #specials-tile span, #quiz-tile span{
+      position: absolute;
+      bottom: 0;
+      right:0;
+      width:100%;
+      text-align:center;
+      font-size:1.6em;
+      text-transform: uppercase;
+      background-color:#fff;
+      color:black;
+      opacity: .6;
+    }
+
+    .home-tiles{
+      height:400px;
+    }
