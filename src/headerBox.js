@@ -6,14 +6,10 @@ import AboutTest from './AboutTest';
 import Tutor from './Tutor';
 import Quiz from './Quiz';
 import ContactUs from './ContactUs';
-import fire from './config/fire';
-
 
 class HeaderBox extends Component {
     
-    logout() {
-        fire.auth().signOut();
-      }
+
    
 
     render() {
@@ -28,8 +24,7 @@ class HeaderBox extends Component {
          <li> <Link className="individual_item" to='/aboutTest'>About</Link></li>
          <li><Link className="individual_item" to='/tutor'>Tutor</Link></li>
          <li> <Link className="individual_item" to='/quiz'>Quiz</Link></li>
-         <li> <Link className="individual_item" onClick={this.logout}>Logout</Link></li>
-
+         <li> <Link className="individual_item" to='/contactUs'>Contact Us</Link></li>
         </ul>
         
         
