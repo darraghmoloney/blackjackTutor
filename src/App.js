@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import HeaderBox from './HeaderBox';
 import Footer from './Footer';
 import './App.css';
 import {BrowserRouter as Router, Link} from 'react-router-dom';
@@ -10,7 +9,7 @@ import Home from './Home.js';
 
 
 class App extends Component {
-  
+
   constructor(props) {
     super(props);
     this.state = {
@@ -19,7 +18,7 @@ class App extends Component {
     this.authListener = this.authListener.bind(this);
   }
 
-  
+
 
   componentDidMount() {
     this.authListener();
@@ -34,16 +33,16 @@ class App extends Component {
       }
     })
   }
-  
+
   render() {
-   
+
 
     return (
-     
+
       <div className="app">
         {this.state.user ? (<Home/>) : (<Login />)}
       </div>
-      
+
     );
   }
 }
