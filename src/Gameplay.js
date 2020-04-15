@@ -185,6 +185,7 @@ class Gameplay extends React.Component {
       hand.hintDisabled = false;
       hand.surrenderDisabled = false;
       hand.won = false;
+      hand.push = false;
     }
     /*  Or for the dealer, an extra shownPoints property without
         the other extra ones
@@ -316,7 +317,16 @@ class Gameplay extends React.Component {
           </div>
 
           <div id="hint" className="handStatus">{hand.hintMessage}</div>
-          <div id="handGameOverMsg"> &nbsp; {hand.gameOverMessage}</div>
+          {/*<div id="handGameOverMsg"> &nbsp; {hand.gameOverMessage}</div>*/}
+          {hand.won === true &&
+              <div id="winIcon">✔️ {hand.gameOverMessage}</div>
+          }
+          {hand.push === true &&
+              <div id="winIcon">❕ {hand.gameOverMessage}</div>
+          }
+          {!hand.won && !hand.push && hand.gameOverMessage !== "" &&
+              <div id="winIcon">❌ {hand.gameOverMessage}</div>
+          }
 
           <br />
         </div>
@@ -748,6 +758,7 @@ class Gameplay extends React.Component {
             /*  2a-2 dealer also has a Natural Blackjack, so no winner */
             else {
             hand.gameOverMessage = "Push. Natural Blackjacks.";
+            hand.push = true;
             console.log( `Player hand ${hand.number} push on Natural Blackjack` );
             }
 
@@ -756,12 +767,13 @@ class Gameplay extends React.Component {
           else {
             /*  2b-1 dealer has a Natural Blackjack, so dealer wins */
             if(dHand.naturalBlackjack === true) {
-              hand.gameOverMessage = "Hand Lost. Dealer wins with Natural Blackjack";
+              hand.gameOverMessage = "Hand Lost. Dealer Natural Blackjack";
               console.log( `Player hand ${hand.number} lost with dealer Natural Blackjack` );
             }
             /*  2b-2 nobody has a Natural Blackjack, no winner */
             else {
               hand.gameOverMessage = "Push.";
+              hand.push = true;
               console.log( `Player hand ${hand.number} push with dealer` );
             }
           }
