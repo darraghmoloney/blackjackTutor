@@ -7,7 +7,6 @@ import './Gameplay.css';
 const blankCard =  "./cardImages/200px-Card_back_05.svg.png";
 
 
-
 class Gameplay extends React.Component {
 
   constructor(props) {
@@ -39,6 +38,9 @@ class Gameplay extends React.Component {
 
           gameStarted: false, //show cards only after game is started
 
+          dealerStartDelay: 200, //wait before dealer play is shown
+          dealerTimeout: '', //control & reset dealer delay
+
     }
 
     this.start = this.start.bind(this);
@@ -46,6 +48,8 @@ class Gameplay extends React.Component {
     this.selectDoubles = this.selectDoubles.bind(this);
     this.selectSurrenders = this.selectSurrenders.bind(this);
     this.selectDoubleAfterSplit = this.selectDoubleAfterSplit.bind(this);
+
+    this.dealerPlay = this.dealerPlay.bind(this);
 
   }
 
@@ -446,7 +450,8 @@ class Gameplay extends React.Component {
       */
       if((active === 0) && (bust < this.state.totalHands)) {
 
-        this.dealerPlay();
+        let timeout = setTimeout( this.dealerPlay, this.state.dealerStartDelay);
+        this.setState({dealerTimeout: timeout});
       }
 
     }
@@ -584,7 +589,8 @@ class Gameplay extends React.Component {
 
     /*  Dealer should play if no hands are active */
     if((active === 0) && (bust < this.state.totalHands)) {
-      this.dealerPlay();
+      let timeout = setTimeout( this.dealerPlay, this.state.dealerStartDelay);
+      this.setState({dealerTimeout: timeout});
     }
 
   }
@@ -783,6 +789,9 @@ class Gameplay extends React.Component {
 /*  Reset & restart the game */
 //_____________________________________________________________________________
   newGame() {
+
+    let timeout = clearTimeout(this.state.dealerTimeout);
+    this.setState({dealerTimeout: timeout});
 
     let firstHands = this.makeFirstHands(); //Deal new hands
 
