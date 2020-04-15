@@ -41,6 +41,9 @@ class Gameplay extends React.Component {
           dealerStartDelay: 200, //wait before dealer play is shown
           dealerTimeout: '', //control & reset dealer delay
 
+          winCheckDelay: 800,
+          winCheckTimeout: '', //delay before win messages shown
+
     }
 
     this.start = this.start.bind(this);
@@ -50,6 +53,7 @@ class Gameplay extends React.Component {
     this.selectDoubleAfterSplit = this.selectDoubleAfterSplit.bind(this);
 
     this.dealerPlay = this.dealerPlay.bind(this);
+    this.checkWinningHands = this.checkWinningHands.bind(this);
 
   }
 
@@ -446,10 +450,9 @@ class Gameplay extends React.Component {
       this.setState({bustHands: bust});
 
       /* If there are no more hands being played, and some of them
-        are not bust, check the dealer cards
+        are not bust, check the dealer cards after a small time delay
       */
       if((active === 0) && (bust < this.state.totalHands)) {
-
         let timeout = setTimeout( this.dealerPlay, this.state.dealerStartDelay);
         this.setState({dealerTimeout: timeout});
       }
@@ -587,7 +590,7 @@ class Gameplay extends React.Component {
 
     console.log(`Player stands on Hand ${handIndex}, Pts: ${hand.points}`);
 
-    /*  Dealer should play if no hands are active */
+    /*  Dealer should play if no hands are active after a small delay */
     if((active === 0) && (bust < this.state.totalHands)) {
       let timeout = setTimeout( this.dealerPlay, this.state.dealerStartDelay);
       this.setState({dealerTimeout: timeout});
@@ -689,8 +692,13 @@ class Gameplay extends React.Component {
         this.setState({dealerHand: hand});
       }
 
-      /*  Dealer play is now finished - Find the winners */
-      this.checkWinningHands();
+      /*  Dealer play is now finished - Find the winners
+          after a slight time delay
+       */
+      let timeout = setTimeout(this.checkWinningHands, this.state.winCheckDelay);
+      this.setState({winCheckTimeout: timeout});
+
+      // this.checkWinningHands();
 
   }
 
@@ -698,6 +706,9 @@ class Gameplay extends React.Component {
 /*  Check which hands won, if some hands are not already bust */
 //______________________________________________________________________________
   checkWinningHands() {
+
+    let timeout = clearTimeout(this.state.winCheckTimeout);
+    this.setState({winCheckTimeout: timeout});
 
     /*  Get the dealer hand */
     let dHand = this.state.dealerHand;
