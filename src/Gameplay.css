@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Doppio+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Doppio+One&family=Montserrat:wght@500&display=swap');
 
 .cardDisplay {
   max-width: 7rem;
@@ -53,7 +53,7 @@
 
 #gameOptions {
   padding: 0.5%;
-  
+
 }
 
 #settings {
@@ -107,4 +107,9 @@
 #hint {
   padding-top: 1rem;
   font-family: 'Doppio One', sans-serif;
+}
+
+.handPoints {
+  /* font-family: 'Doppio One', sans-serif; */
+  font-family: 'Montserrat', sans-serif;
 }

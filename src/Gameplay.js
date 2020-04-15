@@ -253,7 +253,7 @@ class Gameplay extends React.Component {
         </div>
 
           <div className="handStatus">
-            <span id="playerPoints">• {hand.points} •</span>
+            <span id="playerPoints" className="handPoints">· {hand.points} ·</span>
 
           </div>
 
@@ -333,7 +333,7 @@ class Gameplay extends React.Component {
     return (
       <div id="dealerHand" className="dealerShow">
 
-        <div id="dealerPoints">• {this.state.dealerHand.shownPoints} •</div>
+        <div id="dealerPoints" className="handPoints">· {this.state.dealerHand.shownPoints} ·</div>
         <div id="dealerCards">
           <img className="cardDisplay" src={blankCard} alt="back of card" />
           <img className="cardDisplay" src={shownCard.imagePath} alt={shownCard.shortName} />
@@ -371,7 +371,7 @@ class Gameplay extends React.Component {
     let displayHTML =
       <div id="dealerHand" className="dealerShow w3-container">
 
-        <div id="dealerPoints">• {this.state.dealerHand.points} •</div>
+        <div id="dealerPoints" className="handPoints">· {this.state.dealerHand.points} ·</div>
         <div id="dealerCards">{cards}</div>
       </div>
 
