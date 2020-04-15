@@ -316,16 +316,16 @@ class Gameplay extends React.Component {
 
           </div>
 
-          <div id="hint" className="handStatus">{hand.hintMessage}</div>
+          <div id="hint" className="handInfo">{hand.hintMessage}</div>
           {/*<div id="handGameOverMsg"> &nbsp; {hand.gameOverMessage}</div>*/}
           {hand.won === true &&
-              <div id="winIcon">✔️ {hand.gameOverMessage}</div>
+              <div id="winMessage">✔️ {hand.gameOverMessage}</div>
           }
           {hand.push === true &&
-              <div id="winIcon">❕ {hand.gameOverMessage}</div>
+              <div id="winMessage">❕ {hand.gameOverMessage}</div>
           }
           {!hand.won && !hand.push && hand.gameOverMessage !== "" &&
-              <div id="winIcon">❌ {hand.gameOverMessage}</div>
+              <div id="winMessage">❌ {hand.gameOverMessage}</div>
           }
 
           <br />
