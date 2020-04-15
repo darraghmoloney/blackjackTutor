@@ -17,6 +17,16 @@
   margin-bottom: 0.05rem;
 }
 
+.playerShow {
+
+}
+
+.playerCards{
+  /* border: 0.15rem solid white; */
+  /* margin: 0.3rem; */
+  /* padding: 0.5rem; */
+}
+
 #playerGame {
   padding-top: 2%;
   margin-right: 2%;
@@ -85,4 +95,8 @@
   /* flex-wrap: wrap; */
   /* justify-content: center; */
   justify-content: space-evenly;
+}
+
+#playerPoints {
+  color: goldenrod;
 }

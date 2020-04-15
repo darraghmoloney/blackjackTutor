@@ -233,7 +233,7 @@ class Gameplay extends React.Component {
 
         <div key={index} className="playerShow">
 
-
+        <div className="playerCards">
         {hand.cards.map( (card, index) => (
             <img
               key={index}
@@ -242,10 +242,11 @@ class Gameplay extends React.Component {
               alt={card.shortName}
             />
         ))}
+        </div>
 
           <div className="handStatus">
-            <span id="playerPoints">Player Points: {hand.points}</span>
-            <span id="handGameOverMsg"> &nbsp; {hand.gameOverMessage}</span>
+            <span id="playerPoints">• {hand.points} •</span>
+
           </div>
 
           <div id="playerButtons">
@@ -307,6 +308,7 @@ class Gameplay extends React.Component {
           </div>
 
           <div id="hint" className="handStatus">{hand.hintMessage}</div>
+          <div id="handGameOverMsg"> &nbsp; {hand.gameOverMessage}</div>
 
           <br />
         </div>
@@ -321,13 +323,13 @@ class Gameplay extends React.Component {
   displayHiddenDealerHand() {
     let shownCard = this.state.dealerHand.cards[1];
     return (
-      <div id="dealerCards" className="dealerShow">
+      <div id="dealerHand" className="dealerShow">
 
-        <div id="dealerPoints">Dealer Points: {this.state.dealerHand.shownPoints}</div>
-
-        <img className="cardDisplay" src={blankCard} alt="back of card" />
-        <img className="cardDisplay" src={shownCard.imagePath} alt={shownCard.shortName} />
-
+        <div id="dealerPoints">• {this.state.dealerHand.shownPoints} •</div>
+        <div id="dealerCards">
+          <img className="cardDisplay" src={blankCard} alt="back of card" />
+          <img className="cardDisplay" src={shownCard.imagePath} alt={shownCard.shortName} />
+        </div>
       </div>
     );
   }
@@ -360,11 +362,9 @@ class Gameplay extends React.Component {
 
     let displayHTML =
       <div id="dealerHand" className="dealerShow w3-container">
-        <div id="dealerPoints">
-          Dealer Points: {this.state.dealerHand.points}&nbsp;
-          {this.state.dealerHand.gameOverMessage}
-        </div>
-        {cards}
+
+        <div id="dealerPoints">• {this.state.dealerHand.points} •</div>
+        <div id="dealerCards">{cards}</div>
       </div>
 
     return displayHTML;
@@ -678,7 +678,7 @@ class Gameplay extends React.Component {
       /*  Check if dealer went bust */
       if(dealerPts > 21) {
         hand.bust = true;
-        hand.gameOverMessage = "Bust!";
+        hand.gameOverMessage = "Dealer Bust!";
         console.log(`Dealer is bust with ${dealerPts} pts`);
         this.setState({dealerHand: hand});
       }
