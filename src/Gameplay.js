@@ -231,7 +231,7 @@ class Gameplay extends React.Component {
     let hands =
     this.state.playerHands.map( (hand, index) => (
 
-        <div id="allPlayerHands" key={index} className="playerShow w3-container">
+        <div key={index} className="playerShow">
 
 
         {hand.cards.map( (card, index) => (
@@ -312,7 +312,7 @@ class Gameplay extends React.Component {
         </div>
       ));
 
-      return hands;
+      return <div id="allPlayerHands">{hands}</div>;
   }
 
 
