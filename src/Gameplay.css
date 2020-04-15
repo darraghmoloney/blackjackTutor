@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Doppio+One&display=swap');
+
 .cardDisplay {
   max-width: 7rem;
   opacity: 1;
@@ -51,6 +53,7 @@
 
 #gameOptions {
   padding: 0.5%;
+  
 }
 
 #settings {
@@ -99,4 +102,9 @@
 
 #playerPoints {
   color: goldenrod;
+}
+
+#hint {
+  padding-top: 1rem;
+  font-family: 'Doppio One', sans-serif;
 }
