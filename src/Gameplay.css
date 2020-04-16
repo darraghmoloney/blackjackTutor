@@ -24,9 +24,9 @@
 }
 
 .playerCards{
-  /* border: 0.15rem solid white; */
-  /* margin: 0.3rem; */
-  /* padding: 0.5rem; */
+  border: 0.15rem solid white;
+  margin: 0.3rem;
+  padding: 0.5rem;
 }
 
 #playerGame {
