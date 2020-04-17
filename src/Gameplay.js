@@ -7,7 +7,6 @@ import './Gameplay.css';
 const blankCard =  "./cardImages/200px-Card_back_05.svg.png";
 
 
-
 class Gameplay extends React.Component {
 
   constructor(props) {
@@ -39,6 +38,12 @@ class Gameplay extends React.Component {
 
           gameStarted: false, //show cards only after game is started
 
+          dealerStartDelay: 200, //wait before dealer play is shown
+          dealerTimeout: '', //control & reset dealer delay
+
+          winCheckDelay: 800,
+          winCheckTimeout: '', //delay before win messages shown
+
     }
 
     this.start = this.start.bind(this);
@@ -46,6 +51,9 @@ class Gameplay extends React.Component {
     this.selectDoubles = this.selectDoubles.bind(this);
     this.selectSurrenders = this.selectSurrenders.bind(this);
     this.selectDoubleAfterSplit = this.selectDoubleAfterSplit.bind(this);
+
+    this.dealerPlay = this.dealerPlay.bind(this);
+    this.checkWinningHands = this.checkWinningHands.bind(this);
 
   }
 
@@ -177,6 +185,7 @@ class Gameplay extends React.Component {
       hand.hintDisabled = false;
       hand.surrenderDisabled = false;
       hand.won = false;
+      hand.push = false;
     }
     /*  Or for the dealer, an extra shownPoints property without
         the other extra ones
@@ -233,7 +242,7 @@ class Gameplay extends React.Component {
 
         <div key={index} className="playerShow">
 
-
+        <div className="playerCards">
         {hand.cards.map( (card, index) => (
             <img
               key={index}
@@ -242,10 +251,11 @@ class Gameplay extends React.Component {
               alt={card.shortName}
             />
         ))}
+        </div>
 
           <div className="handStatus">
-            <span id="playerPoints">Player Points: {hand.points}</span>
-            <span id="handGameOverMsg"> &nbsp; {hand.gameOverMessage}</span>
+            <span id="playerPoints" className="handPoints">· {hand.points} ·</span>
+
           </div>
 
           <div id="playerButtons">
@@ -306,7 +316,17 @@ class Gameplay extends React.Component {
 
           </div>
 
-          <div id="hint" className="handStatus">{hand.hintMessage}</div>
+          <div id="hint" className="handInfo">{hand.hintMessage}</div>
+          {/*<div id="handGameOverMsg"> &nbsp; {hand.gameOverMessage}</div>*/}
+          {hand.won === true &&
+              <div id="winMessage">✔️ {hand.gameOverMessage}</div>
+          }
+          {hand.push === true &&
+              <div id="winMessage">❕ {hand.gameOverMessage}</div>
+          }
+          {!hand.won && !hand.push && hand.gameOverMessage !== "" &&
+              <div id="winMessage">❌ {hand.gameOverMessage}</div>
+          }
 
           <br />
         </div>
@@ -321,13 +341,13 @@ class Gameplay extends React.Component {
   displayHiddenDealerHand() {
     let shownCard = this.state.dealerHand.cards[1];
     return (
-      <div id="dealerCards" className="dealerShow">
+      <div id="dealerHand" className="dealerShow">
 
-        <div id="dealerPoints">Dealer Points: {this.state.dealerHand.shownPoints}</div>
-
-        <img className="cardDisplay" src={blankCard} alt="back of card" />
-        <img className="cardDisplay" src={shownCard.imagePath} alt={shownCard.shortName} />
-
+        <div id="dealerPoints" className="handPoints">· {this.state.dealerHand.shownPoints} ·</div>
+        <div id="dealerCards">
+          <img className="cardDisplay" src={blankCard} alt="back of card" />
+          <img className="cardDisplay" src={shownCard.imagePath} alt={shownCard.shortName} />
+        </div>
       </div>
     );
   }
@@ -360,11 +380,9 @@ class Gameplay extends React.Component {
 
     let displayHTML =
       <div id="dealerHand" className="dealerShow w3-container">
-        <div id="dealerPoints">
-          Dealer Points: {this.state.dealerHand.points}&nbsp;
-          {this.state.dealerHand.gameOverMessage}
-        </div>
-        {cards}
+
+        <div id="dealerPoints" className="handPoints">· {this.state.dealerHand.points} ·</div>
+        <div id="dealerCards">{cards}</div>
       </div>
 
     return displayHTML;
@@ -442,11 +460,11 @@ class Gameplay extends React.Component {
       this.setState({bustHands: bust});
 
       /* If there are no more hands being played, and some of them
-        are not bust, check the dealer cards
+        are not bust, check the dealer cards after a small time delay
       */
       if((active === 0) && (bust < this.state.totalHands)) {
-
-        this.dealerPlay();
+        let timeout = setTimeout( this.dealerPlay, this.state.dealerStartDelay);
+        this.setState({dealerTimeout: timeout});
       }
 
     }
@@ -582,9 +600,10 @@ class Gameplay extends React.Component {
 
     console.log(`Player stands on Hand ${handIndex}, Pts: ${hand.points}`);
 
-    /*  Dealer should play if no hands are active */
+    /*  Dealer should play if no hands are active after a small delay */
     if((active === 0) && (bust < this.state.totalHands)) {
-      this.dealerPlay();
+      let timeout = setTimeout( this.dealerPlay, this.state.dealerStartDelay);
+      this.setState({dealerTimeout: timeout});
     }
 
   }
@@ -678,13 +697,18 @@ class Gameplay extends React.Component {
       /*  Check if dealer went bust */
       if(dealerPts > 21) {
         hand.bust = true;
-        hand.gameOverMessage = "Bust!";
+        hand.gameOverMessage = "Dealer Bust!";
         console.log(`Dealer is bust with ${dealerPts} pts`);
         this.setState({dealerHand: hand});
       }
 
-      /*  Dealer play is now finished - Find the winners */
-      this.checkWinningHands();
+      /*  Dealer play is now finished - Find the winners
+          after a slight time delay
+       */
+      let timeout = setTimeout(this.checkWinningHands, this.state.winCheckDelay);
+      this.setState({winCheckTimeout: timeout});
+
+      // this.checkWinningHands();
 
   }
 
@@ -692,6 +716,9 @@ class Gameplay extends React.Component {
 /*  Check which hands won, if some hands are not already bust */
 //______________________________________________________________________________
   checkWinningHands() {
+
+    let timeout = clearTimeout(this.state.winCheckTimeout);
+    this.setState({winCheckTimeout: timeout});
 
     /*  Get the dealer hand */
     let dHand = this.state.dealerHand;
@@ -731,6 +758,7 @@ class Gameplay extends React.Component {
             /*  2a-2 dealer also has a Natural Blackjack, so no winner */
             else {
             hand.gameOverMessage = "Push. Natural Blackjacks.";
+            hand.push = true;
             console.log( `Player hand ${hand.number} push on Natural Blackjack` );
             }
 
@@ -739,12 +767,13 @@ class Gameplay extends React.Component {
           else {
             /*  2b-1 dealer has a Natural Blackjack, so dealer wins */
             if(dHand.naturalBlackjack === true) {
-              hand.gameOverMessage = "Hand Lost. Dealer wins with Natural Blackjack";
+              hand.gameOverMessage = "Hand Lost. Dealer Natural Blackjack";
               console.log( `Player hand ${hand.number} lost with dealer Natural Blackjack` );
             }
             /*  2b-2 nobody has a Natural Blackjack, no winner */
             else {
               hand.gameOverMessage = "Push.";
+              hand.push = true;
               console.log( `Player hand ${hand.number} push with dealer` );
             }
           }
@@ -783,6 +812,9 @@ class Gameplay extends React.Component {
 /*  Reset & restart the game */
 //_____________________________________________________________________________
   newGame() {
+
+    let timeout = clearTimeout(this.state.dealerTimeout);
+    this.setState({dealerTimeout: timeout});
 
     let firstHands = this.makeFirstHands(); //Deal new hands
 
@@ -908,8 +940,11 @@ class Gameplay extends React.Component {
       if(hintVisible === true) {
 
        /* Get a hint message for the hand */
-       let playerHint = getHint(this.state.doubleAllowed, this.state.doubleAfterSplitAllowed,
-        this.state.surrenderAllowed, this.state.dealerHand, hand);
+       let playerHint = getHint(this.state.doubleAllowed,
+                                this.state.doubleAfterSplitAllowed,
+                                this.state.surrenderAllowed,
+                                this.state.dealerHand,
+                                hand);
 
         hand.hintMessage = playerHint.hintMessage;
 

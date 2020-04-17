@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Doppio+One&family=Montserrat:wght@500&display=swap');
+
 .cardDisplay {
   max-width: 7rem;
   opacity: 1;
@@ -17,18 +19,33 @@
   margin-bottom: 0.05rem;
 }
 
+.playerShow {
+
+}
+
+.playerCards{
+  border: 0.15rem solid white;
+  margin: 0.3rem;
+  padding: 0.5rem;
+}
+
 #playerGame {
   padding-top: 2%;
   margin-right: 2%;
   margin-left: 2%;
-  border: 2px solid #ffaa3b;
+  border: 0.15rem solid #ffaa3b;
   color: lightgrey;
 }
 
 #gameContainer {
   text-align: center;
-  margin-top: 30px;
-  padding-top: 35px;
+  /* margin-top: 30px; */
+  margin-top: 2.45%;
+  /* padding-top: 35px; */
+  padding-top: 2.5%;
+  border-radius: 0.5rem;
+  /* min-height: 25%; */
+  /* padding-bottom: 5px; */
   /* display: flex;
   flex-direction: column;
   align-items: center;
@@ -41,6 +58,7 @@
 
 #gameOptions {
   padding: 0.5%;
+
 }
 
 #settings {
@@ -85,4 +103,25 @@
   /* flex-wrap: wrap; */
   /* justify-content: center; */
   justify-content: space-evenly;
+}
+
+#playerPoints {
+  color: goldenrod;
+}
+
+#hint {
+  padding-top: 1rem;
+  font-family: 'Doppio One', sans-serif;
+  color: lightgrey;
+  /* background: green; */
+}
+
+.handPoints {
+  /* font-family: 'Doppio One', sans-serif; */
+  font-family: 'Montserrat', sans-serif;
+}
+
+#winMessage {
+  color: goldenrod;
+  font-family: 'Doppio One', sans-serif;
 }

@@ -40,23 +40,23 @@ export function getHint(dblOK, dblAfterSplitOK, surrenderOK,
       hint.stand = false;
     }
     /*  Hints for valid total points */
-    else if(dealer==2 && (player>=13 && player<=21))
+    else if(dealer===2 && (player>=13 && player<=21))
     {
       hint.hintMessage = "You should stand";
     }
-    else if(dealer==3 && (player>=13 && player<=21))
+    else if(dealer===3 && (player>=13 && player<=21))
     {
       hint.hintMessage = "You should stand";
     }
-    else if(dealer==4 && (player>=12 && player<=21))
+    else if(dealer===4 && (player>=12 && player<=21))
     {
       hint.hintMessage = "You should stand";
     }
-    else if(dealer==5 && (player>=12 && player<=21))
+    else if(dealer===5 && (player>=12 && player<=21))
     {
       hint.hintMessage = "You should stand";
     }
-    else if(dealer==6 && (player>=12 && player<=21))
+    else if(dealer===6 && (player>=12 && player<=21))
     {
       hint.hintMessage = "You should stand";
     }
