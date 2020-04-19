@@ -240,29 +240,29 @@ class Gameplay extends React.Component {
     let hands =
     this.state.playerHands.map( (hand, index) => (
 
-        <div key={index} className="playerShow">
+        <div key={index} className="playerShowGP">
 
-        <div className="playerCards">
+        <div className="playerCardsGP">
         {hand.cards.map( (card, index) => (
             <img
               key={index}
-              className="cardDisplay  w3-center w3-animate-right"
+              className="cardDisplayGP  w3-center w3-animate-right"
               src={card.imagePath}
               alt={card.shortName}
             />
         ))}
         </div>
 
-          <div className="handStatus">
-            <span id="playerPoints" className="handPoints">· {hand.points} ·</span>
+          <div className="handStatusGP">
+            <span id="playerPointsGP" className="handPointsGP">· {hand.points} ·</span>
 
           </div>
 
-          <div id="playerButtons">
+          <div id="playerButtonsGP">
 
             {hand.hitDisabled === false &&
               <button
-                className="gameplayBtn"
+                className="gameplayBtnGP"
                 disabled={hand.hitDisabled}
                 onClick={() => {this.hit(hand.number)}}>
                   Hit
@@ -271,7 +271,7 @@ class Gameplay extends React.Component {
 
             {hand.standDisabled === false &&
               <button
-                className="gameplayBtn"
+                className="gameplayBtnGP"
                 disabled={hand.standDisabled}
                 onClick={() => {this.stand(hand.number)}}>
                   Stand
@@ -280,7 +280,7 @@ class Gameplay extends React.Component {
 
             { this.state.doubleAllowed && hand.doubleDisabled === false &&
               <button
-                className="gameplayBtn"
+                className="gameplayBtnGP"
                 disabled={hand.doubleDisabled}
                 onClick={() => {this.double(hand.number)}}>
                   Double
@@ -289,7 +289,7 @@ class Gameplay extends React.Component {
 
             {this.state.splitAllowed && hand.splitDisabled === false &&
               <button
-                className="gameplayBtn"
+                className="gameplayBtnGP"
                 disabled={hand.splitDisabled}
                 onClick={() => {this.split(hand.number)}}>
                   Split
@@ -298,7 +298,7 @@ class Gameplay extends React.Component {
 
             {this.state.surrenderAllowed && hand.surrenderDisabled === false &&
               <button
-                className="gameplayBtn"
+                className="gameplayBtnGP"
                 disabled={hand.surrenderDisabled}
                 onClick={() => {this.surrender(hand.number)}}>
                   Surrender
@@ -307,7 +307,7 @@ class Gameplay extends React.Component {
 
             {hand.hintDisabled === false &&
               <button
-                className="gameplayBtn"
+                className="gameplayBtnGP"
                 disabled={hand.hintDisabled}
                 onClick={() => {this.toggleHint(hand.number)}}>
                   Hint
@@ -316,23 +316,23 @@ class Gameplay extends React.Component {
 
           </div>
 
-          <div id="hint" className="handInfo">{hand.hintMessage}</div>
+          <div id="hint" className="handInfoGP">{hand.hintMessage}</div>
           {/*<div id="handGameOverMsg"> &nbsp; {hand.gameOverMessage}</div>*/}
           {hand.won === true &&
-              <div id="winMessage">✔️ {hand.gameOverMessage}</div>
+              <div id="winMessageGP">✔️ {hand.gameOverMessage}</div>
           }
           {hand.push === true &&
-              <div id="winMessage">❕ {hand.gameOverMessage}</div>
+              <div id="winMessageGP">❕ {hand.gameOverMessage}</div>
           }
           {!hand.won && !hand.push && hand.gameOverMessage !== "" &&
-              <div id="winMessage">❌ {hand.gameOverMessage}</div>
+              <div id="winMessageGP">❌ {hand.gameOverMessage}</div>
           }
 
           <br />
         </div>
       ));
 
-      return <div id="allPlayerHands">{hands}</div>;
+      return <div id="allPlayerHandsGP">{hands}</div>;
   }
 
 
@@ -341,12 +341,12 @@ class Gameplay extends React.Component {
   displayHiddenDealerHand() {
     let shownCard = this.state.dealerHand.cards[1];
     return (
-      <div id="dealerHand" className="dealerShow">
+      <div id="dealerHandGP" className="dealerShowGP">
 
-        <div id="dealerPoints" className="handPoints">· {this.state.dealerHand.shownPoints} ·</div>
-        <div id="dealerCards">
-          <img className="cardDisplay" src={blankCard} alt="back of card" />
-          <img className="cardDisplay" src={shownCard.imagePath} alt={shownCard.shortName} />
+        <div id="dealerPointsGP" className="handPointsGP">· {this.state.dealerHand.shownPoints} ·</div>
+        <div id="dealerCardsGP">
+          <img className="cardDisplayGP" src={blankCard} alt="back of card" />
+          <img className="cardDisplayGP" src={shownCard.imagePath} alt={shownCard.shortName} />
         </div>
       </div>
     );
@@ -369,8 +369,8 @@ class Gameplay extends React.Component {
         key={index}
         className=
         { (index > 1) ?
-          "cardDisplay  w3-center w3-animate-right" :
-          "cardDisplay"
+          "cardDisplayGP  w3-center w3-animate-right" :
+          "cardDisplayGP"
         }
         src={card.imagePath}
         alt={card.shortName}
@@ -379,10 +379,10 @@ class Gameplay extends React.Component {
     );
 
     let displayHTML =
-      <div id="dealerHand" className="dealerShow w3-container">
+      <div id="dealerHandGP" className="dealerShowGP w3-container">
 
-        <div id="dealerPoints" className="handPoints">· {this.state.dealerHand.points} ·</div>
-        <div id="dealerCards">{cards}</div>
+        <div id="dealerPointsGP" className="handPointsGP">· {this.state.dealerHand.points} ·</div>
+        <div id="dealerCardsGP">{cards}</div>
       </div>
 
     return displayHTML;
@@ -976,25 +976,25 @@ class Gameplay extends React.Component {
     const optionsClick = () => {this.optionsChange()};
 
     return(
-      <div id="gameContainer">
+      <div id="gameContainerGP">
 
 
 
-        <div id="gameInterface">
+        <div id="gameInterfaceGP">
 
         {this.state.optionsChosen === false &&
-          <div id="settings">
+          <div id="settingsGP">
 
             <h2>Game Options</h2>
 
-            <input type="checkbox" id="doubleChoice"
+            <input type="checkbox" id="doubleChoiceGP"
               checked={this.state.doubleAllowed}
               onChange={this.selectDoubles}
             />
               <label>Double Allowed</label>&nbsp;&nbsp;
 
 
-            <input type="checkbox" id="surrenderChoice"
+            <input type="checkbox" id="surrenderChoiceGP"
               checked={this.state.surrenderAllowed}
               onChange={this.selectSurrenders}
             />
@@ -1003,7 +1003,7 @@ class Gameplay extends React.Component {
             {this.state.doubleAllowed === true&&
               <>
               <br />
-              <input type="checkbox" id="doubleSplitChoice"
+              <input type="checkbox" id="doubleSplitChoiceGP"
                 checked={this.state.doubleAfterSplitAllowed}
                 onChange={this.selectDoubleAfterSplit}
               />
@@ -1012,21 +1012,21 @@ class Gameplay extends React.Component {
             }
             <br />
 
-            <button id="gameChoiceBtn" className="gameplayBtn" onClick={this.start}>Play</button>
+            <button id="gameChoiceBtnGP" className="gameplayBtnGP" onClick={this.start}>Play</button>
           </div>
         }
 
         {this.state.optionsChosen === true &&
-          <div id="game">
+          <div id="gameGP">
 
-            <div id="gameOptions">
-              <button className="gameplayBtn" onClick={newGameClick}>New Game</button>
-              <button className="gameplayBtn" onClick={optionsClick}>Options</button>
+            <div id="gameOptionsGP">
+              <button className="gameplayBtnGP" onClick={newGameClick}>New Game</button>
+              <button className="gameplayBtnGP" onClick={optionsClick}>Options</button>
             </div>
 
             {this.state.gameStarted === true &&
               <>
-              <div id="dealerGame">
+              <div id="dealerGameGP">
                 {this.state.showDealerCards === true &&
                   this.displayWholeDealerHand()
                 }
@@ -1035,11 +1035,11 @@ class Gameplay extends React.Component {
                 }
               </div>
 
-              <div id="playerGame">
+              <div id="playerGameGP">
                 {this.displayAllPlayerHands()}
               </div>
 
-              <div id="handStats">
+              <div id="handStatsGP">
                 Active hands: {this.state.activeHands}&nbsp;
                 Total hands: {this.state.totalHands}
               </div>

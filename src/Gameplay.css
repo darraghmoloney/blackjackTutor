@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Doppio+One&family=Montserrat:wght@500&display=swap');
 
-.cardDisplay {
+.cardDisplayGP {
   max-width: 7rem;
   opacity: 1;
   border: 5px solid black;
@@ -10,7 +10,7 @@
 }
 
 
-.dealerShow {
+.dealerShowGP {
   margin-right: 2%;
   margin-left: 2%;
   padding: 2%;
@@ -19,17 +19,17 @@
   margin-bottom: 0.05rem;
 }
 
-.playerShow {
+.playerShowGP {
 
 }
 
-.playerCards{
+.playerCardsGP{
   border: 0.15rem solid white;
   margin: 0.3rem;
   padding: 0.5rem;
 }
 
-#playerGame {
+#playerGameGP {
   padding-top: 2%;
   margin-right: 2%;
   margin-left: 2%;
@@ -37,7 +37,7 @@
   color: lightgrey;
 }
 
-#gameContainer {
+#gameContainerGP {
   text-align: center;
   /* margin-top: 30px; */
   margin-top: 2.45%;
@@ -56,22 +56,22 @@
 
 }
 
-#gameOptions {
+#gameOptionsGP {
   padding: 0.5%;
 
 }
 
-#settings {
+#settingsGP {
   color: white;
   padding: 17%;
 }
 
-#handStats {
+#handStatsGP {
   font-size: small;
   color: #aaa;
 }
 
-.gameplayBtn{
+.gameplayBtnGP{
   background-color: goldenrod;
   border-radius: 2px;
   font-size: 0.9rem;
@@ -88,16 +88,16 @@
 
 }
 
-.gameplayBtn:hover{
+.gameplayBtnGP:hover{
   background:  rgb(255, 217, 0);
 }
 
-.gameplayBtn:active{
+.gameplayBtnGP:active{
   background: rgb(233, 211, 87);
   border-color:rgb(233, 211, 87);
 }
 
-#allPlayerHands {
+#allPlayerHandsGP {
   display: flex;
   flex-direction: row;
   /* flex-wrap: wrap; */
@@ -105,23 +105,23 @@
   justify-content: space-evenly;
 }
 
-#playerPoints {
+#playerPointsGP {
   color: goldenrod;
 }
 
-#hint {
+#hintGP {
   padding-top: 1rem;
   font-family: 'Doppio One', sans-serif;
   color: lightgrey;
   /* background: green; */
 }
 
-.handPoints {
+.handPointsGP {
   /* font-family: 'Doppio One', sans-serif; */
   font-family: 'Montserrat', sans-serif;
 }
 
-#winMessage {
+#winMessageGP {
   color: goldenrod;
   font-family: 'Doppio One', sans-serif;
 }
