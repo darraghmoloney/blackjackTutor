@@ -7,8 +7,8 @@
 
 
 .app{
-	width:1250px;
-	margin:20px auto;
+	/* width:1250px; */
+	margin: auto;
 }
 
 html, body {
@@ -21,8 +21,8 @@ body {
 }
 
 .container {
-    width: 1250px;
-    margin: 20px auto;
+    /* width: 1250px; */
+    margin: auto;
 }
 
 .center {
@@ -35,5 +35,3 @@ body {
 .hide {
     display: none;
 }
-
-

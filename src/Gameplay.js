@@ -987,18 +987,13 @@ class Gameplay extends React.Component {
 
             <h2>Game Options</h2>
 
+            <>
             <input type="checkbox" id="doubleChoiceGP"
               checked={this.state.doubleAllowed}
               onChange={this.selectDoubles}
             />
-              <label>Double Allowed</label>&nbsp;&nbsp;
-
-
-            <input type="checkbox" id="surrenderChoiceGP"
-              checked={this.state.surrenderAllowed}
-              onChange={this.selectSurrenders}
-            />
-              <label>Surrender Allowed</label>
+              <label onClick={this.selectDoubles}>Doubles</label>&nbsp;&nbsp;
+            </>
 
             {this.state.doubleAllowed === true&&
               <>
@@ -1007,9 +1002,19 @@ class Gameplay extends React.Component {
                 checked={this.state.doubleAfterSplitAllowed}
                 onChange={this.selectDoubleAfterSplit}
               />
-                <label>Double After Split</label>&nbsp;
+                <label onClick={this.selectDoubleAfterSplit}>Double After Split</label>&nbsp;
               </>
             }
+
+            <div>
+            <input type="checkbox" id="surrenderChoiceGP"
+              checked={this.state.surrenderAllowed}
+              onChange={this.selectSurrenders}
+            />
+              <label onClick={this.selectSurrenders}>Surrenders</label>
+            </div>
+
+
             <br />
 
             <button id="gameChoiceBtnGP" className="gameplayBtnGP" onClick={this.start}>Play</button>
