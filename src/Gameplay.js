@@ -255,7 +255,7 @@ class Gameplay extends React.Component {
 
           <div className="handStatusGP">
             <span id="playerPointsGP" className="handPointsGP">· {hand.points} ·</span>
-
+            <span id="hint" className="handInfoGP">&nbsp;{hand.hintMessage}</span>
           </div>
 
           <div id="playerButtonsGP">
@@ -323,7 +323,7 @@ class Gameplay extends React.Component {
 
           </div>
 
-          <div id="hint" className="handInfoGP">{hand.hintMessage}</div>
+          {/*<div id="hint" className="handInfoGP">{hand.hintMessage}</div>*/}
           {/*<div id="handGameOverMsg"> &nbsp; {hand.gameOverMessage}</div>*/}
           {hand.won === true &&
               <div id="winMessageGP">✔️ {hand.gameOverMessage}</div>
