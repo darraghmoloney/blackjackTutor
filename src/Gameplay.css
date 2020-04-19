@@ -124,4 +124,9 @@
 #winMessageGP {
   color: goldenrod;
   font-family: 'Doppio One', sans-serif;
+  padding: 0.38rem;
+}
+
+#playerButtonsHidden {
+  padding: 0.38rem;
 }

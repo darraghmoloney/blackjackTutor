@@ -314,6 +314,13 @@ class Gameplay extends React.Component {
               </button>
             }
 
+            {hand.hitDisabled && hand.standDisabled && (!this.state.doubleAllowed ||
+              hand.doubleDisabled) && (!this.state.splitAllowed || hand.splitDisabled) &&
+                (!this.state.surrenderAllowed || hand.surrenderDisabled) &&
+                  hand.hintDisabled && (hand.gameOverMessage === "") &&
+                <div id="playerButtonsHidden">&nbsp;</div>
+            }
+
           </div>
 
           <div id="hint" className="handInfoGP">{hand.hintMessage}</div>
