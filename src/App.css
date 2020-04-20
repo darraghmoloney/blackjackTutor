@@ -6,13 +6,7 @@
   border-radius: 8px;
 }
 
-.jumbotron {
-    background-image: url('./jumbo_background.png');
-    background-repeat: repeat;
-		height: 675px;
-		box-shadow: 0 0 50px #3F0C1F;
-    border: 2px solid #3F0C1F;
-    }
+
 
     #menu-tile, #specials-tile, #quiz-tile {
       height: 246px;
@@ -33,24 +27,23 @@
       background-image: url('./quizTime.png');
       background-repeat: round;
       background-position: center;
-      left:870px;
-      bottom:462px;
+     
     }
 
     #specials-tile {
       background-image: url('./basicStrategy.png');
       background-repeat: round;
       background-position: center;
-      left:475px;
-      bottom:200px;
+      margin-right:3%;
+
     }
 
     #menu-tile {
       background-image: url('./whatisbj.png');
       background-position: center;
       background-repeat: round;
-      left: 75px;
-      top:60px;
+      margin-right:3%;
+
     }
 
     #menu-tile span, #specials-tile span, #quiz-tile span{
@@ -67,5 +60,104 @@
     }
 
     .home-tiles{
-      height:400px;
+      display:flex;
+      justify-content: center;
+      width:100%;
+	    position: relative;
+      overflow: hidden;
+      bottom:30px
+      
     }
+
+/********** Large devices only **********/
+
+@media (min-width: 1200px) {
+     
+  .jumboHolder {
+        height: 1100px;
+        border-top: 1px solid #3F0C1F;
+      }
+      .innerJumbo{
+          background-image: url('./jumbo_background800.png');
+          background-repeat: round;
+          margin: 10%;
+		      height: 800px;
+		      box-shadow: 0 0 20px #3F0C1F;
+		      border: 2px solid #3F0C1F;
+      }
+    }    
+/********** Medium devices only **********/
+
+@media (min-width: 992px) and (max-width: 1199px) {
+  .homePage{
+    height:1300px;
+  }
+  .jumboHolder {
+    height: 700px;
+    border-top: 1px solid #3F0C1F;
+  }
+  .innerJumbo{
+      background-image: url('./jumbo_background800.png');
+      background-repeat: round;
+
+      margin: 10%;
+      height: 800px;
+      box-shadow: 0 0 20px #3F0C1F;
+      border: 2px solid #3F0C1F;
+  }
+  .home-tiles{
+  top:300px;
+  }
+  
+}    
+/********** Small devices only **********/
+@media (min-width: 768px) and (max-width: 991px) {
+  
+  .jumboHolder {
+    height: 700px;
+    border-top: 1px solid #3F0C1F;
+  }
+  .innerJumbo{
+      background-image: url('./jumbo_background800.png');
+      background-repeat: round;
+
+      margin: 10%;
+      height: 500px;
+      box-shadow: 0 0 20px #3F0C1F;
+      border: 2px solid #3F0C1F;
+  }
+  .home-tiles{
+    height: 250px;
+    display:inline;
+    position: relative;
+    left:30%
+  }
+}
+/********** Xtra Small devices only **********/
+
+@media (max-width: 767px) {
+  .homePage{
+    height:1400px
+  }
+  .jumboHolder {
+    height: 500px;
+    border-top: 1px solid #3F0C1F;
+  }
+  .innerJumbo{
+      background-image: url('./jumbo_background800.png');
+      background-repeat: round;
+
+      margin: 10%;
+      height: 400px;
+      box-shadow: 0 0 20px #3F0C1F;
+      border: 2px solid #3F0C1F;
+  }
+  
+  .home-tiles{
+    height: 250px;
+    display:inline;
+    position: relative;
+    left:25%;
+    top: 40px;
+  }
+}

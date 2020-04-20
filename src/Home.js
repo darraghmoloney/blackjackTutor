@@ -26,10 +26,11 @@ class Home extends Component {
           () => {
             return (
             <div className="homePage">
-              <Jumbotron className="jumbotron">
-                
+              <div className="jumboHolder">
+                 <div className="innerJumbo">
+                   </div>
                  
-              </Jumbotron>
+              </div>
 
               <div className="home-tiles">
               <div id="menu-tile">
