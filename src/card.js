@@ -45,7 +45,7 @@ function generateShortName(cardSuit, cardValue) {
 }
 
 function generateImagePath(cardSuit, cardValue) {
-  let imagePath = `./cardImages/`;
+  let imagePath = `./cardImages/svg/`;
   let tagString = "";
 
     switch(cardValue) {
@@ -87,7 +87,7 @@ function generateImagePath(cardSuit, cardValue) {
         break;
     }
 
-    imagePath += tagString + ".png";
+    imagePath += tagString + ".svg";
 
     return imagePath;
 }

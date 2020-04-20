@@ -2,7 +2,7 @@
   background-color:rgb(29, 44, 29);
   background-image: url("https:/www.transparenttextures.com/patterns/felt.png");
   margin-top:30px;
-  color: #aaa; 
+  color: #aaa;
   border-radius: 8px;
 }
 
@@ -26,9 +26,9 @@
 
     #menu-tile:hover, #specials-tile:hover, #quiz-tile:hover {
       box-shadow: 0 1px 5px 1px #cccccc;
-    
+
     }
-    
+
     #quiz-tile {
       background-image: url('./quizTime.png');
       background-repeat: round;
