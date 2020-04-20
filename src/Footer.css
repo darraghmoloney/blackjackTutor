@@ -37,3 +37,15 @@
 #testimonils p:nth-child(2) {
 	margin-top:25px;
 }
+
+/********** Small devices only **********/
+@media (max-width: 767px) {
+	.panel-footer {
+		
+		text-align: center;
+	}
+	
+
+	
+	
+}

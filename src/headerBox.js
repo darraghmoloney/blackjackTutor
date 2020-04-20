@@ -20,7 +20,7 @@ class HeaderBox extends Component {
     
         return (
             <nav className="menu">
-                <h1 className="menu__Title">BlackJack Tutor</h1>
+                <h1 className="menu__Title">BlackJack  Tutor</h1>
 
 
                 <ul className="menu__link">
