@@ -9,11 +9,9 @@ import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap
 class AboutTest extends Component {
 
     render () {
-        function shoot() {
-            alert("Blackjack is a game where you must beat the dealer's hand by getting a hand whose value is greater than the dealer but less than or equal to 21. Cards have scores equal to the number they display while Jacks, Queens and Kings are equal to 10 and Ace's can be either 1 or 11 At the beginning of the game the player places the chips they intend to bet with and the player and the the dealer is dealt 2 cards each,the dealer's 2nd card remains face down, all others are revealed.The player then chooses what to do. Some options are only available in certain variations of the game");}
         
-        function shoot() {
-                alert("Blackjack is a game where you must beat the dealer's hand by getting a hand whose value is greater than the dealer but less than or equal to 21. Cards have scores equal to the number they display while Jacks, Queens and Kings are equal to 10 and Ace's can be either 1 or 11 At the beginning of the game the player places the chips they intend to bet with and the player and the the dealer is dealt 2 cards each,the dealer's 2nd card remains face down, all others are revealed.The player then chooses what to do. Some options are only available in certain variations of the game");}
+        
+        
         
                 function playerOptions(e) {
                         alert("Hit: An additional card is dealt to the player, if they're hand is still less than or equal to 21 they can make an additional choice");
@@ -44,13 +42,17 @@ class AboutTest extends Component {
                     alert("Hard totals/hard hand/hard 17 etc: A hard hand is one that does not contain an ace, for example a jack and a 7 is a hard 17 as they can only add up to 17.");
                     alert("Soft totals/soft hand/soft 17 etc:</h4> A soft hand is one that contains an ace, the number it refers to is usually the highest amount it can be equal to, for example an ace and a 6 can be counted as either a score of 7 or 17, but it is referred to as a soft 17.");
                 }
+                
+                function howToPlay(h){
+                    alert("Blackjack is a game where you must beat the dealer's hand by getting a hand whose value is greater than the dealer but less than or equal to 21. Cards have scores equal to the number they display while Jacks, Queens and Kings are equal to 10 and Ace's can be either 1 or 11 At the beginning of the game the player places the chips they intend to bet with and the player and the the dealer is dealt 2 cards each,the dealer's 2nd card remains face down, all others are revealed.The player then chooses what to do. Some options are only available in certain variations of the game");
+                }
 
         return (
             
             <div className="AboutTest">
 
         
-           <h1 id="pageTitle">About Us </h1> 
+            <h1 id="pageTitle">About Us </h1> 
             <p id="intro">  
                 Here you will be able to play games of blackjack as well as
                 practice and learn a method known as basic strategy. By learning
@@ -59,27 +61,6 @@ class AboutTest extends Component {
                 Check out the about section to learn how to play!
             </p> 
             
-            <h2 id="warningTitle"><b>**WARNING**</b></h2>
-            <p id="warningPara">
-                While this will improve your odds, it is not enough to counteract
-                the house edge, you are more likely to lose so do not use this advice
-                thinking you will beat the casinos, other techniques are needed such as
-                card counting which this app does not cover, also casinos may offer
-                Variations on the rules which can change the results please gamble responsibly.
-            </p>
-
-           
-            
-            <div id="playerOptions">
-            <button id="playerOpTitle" onClick={keyTerminology}>Key Terminology</button>
-            <button id="playerOpTitle" onClick={playerOptions}>Player options</button>
-            <button id="playerOpTitle" onClick={dealerOptions}>Dealer Options</button>
-            <button id="playerOpTitle" onClick={winConditions}>Win Conditions</button>
-            <button id="playerOpTitle" onClick={shoot}>How To Play!</button>
-            <h2 id="htpTitle"><button onClick={shoot}>How To Play!</button></h2>
-
-            </div>
-
             <div id="whatIs">
             <h2 id="whatIsTitle">What is basic strategy?</h2>
             
@@ -96,6 +77,25 @@ class AboutTest extends Component {
             as card counting (which this app does not cover) in order to beat a casino.
             </p>
 
+            </div>
+
+            <div id="buttonDiv">
+            <button id="button1" onClick={keyTerminology}>Key Terminology</button>
+            <button id="button2" onClick={playerOptions}>Player options</button>
+            <button id="button3" onClick={dealerOptions}>Dealer Options</button>
+            <button id="button4" onClick={winConditions}>Win Conditions</button>
+            <button id="button5" onClick={howToPlay}>How To Play!</button>
+            </div>
+            
+            <div id="warningDiv">
+            <h2 id="warningTitle"><b>**WARNING**</b></h2>
+            <p id="warningPara">
+                While this will improve your odds, it is not enough to counteract
+                the house edge, you are more likely to lose so do not use this advice
+                thinking you will beat the casinos, other techniques are needed such as
+                card counting which this app does not cover, also casinos may offer
+                Variations on the rules which can change the results please gamble responsibly.
+            </p>
             </div>
             
   </div>

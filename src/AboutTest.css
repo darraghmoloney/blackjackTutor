@@ -10,14 +10,7 @@
     font-family:'Lora', serif;
 
 }
-#logo-img {
-    background-repeat: round;
-    position: relative;
-    left:600px;
-    top:100px;
-    
 
-}
 #pageTitle{
     text-align: center;
     font-size: 8em;
@@ -37,122 +30,74 @@
 
 }
 
+#warningDiv{
+    position: relative;
+    width:40%;
+    left:50%;
+    bottom:450px;
+}
 #warningTitle{
-    overflow: hidden;
+    
     color: black; 
-    padding-top: 5%;
-    width: 20%;
     font-size: 3em;
-    margin: 0  70%;
+    text-align: center;
     font-family: 'Notable', sans-serif;
 
 }
 #warningPara{
     position:relative;
     overflow: hidden;
-    padding-top: 2%;
-    width: 30%;
-    font-size: 1.5em;
-    left:60%;
-    font-family:'Lora', serif;
-
-}
-
-#headTitle{
-    position: relative;
-    overflow: hidden;
-    width: 20%;
-    font-size: 3em;
-    bottom:10%;
-    left:4%;
-    font-family:'Lora', serif;
-}
-
-#h4{
     
-    position: relative;
-    font-family:'Lora', serif;  
-    font-size: 1.5em;
-}
-#term{
-    position: relative;
-   
-    overflow: hidden;
-    font-size: 1em;
-    width:50%;
-    bottom:10%;
-    left:10%;
-    font-family:'Lora', serif;
-    }
-
-#htpTitle{
-    position: relative;
-   overflow: hidden;
-    font-size: 1em;
-    bottom:250px;
-    left:50%;
-    font-family:'Lora', serif;
-
-}
-
-#playerOptions{
-    position: relative;
-   
-    overflow: hidden;
-    width:30%;
-    font-size: 1em;
-    bottom:7%;
-    left:10%;
+    text-align: center;
+    font-size: 2.5em;
+    
     font-family:'Lora', serif;
 }
 
-#playerOpTitle, #dealerOpTitle, #winCondTitle{
-    font-size: 1.5em;
+#buttonDiv{
+        position: relative;
+        border: none;
+        color: white;
+        padding: 16px 32px;
+        text-align: center;
+        text-decoration:saddlebrown;
+        display:inline-flexbox;
+        font-size: 16px;
+        transition-duration: 0.4s;
+        cursor: pointer;
+        width:9%;
+        top:100px;
+        left:15%;      
 }
 
-#playerOpPara, #dealerOpPara, #winConPara, #whatIsPara{
+#button1,#button2,#button4,#button3,#button5{
+    background-color: rgb(15, 90, 151);
+    background-image: url("https:/www.transparenttextures.com/patterns/felt.png");
     position: relative;
-    font-size: 1em;
-    font-family:'Lora', serif;
-
+    font-size: 25px;
+    width:300%;
+    padding:20px;
+    margin-bottom: 30%;
 }
-
-#dealerOption{
-    position: relative;
-   
-    overflow: hidden;
-    width:30%;
-    font-size: 1em;
-    bottom:26%;
-    left:60%;
-    font-family:'Lora', serif;
-}
-
-#winCond{
-    position: relative;
-   
-    overflow: hidden;
-    width:30%;
-    font-size: 1em;
-    bottom:26%;
-    left:60%;
-    font-family:'Lora', serif;  
-}
+#button1:hover,#button2:hover,#button4:hover,#button3:hover,#button5:hover {
+    background: #0b7dda;
+    color: white;
+  }
 
 #whatIs{
-    position: relative;
-   
-    overflow: hidden;
-    width:50%;
+    position: relative; 
+    padding-top: 5%;
+    width: 75%;
     text-align: center;
-    font-size: 1.7em;
-    bottom:15%;
-    left:25%;
+    font-size: 2.7em;
+    margin: 0 auto 15px;
     font-family:'Lora', serif;  
 }
 #whatIsTitle{
-    font-size: 1.5em;
+    font-size: 2em;
     font-family:'Lora', serif;  
     text-align: center;
-
+}
+#whatIsPara{
+    padding-top: 4%;
 }
