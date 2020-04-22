@@ -10,12 +10,16 @@ class AboutTest extends Component {
 
     
     render () {
+        function shoot() {
+            alert("Blackjack is a game where you must beat the dealer's hand by getting a hand whose value is greater than the dealer but less than or equal to 21. Cards have scores equal to the number they display while Jacks, Queens and Kings are equal to 10 and Ace's can be either 1 or 11 At the beginning of the game the player places the chips they intend to bet with and the player and the the dealer is dealt 2 cards each,the dealer's 2nd card remains face down, all others are revealed.The player then chooses what to do. Some options are only available in certain variations of the game");}
         
-        
+            function shoot() {
+                alert("Blackjack is a game where you must beat the dealer's hand by getting a hand whose value is greater than the dealer but less than or equal to 21. Cards have scores equal to the number they display while Jacks, Queens and Kings are equal to 10 and Ace's can be either 1 or 11 At the beginning of the game the player places the chips they intend to bet with and the player and the the dealer is dealt 2 cards each,the dealer's 2nd card remains face down, all others are revealed.The player then chooses what to do. Some options are only available in certain variations of the game");}
         return (
+            
             <div className="AboutTest">
            <h1 id="pageTitle">About Us </h1> 
-           <div id="logo-img" alt="Logo image"> <img src={blackjack_1150}></img></div>
+           
             <p id="intro">  
                 Here you will be able to play games of blackjack as well as
                 practice and learn a method known as basic strategy. By learning
@@ -50,19 +54,8 @@ class AboutTest extends Component {
             but it is referred to as a soft 17.<br></br>
              </p>
             <div id="howToPlay">
-            <h2 id="htpTitle">How to play:</h2>
-            <p id="htpPara">
-                Blackjack is a game where you must beat the dealer's hand by getting a hand whose
-                value is greater than the dealer but less than or equal to 21. Cards have scores equal
-                to the number they display while Jacks, Queens and Kings are equal to 10 and Ace's can
-                be either 1 or 11.
-
-                At the beginning of the game the player places the chips they intend 
-                to bet with and the player and the the dealer is dealt 2 cards each, 
-                the dealer's 2nd card remains face down, all others are revealed. 
-                The player then chooses what to do. Some options are only available in 
-                certain variations of the game.
-            </p>
+            <h2 id="htpTitle"><button onClick={shoot}>How To Play!</button></h2>
+           
             </div>
             <div id="playerOptions">
             <h3 id="playerOpTitle"> Player options</h3>

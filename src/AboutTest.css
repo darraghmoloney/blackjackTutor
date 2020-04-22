@@ -3,12 +3,12 @@
 
 .AboutTest{
     margin-top:30px;
-    padding-top: 35px;
     color: #aaa; 
-    background-color: #064408;
+    background-color:rgb(29, 44, 29);
     background-image: url("https:/www.transparenttextures.com/patterns/felt.png");
-    height: 3000px;
     border-radius: 8px;
+    font-family:'Lora', serif;
+
 }
 #logo-img {
     background-repeat: round;
@@ -20,140 +20,139 @@
 }
 #pageTitle{
     text-align: center;
-    font-size: 4em;
-    font-family: 'Notable', sans-serif;
+    font-size: 8em;
+    font-family:'Lora', serif;
+    padding-top: 5%;
 
 }
 
 #intro{
-    position: relative; Right: 400px; Bottom:250px;
-    overflow: hidden;
-    width: 400px;
-    height: 400px;
+    position: relative; 
+    padding-top: 5%;
+    width: 75%;
     text-align: center;
-    font-size: 1.5em;
+    font-size: 3em;
     margin: 0 auto 15px;
-    font-family: 'Notable', sans-serif;
+    font-family:'Lora', serif;
 
 }
 
 #warningTitle{
-    position: relative; left: 400px; bottom:200px;
     overflow: hidden;
     color: black; 
-    width: 400px;
-    height: 400px;
-    text-align: center;
+    padding-top: 5%;
+    width: 20%;
     font-size: 3em;
-    margin: 0 auto 15px;
+    margin: 0  70%;
     font-family: 'Notable', sans-serif;
 
 }
 #warningPara{
-    position: relative; left: 400px;bottom:500px;
+    position:relative;
     overflow: hidden;
-    width: 400px;
-    height: 400px;
-    text-align: center;
+    padding-top: 2%;
+    width: 30%;
     font-size: 1.5em;
-    margin: 0 auto 15px;
-    font-family: 'Notable', sans-serif;
+    left:60%;
+    font-family:'Lora', serif;
 
 }
 
 #headTitle{
     position: relative;
-    bottom: 1000px;
-    left : 30px;
     overflow: hidden;
-    font-size: 2em;
-    margin: 0 auto 15px;
-    font-family: 'Notable', sans-serif;
+    width: 20%;
+    font-size: 3em;
+    bottom:10%;
+    left:4%;
+    font-family:'Lora', serif;
 }
 
 #h4{
-    font-family: 'Notable', sans-serif;
+    
+    position: relative;
+    font-family:'Lora', serif;  
     font-size: 1.5em;
 }
 #term{
     position: relative;
-    bottom: 1000px;
-    right:300px;
-    width: 400px;
-    height: 500px;
+   
     overflow: hidden;
-    font-size: .8em;
-    margin: 0 auto 15px;
-    font-family: 'Notable', sans-serif;
-}
-
-#howToPlay{
-    position: relative;
-    bottom:1000px;
-    width: 800px;
-    height: 500px;
-    overflow: hidden;
-    margin: 0 auto 
-}
+    font-size: 1em;
+    width:50%;
+    bottom:10%;
+    left:10%;
+    font-family:'Lora', serif;
+    }
 
 #htpTitle{
-    font-size: 1.5em;
-    font-family: 'Notable', sans-serif;
-
-}
-
-#htpPara{
     position: relative;
-    font-size: .8em;
-    font-family: 'Notable', sans-serif;
+   overflow: hidden;
+    font-size: 1em;
+    bottom:250px;
+    left:50%;
+    font-family:'Lora', serif;
 
-    
 }
 
 #playerOptions{
     position: relative;
-    bottom:1200px;
-    width: 800px;
-    height: 500px;
+   
     overflow: hidden;
-    margin: 0 auto 
+    width:30%;
+    font-size: 1em;
+    bottom:7%;
+    left:10%;
+    font-family:'Lora', serif;
 }
 
-#playerOpTitle, #dealerOpTitle, #winCondTitle, #whatIsTitle{
+#playerOpTitle, #dealerOpTitle, #winCondTitle{
     font-size: 1.5em;
-    font-family: 'Notable', sans-serif;
 }
 
 #playerOpPara, #dealerOpPara, #winConPara, #whatIsPara{
     position: relative;
-    font-size: .8em;
+    font-size: 1em;
     font-family: 'Notable', sans-serif;
 
 }
 
 #dealerOption{
     position: relative;
-    bottom:1200px;
-    width: 800px;
-    height: 500px;
+   
     overflow: hidden;
-    margin: 0 auto 
+    width:30%;
+    font-size: 1em;
+    bottom:26%;
+    left:60%;
+    font-family:'Lora', serif;
 }
 
 #winCond{
     position: relative;
-    bottom:1450px;
-    width: 800px;
-    height: 500px;
+   
     overflow: hidden;
-    margin: 0 auto 
+    width:30%;
+    font-size: 1em;
+    bottom:26%;
+    left:60%;
+    font-family:'Lora', serif;  
 }
 
 #whatIs{
     position: relative;
-    bottom:1700px;
-    width: 800px;
-    height: 500px;
+   
     overflow: hidden;
-    margin: 0 auto 
+    width:50%;
+    text-align: center;
+    font-size: 1.7em;
+    bottom:15%;
+    left:25%;
+    font-family:'Lora', serif;  
+}
+#whatIsTitle{
+    font-size: 1.5em;
+    font-family:'Lora', serif;  
+    text-align: center;
+
 }
