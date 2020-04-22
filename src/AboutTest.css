@@ -3,157 +3,101 @@
 
 .AboutTest{
     margin-top:30px;
-    padding-top: 35px;
     color: #aaa; 
-    background-color: #064408;
+    background-color:rgb(29, 44, 29);
     background-image: url("https:/www.transparenttextures.com/patterns/felt.png");
-    height: 3000px;
     border-radius: 8px;
-}
-#logo-img {
-    background-repeat: round;
-    position: relative;
-    left:600px;
-    top:100px;
-    
+    font-family:'Lora', serif;
 
 }
+
 #pageTitle{
     text-align: center;
-    font-size: 4em;
-    font-family: 'Notable', sans-serif;
+    font-size: 8em;
+    font-family:'Lora', serif;
+    padding-top: 5%;
 
 }
 
 #intro{
-    position: relative; Right: 400px; Bottom:250px;
-    overflow: hidden;
-    width: 400px;
-    height: 400px;
-    text-align: center;
-    font-size: 1.5em;
-    margin: 0 auto 15px;
-    font-family: 'Notable', sans-serif;
-
-}
-
-#warningTitle{
-    position: relative; left: 400px; bottom:200px;
-    overflow: hidden;
-    color: black; 
-    width: 400px;
-    height: 400px;
+    position: relative; 
+    padding-top: 5%;
+    width: 75%;
     text-align: center;
     font-size: 3em;
     margin: 0 auto 15px;
+    font-family:'Lora', serif;
+
+}
+
+#warningDiv{
+    position: relative;
+    width:40%;
+    left:50%;
+    bottom:450px;
+}
+#warningTitle{
+    
+    color: black; 
+    font-size: 3em;
+    text-align: center;
     font-family: 'Notable', sans-serif;
 
 }
 #warningPara{
-    position: relative; left: 400px;bottom:500px;
+    position:relative;
     overflow: hidden;
-    width: 400px;
-    height: 400px;
-    text-align: center;
-    font-size: 1.5em;
-    margin: 0 auto 15px;
-    font-family: 'Notable', sans-serif;
-
-}
-
-#headTitle{
-    position: relative;
-    bottom: 1000px;
-    left : 30px;
-    overflow: hidden;
-    font-size: 2em;
-    margin: 0 auto 15px;
-    font-family: 'Notable', sans-serif;
-}
-
-#h4{
-    font-family: 'Notable', sans-serif;
-    font-size: 1.5em;
-}
-#term{
-    position: relative;
-    bottom: 1000px;
-    right:300px;
-    width: 400px;
-    height: 500px;
-    overflow: hidden;
-    font-size: .8em;
-    margin: 0 auto 15px;
-    font-family: 'Notable', sans-serif;
-}
-
-#howToPlay{
-    position: relative;
-    bottom:1000px;
-    width: 800px;
-    height: 500px;
-    overflow: hidden;
-    margin: 0 auto 
-}
-
-#htpTitle{
-    font-size: 1.5em;
-    font-family: 'Notable', sans-serif;
-
-}
-
-#htpPara{
-    position: relative;
-    font-size: .8em;
-    font-family: 'Notable', sans-serif;
-
     
+    text-align: center;
+    font-size: 2.5em;
+    
+    font-family:'Lora', serif;
 }
 
-#playerOptions{
+#buttonDiv{
+        position: relative;
+        border: none;
+        color: white;
+        padding: 16px 32px;
+        text-align: center;
+        text-decoration:saddlebrown;
+        display:inline-flexbox;
+        font-size: 16px;
+        transition-duration: 0.4s;
+        cursor: pointer;
+        width:9%;
+        top:100px;
+        left:15%;      
+}
+
+#button1,#button2,#button4,#button3,#button5{
+    background-color: rgb(15, 90, 151);
+    background-image: url("https:/www.transparenttextures.com/patterns/felt.png");
     position: relative;
-    bottom:1200px;
-    width: 800px;
-    height: 500px;
-    overflow: hidden;
-    margin: 0 auto 
+    font-size: 25px;
+    width:300%;
+    padding:20px;
+    margin-bottom: 30%;
 }
-
-#playerOpTitle, #dealerOpTitle, #winCondTitle, #whatIsTitle{
-    font-size: 1.5em;
-    font-family: 'Notable', sans-serif;
-}
-
-#playerOpPara, #dealerOpPara, #winConPara, #whatIsPara{
-    position: relative;
-    font-size: .8em;
-    font-family: 'Notable', sans-serif;
-
-}
-
-#dealerOption{
-    position: relative;
-    bottom:1200px;
-    width: 800px;
-    height: 500px;
-    overflow: hidden;
-    margin: 0 auto 
-}
-
-#winCond{
-    position: relative;
-    bottom:1450px;
-    width: 800px;
-    height: 500px;
-    overflow: hidden;
-    margin: 0 auto 
-}
+#button1:hover,#button2:hover,#button4:hover,#button3:hover,#button5:hover {
+    background: #0b7dda;
+    color: white;
+  }
 
 #whatIs{
-    position: relative;
-    bottom:1700px;
-    width: 800px;
-    height: 500px;
-    overflow: hidden;
-    margin: 0 auto 
+    position: relative; 
+    padding-top: 5%;
+    width: 75%;
+    text-align: center;
+    font-size: 2.7em;
+    margin: 0 auto 15px;
+    font-family:'Lora', serif;  
+}
+#whatIsTitle{
+    font-size: 2em;
+    font-family:'Lora', serif;  
+    text-align: center;
+}
+#whatIsPara{
+    padding-top: 4%;
 }
