@@ -100,22 +100,14 @@ class Gameplay extends React.Component {
 
 
 /*  Check if 2 cards are a natural Blackjack
-    i.e. an Ace and a Face card
+    i.e. an Ace and a Face/10 card
     - A natural Blackjack will win over another 21 point hand
     NB This function should only be called if the hand has only
     two cards in it */
 //______________________________________________________________________________
   checkNaturalBlackjack(card1, card2) {
-    if( (card1.points + card2.points) !== 21 ) {
-      return false; //blackjack must be exactly 21 points
-    }
-    if( (card1.value === "A") && (card2.value !== 10) ) {
-      return true;  //if one card is ace, the other card must be worth 10 to
-                    //be 21 pts. so if the other card is not a number 10 card,
-                    //it must be a K, Q, or J.
-    }
-    else if( (card1.value !== 10) && (card2.value === "A") ) {
-      return true;
+    if( (card1.points + card2.points) === 21 ) {
+      return true; //blackjack must be exactly 21 points
     }
     else {
       return false;
