@@ -964,8 +964,6 @@ class Gameplay extends React.Component {
 
         let doublePossible = !hand.doubleDisabled && this.state.doubleAllowed;
         let dblAfterSplitPossible = !hand.doubleDisabled && this.state.doubleAfterSplitAllowed;
-        console.log(doublePossible)
-        console.log(dblAfterSplitPossible)
 
        /* Get a hint message for the hand */
        let playerHint = getHint(doublePossible,
