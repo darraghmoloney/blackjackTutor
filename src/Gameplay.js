@@ -679,13 +679,8 @@ class Gameplay extends React.Component {
         }
     });
 
-    console.log(activeCount)
-    console.log(naturalBlackjackCount)
-
-
-
-
-
+    console.log(`Player has ${naturalBlackjackCount} natural blackjacks ` +
+      `in ${activeCount} hands`);
 
     let hand = this.state.dealerHand;
     let dealerPts = hand.points;
@@ -697,6 +692,7 @@ class Gameplay extends React.Component {
         finish the game with all the active player hands winning
     */
     if( activeCount === naturalBlackjackCount && hand.shownPoints < 10) {
+      console.log(`Dealer win impossible`);
       this.checkWinningHands();
     }
     else {
