@@ -197,7 +197,6 @@ function makeFullHint(shortenedHint, extraInfo) {
 
     let doubleAllowed = extraInfo.doubleAllowed;
     let numberOfCards = extraInfo.numberOfCards;
-    let pairOfAces = extraInfo.pairOfAces;
 
     if(shortenedHint === 'h') {
       hint.hintMessage = "You should hit";
