@@ -863,6 +863,8 @@ class Gameplay extends React.Component {
           the previous choice
       */
       currentDoubleAllowed = !currentDoubleAllowed;
+
+      this.resetAllHints();
       this.setState({doubleAllowed: currentDoubleAllowed});
     }
 
@@ -874,6 +876,8 @@ class Gameplay extends React.Component {
 
       /*  Boolean opposite - True -> False & vice versa */
       currentSurrenderAllowed = !currentSurrenderAllowed;
+
+      this.resetAllHints();
       this.setState({surrenderAllowed: currentSurrenderAllowed});
     }
 
@@ -885,6 +889,8 @@ class Gameplay extends React.Component {
 
       /*  Boolean opposite - True -> False & vice versa */
       currentSplitAllowed = !currentSplitAllowed;
+
+      this.resetAllHints();
       this.setState({splitAllowed: currentSplitAllowed});
     }
 
@@ -895,6 +901,8 @@ class Gameplay extends React.Component {
       let currentDblAfterSplitAllowed = this.state.doubleAfterSplitAllowed;
 
       currentDblAfterSplitAllowed = !currentDblAfterSplitAllowed;
+
+      this.resetAllHints();
       this.setState({doubleAfterSplitAllowed: currentDblAfterSplitAllowed});
     }
 
@@ -922,7 +930,9 @@ class Gameplay extends React.Component {
     checkboxes be shown again and the game itself hidden  */
 //______________________________________________________________________________
     optionsChange() {
+
       this.setState({optionsChosen: false});
+
     }
 
 
@@ -946,8 +956,11 @@ class Gameplay extends React.Component {
       /*  Show the hint or hide it by just making a blank string */
       if(hintVisible === true) {
 
+        let doublePossible = !hand.doubleDisabled && this.state.doubleAllowed;
+        // console.log(doublePossible)
+
        /* Get a hint message for the hand */
-       let playerHint = getHint(!hand.doubleDisabled,
+       let playerHint = getHint(doublePossible,
                                 this.state.doubleAfterSplitAllowed,
                                 this.state.surrenderAllowed,
                                 this.state.dealerHand,
@@ -966,6 +979,22 @@ class Gameplay extends React.Component {
       hands[handIndex] = hand;
       this.setState({playerHands: hands});
     }
+
+
+/*  Reset hint messages if game options changed  */
+//______________________________________________________________________________
+  resetAllHints() {
+
+    let hands = this.state.playerHands;
+
+    hands.forEach((hand, i) => {
+      hand.hintShown = false;
+      hand.hintMessage = "";
+    });
+
+    this.setState({playerHands: hands});
+
+  }
 
 
 
