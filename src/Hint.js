@@ -66,10 +66,18 @@ export function getHint(dblOK, dblAfterSplitOk, surrenderOK,
         for both hands
     */
     if(playerHandIsPairs) {
-      return getHintPairHand(dealer, player, doubleAllowed, doubleAfterSplitAllowed, pairOfAces);
+      return getHintPairHand(dealer,
+                            player,
+                            doubleAllowed,
+                            doubleAfterSplitAllowed,
+                            pairOfAces);
     }
     else if(playerHandIsHard) {
-      return getHintHardHand(dealer, player, doubleAllowed, surrenderAllowed, playerCardsCount);
+      return getHintHardHand(dealer,
+                            player,
+                            doubleAllowed,
+                            surrenderAllowed,
+                            playerCardsCount);
     }
     else {
       return getHintSoftHand(dealer, player, doubleAllowed);
