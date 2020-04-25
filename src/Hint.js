@@ -1,3 +1,5 @@
+import {hardStrategyTable, softStrategyTable, pairsStrategyTable} from './strategyTables.js';
+
 /*  Make a hint for the player.
 
     Uses
@@ -5,470 +7,221 @@
       - the game options (double allowed, double after split allowed, surrender
           allowed)
 */
+//______________________________________________________________________________
 export function getHint(dblOK, dblAfterSplitOK, surrenderOK,
   dealerHand, playerHand) {
 
     let dealer = dealerHand.shownPoints;
     let player = playerHand.points;
+
+
     let playerHandIsHard = (playerHand.softAces === 0);
+
     let playerCardsCount = playerHand.cards.length;
-    // console.log(playerCardsCount)
 
     let playerHandIsPairs = (playerCardsCount === 2) &&
-      (playerHand.cards[0].value === playerHand.cards[1].value);
+      (
+        (playerHand.cards[0].points===playerHand.cards[1].points)
+          ||
+          //Pair of Aces will be set to different pts, as one will be hard
+        (playerHand.cards[0].value==='A' && playerHand.cards[1].value==='A')
+      );
 
-    // console.log(playerHandIsPairs)
+    let pairOfAces = false;
+    if(playerHandIsPairs && playerHand.cards[0].value === 'A') {
+      pairOfAces = true;
+    }
 
     let doubleAllowed = dblOK;
-    // console.log(doubleAllowed)
-
-    let error = false;
-
-
-    /* Store more detailed info for quiz as well as gameplay */
-    let hint = {
-      hintMessage: "",
-      hit: false,
-      stand: true, //in if checks, stand is the most common, so true by default
-      split: false,
-      double: false,
-      surrender: false,
-    };
 
     /*  Error checking */
     if((dealer<2 && player<2) ||(dealer<2 && player>21) ||
       (dealer >11 && player<2) ||(dealer >11 && player>21))
     {
-      hint.hintMessage = "Invalid for both dealer and player";  //should deal when both values are invalid
-      hint.stand = false;
-      error = true;
+      console.error("Invalid points for both dealer and player in hint check");  //should deal when both values are invalid
+      return;
     }
     else if(dealer<2 || dealer >11) {
-      hint.hintMessage = "Invalid for dealer";  //deals with when dealer has invalid score
-      hint.stand = false;
-      error = true;
+      console.error("Invalid points for dealer in hint check");  //deals with when dealer has invalid score
+      return;
     }
     else if( player<2 || player>21)
     {
-      hint.hintMessage = "Invalid for player"; //deals with when player has invalid score
-      hint.stand = false;
-      error = true;
+      console.error("Invalid points for player in hint check"); //deals with when player has invalid score
+      return;
     }
 
-    //For non-error situations
-    if(!error) {
-      if(playerHandIsPairs) {
-        return getHintPairHand(dealer, player, doubleAllowed);
-      }
-      else if(playerHandIsHard) {
-        return getHintHardHand(dealer, player, playerCardsCount, doubleAllowed);
-      }
-      else {
-        return getHintSoftHand(dealer, player, doubleAllowed);
-      }
+    /*  For non-error situations */
+
+    /*  Must check for pairs FIRST,
+      - otherwise Ace logic would be wrong:
+        A,A pts are 12, but so are 6,6
+        and there are different strategies
+        for both hands
+    */
+    if(playerHandIsPairs) {
+      return getHintPairHand(dealer, player, doubleAllowed, pairOfAces);
     }
-    
-    //Return the error hand - hopefully never happens
-    return hint;
+    else if(playerHandIsHard) {
+      return getHintHardHand(dealer, player, doubleAllowed, playerCardsCount);
+    }
+    else {
+      return getHintSoftHand(dealer, player, doubleAllowed);
+    }
 
 }
 
 
+/*  Default hint */
+//______________________________________________________________________________
+function getHintHardHand(dealer, player, doubleAllowed, playerCardsCount ) {
 
-function getHintHardHand(dealer, player, playerCardsCount, doubleAllowed) {
+  console.log(`Hint for Hard hand`);
 
-  console.log(`Hint for Hard hand`)
-
-  let hint = {
-    hintMessage: "",
-    hit: false,
-    stand: true, //in if checks, stand is the most common, so true by default
-    split: false,
-    double: false,
-    surrender: false,
+  let extraInfo = {
+    "doubleAllowed": doubleAllowed,
+    "numberOfCards": playerCardsCount,
   };
 
-  if(dealer===2)
-  {
-    if (player>=13 && player<=21) {
-      hint.hintMessage = "You should stand";
-    }
-    else if(doubleAllowed && player > 9 && player < 12) {
-      hint.hintMessage = "You should double";
-      hint.stand = false;
-      hint.double = true;
-    }
-    else {
-      hint.hintMessage = "You should hit";
-      hint.stand = false;
-      hint.hit = true;
-    }
+  let short;
+
+  if(player <= 8) {
+    short = hardStrategyTable['5to8'][dealer];
+  }
+  else if(player >= 9 && player <= 12) {
+    short = hardStrategyTable[player][dealer];
+  }
+  else if(player >= 13 && player <= 15) {
+    short = hardStrategyTable['13to15'][dealer];
+  }
+  else if(player === 16) {
+    short = hardStrategyTable['16'][dealer];
+  }
+  else {
+    short = hardStrategyTable['17+'][dealer];
   }
 
+  return makeFullHint(short,extraInfo);
 
-  else if(dealer===3)
-  {
-    if(player>=13 && player<=21) {
-      hint.hintMessage = "You should stand";
-    }
-    else if(doubleAllowed && player > 8 && player < 12) {
-      hint.hintMessage = "You should double";
-      hint.stand = false;
-      hint.double = true;
-    }
-    else {
-      hint.hintMessage = "You should hit";
-      hint.stand = false;
-      hint.hit = true;
-    }
-  }
-
-
-  else if(dealer===4)
-  {
-    if(player>=12 && player<=21) {
-      hint.hintMessage = "You should stand";
-    }
-    else if(doubleAllowed && player > 8 && player < 12) {
-      hint.hintMessage = "You should double";
-      hint.stand = false;
-      hint.double = true;
-    }
-    else {
-      hint.hintMessage = "You should hit";
-      hint.stand = false;
-      hint.hit = true;
-    }
-  }
-
-
-  else if(dealer===5)
-  {
-    if(player>=12 && player<=21){
-      hint.hintMessage = "You should stand";
-    }
-    else if(doubleAllowed && player > 8 && player <12) {
-      hint.hintMessage = "You should double";
-      hint.stand = false;
-      hint.double = true;
-    }
-    else {
-      hint.hintMessage = "You should hit";
-      hint.stand = false;
-      hint.hit = true;
-    }
-  }
-
-
-  else if(dealer===6)
-  {
-    if(player>=12 && player<=21) {
-      hint.hintMessage = "You should stand";
-    }
-    else if(doubleAllowed && player > 8 && player <12) {
-      hint.hintMessage = "You should double";
-      hint.stand = false;
-      hint.double = true;
-    }
-    else {
-      hint.hintMessage = "You should hit";
-      hint.stand = false;
-      hint.hit = true;
-    }
-  }
-
-
-  else if(dealer>=7 && dealer <= 9)   //needs equivalent for jack, queen,king
-  {
-    if(player>=17 && player<=21) {
-      hint.hintMessage = "You should stand";
-    }
-    else if(doubleAllowed && player > 9 && player < 12) {
-      hint.hintMessage = "You should double";
-      hint.stand = false;
-      hint.double = true;
-    }
-    else {
-      hint.hintMessage = "You should hit";
-      hint.stand = false;
-      hint.hit = true;
-    }
-  }
-
-
-  else if(dealer===10) {
-      if( (player >= 17) || (player===16 && playerCardsCount < 3) ) {
-        hint.hintMessage = "You should stand";
-      }
-      else if(doubleAllowed && player===11) {
-        hint.hintMessage = "You should double";
-        hint.stand = false;
-        hint.double = true;
-      }
-      else {
-        hint.hintMessage = "You should hit";
-        hint.stand = false;
-        hint.hit = true;
-      }
-  }
-
-  //Dealer shows an Ace
-  else if(dealer===11) {
-    if(player>=17) {
-      hint.hintMessage = "You should stand";
-
-    }
-    else {
-      hint.hintMessage = "You should hit";
-      hint.stand = false;
-      hint.hit = true;
-    }
-  }
-
-
-  else
-  {
-    hint.hintMessage = "You should hit";
-    hint.stand = false;
-    hint.hit = true;
-  }
-
-  return hint;
 }
 
 /*  Hints for a hand with an Ace still worth 11 pts */
-function getHintSoftHand(dealer, player, doubleAllowed) {
+//______________________________________________________________________________
+function getHintSoftHand(dealer, player, playerCardsCount, doubleAllowed) {
 
   console.log(`Hint for Soft hand`)
 
-  let hint = {
-    hintMessage: "You should hit",
-    hit: true,
-    stand: false,
-    split: false,
-    double: false,
-    surrender: false,
+  let extraInfo = {
+    "doubleAllowed": doubleAllowed,
   };
 
-  if(dealer===2) {
-    if(player>17) {
-      hint.hintMessage = "You should stand"
-      hint.hit = false;
-      hint.stand = true;
-    }
-  }
+  let short;
 
-  if(dealer===3) {
-    if(doubleAllowed && player===17) {
-      hint.hintMessage = "You should double"
-      hint.hit = false;
-      hint.double = true;
-    }
-    else if(player===18) {
-      if(doubleAllowed) {
-        hint.hintMessage = "You should double"
-        hint.hit = false;
-        hint.double = true;
-      }
-      else {
-        hint.hintMessage = "You should stand"
-        hint.hit = false;
-        hint.stand = true;
-      }
-    }
-    else if(player>18) {
-      hint.hintMessage = "You should stand"
-      hint.hit = false;
-      hint.stand = true;
-    }
-  }
 
-  if(dealer===4) {
-    if(doubleAllowed && player >14 && player <18) {
-      hint.hintMessage = "You should double"
-      hint.hit = false;
-      hint.double = true;
-    }
-    else if(player===18) {
-      if(doubleAllowed) {
-        hint.hintMessage = "You should double"
-        hint.hit = false;
-        hint.double = true;
-      }
-      else {
-        hint.hintMessage = "You should stand"
-        hint.hit = false;
-        hint.stand = true;
-      }
-    }
-    else if(player>18) {
-      hint.hintMessage = "You should stand"
-      hint.hit = false;
-      hint.stand = true;
-    }
+  if(player <= 14) {
+    short = softStrategyTable['13to14'][dealer];
 
   }
-
-  if(dealer===5 || dealer===6) {
-    if(doubleAllowed && player<18) {
-      hint.hintMessage = "You should double"
-      hint.hit = false;
-      hint.double = true;
-    }
-    else if(player===18) {
-      if(doubleAllowed) {
-        hint.hintMessage = "You should double"
-        hint.hit = false;
-        hint.double = true;
-      }
-      else {
-        hint.hintMessage = "You should stand"
-        hint.hit = false;
-        hint.stand = true;
-      }
-    }
-    else if(player > 18){
-      hint.hintMessage = "You should stand"
-      hint.hit = false;
-      hint.stand = true;
-    }
+  else if(player >= 15 && player <= 16) {
+    short = softStrategyTable['15to16'][dealer];
+  }
+  else if(player >= 17 && player <= 18) {
+    short = softStrategyTable[player][dealer];
+  }
+  else {
+    short = softStrategyTable['19+'][dealer];
   }
 
-  if(dealer===7 || dealer===8) {
-    if(player>17) {
-      hint.hintMessage = "You should stand"
-      hint.hit = false;
-      hint.stand = true;
-    }
-  }
-
-  if(dealer>=9) {
-    if(player>18) {
-      hint.hintMessage = "You should stand"
-      hint.hit = false;
-      hint.stand = true;
-    }
-  }
-
-  return hint;
+  return makeFullHint(short, extraInfo);
 
 }
-//
-function getHintPairHand(dealer, player, doubleAllowed) {
+
+
+//______________________________________________________________________________
+function getHintPairHand(dealer, player, doubleAllowed, pairOfAces) {
   console.log(`Hint for Pairs hand`)
 
-  let hint = {
-    hintMessage: "You should split",
-    hit: false,
-    stand: false,
-    split: true,
-    double: false,
-    surrender: false,
+  let extraInfo = {
+    "doubleAllowed": doubleAllowed,
+    "pairOfAces": pairOfAces,
   };
 
-  if(dealer<=4) {
-    if(player===8) { //Pair of 4s
-      hint.hintMessage = "You should hit"
-      hint.split = false;
+  console.log("acepair" + pairOfAces)
+
+  let short;
+  // '4or6', '8', '10', '12', '14', '16', '18', '20', 'AA'
+  if(player <= 6) {
+    short = pairsStrategyTable['4or6'][dealer];
+    // return makeFullHint(short, extraInfo);
+  }
+  else if(pairOfAces) {
+    short = pairsStrategyTable['AA'][dealer];
+    console.log(short)
+  }
+  else {
+    short = pairsStrategyTable[player][dealer];
+    console.log(short)
+  }
+  return makeFullHint(short, extraInfo);
+
+}
+
+
+//______________________________________________________________________________
+function makeFullHint(shortenedHint, extraInfo) {
+  let hint = {
+      hintMessage: "",
+      hit: false,
+      stand: false,
+      split: false,
+      double: false,
+      surrender: false,
+    };
+
+    let doubleAllowed = extraInfo.doubleAllowed;
+    let numberOfCards = extraInfo.numberOfCards;
+    let pairOfAces = extraInfo.pairOfAces;
+
+    if(shortenedHint === 'h') {
+      hint.hintMessage = "You should hit";
       hint.hit = true;
     }
-    else if(player===10) { //Pair of 5s
+    else if(shortenedHint === 'd') {
       if(doubleAllowed) {
-        hint.hintMessage = "You should double"
-        hint.split = false;
+        hint.hintMessage = "You should double";
         hint.double = true;
-      }
-      else {
-        hint.hintMessage = "You should hit"
-        hint.split = false;
+      } else {
+        hint.hintMessage = "You should hit";
         hint.hit = true;
       }
     }
-    else if(player===20) {
-      hint.hintMessage = "You should stand"
-      hint.split = false;
+    else if(shortenedHint === 's') {
+      hint.hintMessage = "You should stand";
       hint.stand = true;
     }
-  }
-
-  if(dealer===5 || dealer===6) {
-    if(player===10) {
+    else if(shortenedHint === 'h2s3') {
+      if(numberOfCards <= 2) { //Will skip if undefined value
+        hint.hintMessage = "You should hit";
+        hint.hit = true;
+      } else {
+        hint.hintMessage = "You should stand";
+        hint.stand = true;
+      }
+    }
+    else if(shortenedHint === 'ds') {
       if(doubleAllowed) {
-        hint.hintMessage = "You should double"
-        hint.split = false;
+        hint.hintMessage = "You should double";
         hint.double = true;
-      }
-      else {
-        hint.hintMessage = "You should hit"
-        hint.split = false;
-        hint.hit = true;
+      } else {
+        hint.hintMessage = "You should stand";
+        hint.stand = true;
       }
     }
-    else if(player===20) {
-      hint.hintMessage = "You should stand"
-      hint.split = false;
-      hint.stand = true;
+    else if(shortenedHint === 'p') {
+      hint.hintMessage = "You should split";
+      hint.split = true;
     }
-  }
 
-  if(dealer===7) {
-    if(player===8 || player===12) {
-      hint.hintMessage = "You should hit"
-      hint.split = false;
-      hint.hit = true;
-    }
-    else if(player===10) {
-      if(doubleAllowed) {
-        hint.hintMessage = "You should double"
-        hint.split = false;
-        hint.double = true;
-      }
-      else {
-        hint.hintMessage = "You should hit"
-        hint.split = false;
-        hint.hit = true;
-      }
-    }
-    else if(player===18 || player===20){
-      hint.hintMessage = "You should stand"
-      hint.split = false;
-      hint.stand = true;
-    }
-  }
 
-  if(dealer===8 || dealer===9) {
-    if(player<16 && player !== 12) { //2 Aces are 12
-      if(doubleAllowed && player===10) {
-        hint.hintMessage = "You should double"
-        hint.split = false;
-        hint.double = true;
-      }
-      else {
-        hint.hintMessage = "You should hit"
-        hint.split = false;
-        hint.hit = true;
-      }
-    }
-    else if(player===20) {
-      hint.hintMessage = "You should stand"
-      hint.split = false;
-      hint.stand = true;
-    }
-  }
-
-  if(dealer>=10) {
-    if(player<16 && player !== 12) {
-      hint.hintMessage = "You should hit"
-      hint.split = false;
-      hint.hit = true;
-    }
-    else if(player===18 || player===20) {
-      hint.hintMessage = "You should stand"
-      hint.split = false;
-      hint.stand = true;
-    }
-  }
-
-  return hint;
-
+    return hint;
 }
