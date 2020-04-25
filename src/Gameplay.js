@@ -326,13 +326,19 @@ class Gameplay extends React.Component {
           {/*<div id="hint" className="handInfoGP">{hand.hintMessage}</div>*/}
           {/*<div id="handGameOverMsg"> &nbsp; {hand.gameOverMessage}</div>*/}
           {hand.won === true &&
-              <div id="winMessageGP">✔️ {hand.gameOverMessage}</div>
+              <div id="winMessageGP">
+                <span role="img" aria-label="checkmark">✔️</span> {hand.gameOverMessage}
+              </div>
           }
           {hand.push === true &&
-              <div id="winMessageGP">❕ {hand.gameOverMessage}</div>
+              <div id="winMessageGP">
+                <span role="img" aria-label="exclamation mark">❕</span> {hand.gameOverMessage}
+              </div>
           }
           {!hand.won && !hand.push && hand.gameOverMessage !== "" &&
-              <div id="winMessageGP">❌ {hand.gameOverMessage}</div>
+              <div id="winMessageGP">
+                <span role="img" aria-label="red X">❌</span> {hand.gameOverMessage}
+              </div>
           }
 
           <br />
