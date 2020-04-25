@@ -32,9 +32,9 @@ export const hardStrategyTable = {
 
  'h' : hit     'd': double if possible, else hit
  's': stand    'h2s3': hit with 2 cards, stand with 3+
-
+ 'rh': surrender if possible, otherwise hit
 */
-'5to8':
+'4to8':
   {
     '2': 'h',
     '3': 'h',
@@ -99,7 +99,7 @@ export const hardStrategyTable = {
     '10': 'h',
     '11': 'h'
   },
-'13to15':
+'13to14':
   {
     '2': 's',
     '3': 's',
@@ -112,7 +112,7 @@ export const hardStrategyTable = {
     '10': 'h',
     '11': 'h'
   },
-'16':
+'15':
   {
     '2': 's',
     '3': 's',
@@ -122,8 +122,21 @@ export const hardStrategyTable = {
     '7': 'h',
     '8': 'h',
     '9': 'h',
-    '10': 'h2s3',
+    '10': 'rh',
     '11': 'h'
+  },
+'16':
+  {
+    '2': 's',
+    '3': 's',
+    '4': 's',
+    '5': 's',
+    '6': 's',
+    '7': 'h',
+    '8': 'h',
+    '9': 'rh',
+    '10': 'h2s3',
+    '11': 'rh'
   },
 '17+':
   {
@@ -225,11 +238,12 @@ export const softStrategyTable = {
 export const pairsStrategyTable = {
 /*
   'p': split
+  'ph': split if double after split allowed, otherwise hit
 */
 '4or6': //2,2 && 3,3
   {
-    '2': 'p',
-    '3': 'p',
+    '2': 'ph',
+    '3': 'ph',
     '4': 'p',
     '5': 'p',
     '6': 'p',
@@ -244,8 +258,8 @@ export const pairsStrategyTable = {
     '2': 'h',
     '3': 'h',
     '4': 'h',
-    '5': 'p',
-    '6': 'p',
+    '5': 'ph',
+    '6': 'ph',
     '7': 'h',
     '8': 'h',
     '9': 'h',
@@ -267,7 +281,7 @@ export const pairsStrategyTable = {
   },
 '12': //6,6
   {
-    '2': 'p',
+    '2': 'ph',
     '3': 'p',
     '4': 'p',
     '5': 'p',

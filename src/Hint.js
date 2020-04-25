@@ -12,7 +12,7 @@ import {hardStrategyTable, softStrategyTable, pairsStrategyTable} from './strate
     )
 */
 //______________________________________________________________________________
-export function getHint(dblOK, surrenderOK,
+export function getHint(dblOK, dblAfterSplitOk, surrenderOK,
   dealerHand, playerHand) {
 
     let dealer = dealerHand.shownPoints;
@@ -37,6 +37,8 @@ export function getHint(dblOK, surrenderOK,
     }
 
     let doubleAllowed = dblOK;
+    let doubleAfterSplitAllowed = dblAfterSplitOk;
+    let surrenderAllowed = surrenderOK;
 
     /*  Error checking */
     if((dealer<2 && player<2) ||(dealer<2 && player>21) ||
@@ -64,10 +66,10 @@ export function getHint(dblOK, surrenderOK,
         for both hands
     */
     if(playerHandIsPairs) {
-      return getHintPairHand(dealer, player, doubleAllowed, pairOfAces);
+      return getHintPairHand(dealer, player, doubleAllowed, doubleAfterSplitAllowed, pairOfAces);
     }
     else if(playerHandIsHard) {
-      return getHintHardHand(dealer, player, doubleAllowed, playerCardsCount);
+      return getHintHardHand(dealer, player, doubleAllowed, surrenderAllowed, playerCardsCount);
     }
     else {
       return getHintSoftHand(dealer, player, doubleAllowed);
@@ -84,28 +86,29 @@ export function getHint(dblOK, surrenderOK,
 
 /*  Default hint */
 //______________________________________________________________________________
-function getHintHardHand(dealer, player, doubleAllowed, playerCardsCount ) {
+function getHintHardHand(dealer, player, doubleAllowed, surrenderAllowed, playerCardsCount ) {
 
   console.log(`Hint for Hard hand`);
 
   let extraInfo = {
     "doubleAllowed": doubleAllowed,
     "numberOfCards": playerCardsCount,
+    "surrenderAllowed": surrenderAllowed,
   };
 
   let short;
 
   if(player <= 8) {
-    short = hardStrategyTable['5to8'][dealer];
+    short = hardStrategyTable['4to8'][dealer];
   }
   else if(player >= 9 && player <= 12) {
     short = hardStrategyTable[player][dealer];
   }
-  else if(player >= 13 && player <= 15) {
-    short = hardStrategyTable['13to15'][dealer];
+  else if(player >= 13 && player <= 14) {
+    short = hardStrategyTable['13to14'][dealer];
   }
-  else if(player === 16) {
-    short = hardStrategyTable['16'][dealer];
+  else if(player >= 15 && player <= 16) {
+    short = hardStrategyTable[player][dealer];
   }
   else {
     short = hardStrategyTable['17+'][dealer];
@@ -148,11 +151,12 @@ function getHintSoftHand(dealer, player, playerCardsCount, doubleAllowed) {
 
 /*  Hint for a hand which is a single pair of cards */
 //______________________________________________________________________________
-function getHintPairHand(dealer, player, doubleAllowed, pairOfAces) {
+function getHintPairHand(dealer, player, doubleAllowed, doubleAfterSplitAllowed, pairOfAces) {
   console.log(`Hint for Pairs hand`)
 
   let extraInfo = {
     "doubleAllowed": doubleAllowed,
+    "doubleAfterSplitAllowed": doubleAfterSplitAllowed,
     "pairOfAces": pairOfAces,
   };
 
@@ -196,7 +200,9 @@ function makeFullHint(shortenedHint, extraInfo) {
     };
 
     let doubleAllowed = extraInfo.doubleAllowed;
+    let doubleAfterSplitAllowed = extraInfo.doubleAfterSplitAllowed;
     let numberOfCards = extraInfo.numberOfCards;
+    let surrenderAllowed = extraInfo.surrenderAllowed;
 
     if(shortenedHint === 'h') {
       hint.hintMessage = "You should hit";
@@ -216,12 +222,18 @@ function makeFullHint(shortenedHint, extraInfo) {
       hint.stand = true;
     }
     else if(shortenedHint === 'h2s3') {
-      if(numberOfCards <= 2) { //Will skip if undefined value
-        hint.hintMessage = "You should hit";
-        hint.hit = true;
-      } else {
-        hint.hintMessage = "You should stand";
-        hint.stand = true;
+      if(surrenderAllowed) {
+        hint.hintMessage = "You should surrender";
+        hint.surrender = true;
+      }
+      else {
+        if(numberOfCards <= 2) { //Will skip if undefined value
+          hint.hintMessage = "You should hit";
+          hint.hit = true;
+        } else {
+          hint.hintMessage = "You should stand";
+          hint.stand = true;
+        }
       }
     }
     else if(shortenedHint === 'ds') {
@@ -236,6 +248,24 @@ function makeFullHint(shortenedHint, extraInfo) {
     else if(shortenedHint === 'p') {
       hint.hintMessage = "You should split";
       hint.split = true;
+    }
+    else if(shortenedHint === 'ph') {
+      if(doubleAfterSplitAllowed) {
+        hint.hintMessage = "You should split";
+        hint.split = true;
+      } else {
+        hint.hintMessage = "You should hit";
+        hint.hit = true;
+      }
+    }
+    else if(shortenedHint === 'rh') {
+      if(surrenderAllowed) {
+        hint.hintMessage = "You should surrender";
+        hint.surrender = true;
+      } else {
+        hint.hintMessage = "You should hit";
+        hint.hit = true;
+      }
     }
 
 
