@@ -4,11 +4,15 @@ import {hardStrategyTable, softStrategyTable, pairsStrategyTable} from './strate
 
     Uses
       - the player and dealer hand objects
-      - the game options (double allowed, double after split allowed, surrender
-          allowed)
+      - the game options (double allowed, surrender allowed)
+
+      (NB - the option doubleAfterSplitAllowed is not necessary here because
+      it is part of the overall double allowed setting and handled
+      by the hand object in the gameplay)
+    )
 */
 //______________________________________________________________________________
-export function getHint(dblOK, dblAfterSplitOK, surrenderOK,
+export function getHint(dblOK, surrenderOK,
   dealerHand, playerHand) {
 
     let dealer = dealerHand.shownPoints;
@@ -146,27 +150,27 @@ function getHintPairHand(dealer, player, doubleAllowed, pairOfAces) {
     "pairOfAces": pairOfAces,
   };
 
-  console.log("acepair" + pairOfAces)
+  // console.log("acepair" + pairOfAces)
 
   let short;
+
   // '4or6', '8', '10', '12', '14', '16', '18', '20', 'AA'
   if(player <= 6) {
     short = pairsStrategyTable['4or6'][dealer];
-    // return makeFullHint(short, extraInfo);
   }
   else if(pairOfAces) {
     short = pairsStrategyTable['AA'][dealer];
-    console.log(short)
+    // console.log(short)
   }
   else {
     short = pairsStrategyTable[player][dealer];
-    console.log(short)
+    // console.log(short)
   }
   return makeFullHint(short, extraInfo);
 
 }
 
-
+/*  Helper function */
 //______________________________________________________________________________
 function makeFullHint(shortenedHint, extraInfo) {
   let hint = {

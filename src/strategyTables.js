@@ -307,7 +307,7 @@ export const pairsStrategyTable = {
     '10': 's',
     '11': 's'
   },
-'20': //10,10
+'20': //10/J/Q/K, 10/J/Q/K
   {
     '2': 's',
     '3': 's',
