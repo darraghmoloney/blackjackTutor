@@ -76,6 +76,12 @@ export function getHint(dblOK, surrenderOK,
 }
 
 
+
+
+/******************************************************************************
+    TABLE LOOKUP FUNCTIONS
+*******************************************************************************/
+
 /*  Default hint */
 //______________________________________________________________________________
 function getHintHardHand(dealer, player, doubleAllowed, playerCardsCount ) {
@@ -109,7 +115,7 @@ function getHintHardHand(dealer, player, doubleAllowed, playerCardsCount ) {
 
 }
 
-/*  Hints for a hand with an Ace still worth 11 pts */
+/*  Hint for a hand with an Ace still worth 11 pts */
 //______________________________________________________________________________
 function getHintSoftHand(dealer, player, playerCardsCount, doubleAllowed) {
 
@@ -140,7 +146,7 @@ function getHintSoftHand(dealer, player, playerCardsCount, doubleAllowed) {
 
 }
 
-
+/*  Hint for a hand which is a single pair of cards */
 //______________________________________________________________________________
 function getHintPairHand(dealer, player, doubleAllowed, pairOfAces) {
   console.log(`Hint for Pairs hand`)
@@ -169,6 +175,13 @@ function getHintPairHand(dealer, player, doubleAllowed, pairOfAces) {
   return makeFullHint(short, extraInfo);
 
 }
+
+
+
+
+/******************************************************************************
+    HINT GENERATOR FUNCTION
+*******************************************************************************/
 
 /*  Helper function */
 //______________________________________________________________________________

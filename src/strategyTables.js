@@ -2,11 +2,14 @@
     and dealer points as the inner key that gets the hint
     string like 'h' for hint, etc.
 
-    i.e. table[playerPts][dealerPts]
+    i.e. table[playerPts][dealerPts] == 'h'
 
-    Sometimes the player points key is a range like '5to8'
-    so this needs an extra check. Dealer points are
-    always just the actual number because it's easier to read.
+    Sometimes the player points key is a points range like '5to8'
+    (from 5 points to 8 points) so this needs an extra check before
+    the table value is looked up.
+     
+    Dealer points are always just the actual number simply
+    because it's easier to read.
 
     Tables are designed based on the strategy tables image in
     the app, & are hopefully easier to check as an array
@@ -320,7 +323,7 @@ export const pairsStrategyTable = {
     '10': 's',
     '11': 's'
   },
-'AA': //A,A is also 12pts, needs different name
+'AA': //A,A is 12pts like 6,6, so it needs different key name
   {
     '2': 'p',
     '3': 'p',
