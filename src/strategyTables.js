@@ -7,7 +7,7 @@
     Sometimes the player points key is a points range like '5to8'
     (from 5 points to 8 points) so this needs an extra check before
     the table value is looked up.
-     
+
     Dealer points are always just the actual number simply
     because it's easier to read.
 
@@ -157,16 +157,23 @@ export const softStrategyTable = {
     '6': 'd',
     '7': 'h',
     '8': 'h',
-    '3': 'h',
-    '4': 'd',
-    '5': 'd',
-    '6': 'd',
-    '7': 'h',
-    '8': 'h',
     '9': 'h',
     '10': 'h',
     '11': 'h'
   },
+'15to16':
+{
+  '2': 'h',
+  '3': 'h',
+  '4': 'd',
+  '5': 'd',
+  '6': 'd',
+  '7': 'h',
+  '8': 'h',
+  '9': 'h',
+  '10': 'h',
+  '11': 'h'
+},
 '17': //A,6
   {
     '2': 'h',
