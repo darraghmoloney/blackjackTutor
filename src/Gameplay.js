@@ -947,7 +947,7 @@ class Gameplay extends React.Component {
       if(hintVisible === true) {
 
        /* Get a hint message for the hand */
-       let playerHint = getHint(this.state.doubleAllowed,
+       let playerHint = getHint(!hand.doubleDisabled,
                                 this.state.doubleAfterSplitAllowed,
                                 this.state.surrenderAllowed,
                                 this.state.dealerHand,
