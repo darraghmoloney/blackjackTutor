@@ -8,6 +8,7 @@ class Welcome extends React.Component {
 const setCurrentQ = this.props.setCurrentQ;
 setCurrentQ(this.props.currentQ +1);
 console.log(this.props.currentQ);
+
     }
 
   render() {
@@ -24,7 +25,7 @@ console.log(this.props.currentQ);
           <div className = "divider"></div>
           <button id = "beginner">Advanced</button>
            <br/><br/>
-          <button id = "start" onClick = {this.handleStart.bind(this)}>Start Quiz!</button>
+          <button className = "start" id = "startQuiz" onClick = {this.handleStart.bind(this)}>Start Quiz!</button>
          
       </div>
     );
