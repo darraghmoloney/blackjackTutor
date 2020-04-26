@@ -6,21 +6,17 @@ class Results extends React.Component {
 // handle event for "Try Again" button, resets quiz by setting current question to 0. this triggers conditional rendering
 // in main component to render question 1.
   resetHandle(){
-const {setCurrentQ, setScore, setGames, currentQ} = this.props;
+const {setCurrentQ, setScore, setGames, currentQ, setClassStand, setClassHit} = this.props;
+const start = "start";
+setClassStand(start);
+setClassHit(start);
 setCurrentQ(this.props.currentQ - 5);
 console.log(this.props.currentQ);
 setScore(this.props.score === 0);
 setGames(this.props.numGames + 1);
-//setDealerAnswers(dealerAnswers = []);
-//setPlayerAnswers(playerAnswers = []);
-//this.setState({playerAnswers: []});
-//this.setState({dealerAnswers: []});
 console.log(currentQ);
 console.log(this.props.questionCount);
-//console.log(playerAnswers);
-//console.log(dealerAnswers);
-
-   }
+}
 
   
 seeAnswers(){
@@ -62,9 +58,9 @@ else if (percentage > 80) {
           <h4>{percentage}% - {comment}</h4>
           <h4>Your high score is : {highScore}</h4>
           <h4>Your average score is: {averageScore} </h4>
-           <button id = "start"onClick = {this.resetHandle.bind(this)}> Try Again! </button>
+           <button className = "start" id = "tryAgain" onClick = {this.resetHandle.bind(this)}> Try Again! </button>
           <div className = "divider"></div>
-           <button id = "start" onClick = {this.seeAnswers.bind(this)}> See Answers </button>
+           <button className = "start" id = "SeeAnswers" onClick = {this.seeAnswers.bind(this)}> See Answers </button>
       </div>
     );
   }

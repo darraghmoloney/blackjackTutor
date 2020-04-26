@@ -1,15 +1,12 @@
 import React from 'react';
 import QuestionCount from './QuestionCount.js';
-//import QuestionList from './QuestionList.js';
 import Results from './Results.js';
-//import Question from './Question.js';
-//import {QuestionSheet} from './QuestionSheet';
-import Welcome from './Welcome';
+//import Welcome from './Welcome';
 import Game from './Game.js';
+//import GameTutor from './GameTutor';
 import css from './Quiz.css';
-//import Game2 from './Game2.js';
-//import $ from 'jquery';
-//const questions = QuestionSheet;
+import WelcomeCss from './Welcome.css';
+import { Redirect } from 'react-router-dom';
 
 class App2 extends React.Component {
   constructor(props) {
@@ -19,15 +16,18 @@ class App2 extends React.Component {
       score: 0,
       currentQ: 0,
       choice: "",
-      answer: "",
+      answer: "Card",
       highScore: 0,
       numGames: 0,
       totalScore: 0,
       playerAnswers: [],
       dealerAnswers: [],
-      handNum: 0
+      answerChoice: [],
+      //answerMessage: "Nice job, you got the right answer!",
+      classHit: 'start',
+      classStand: 'start',
+      handNum: 1,
       
-     
     }
 
     this.setCurrentQ = this.setCurrentQ.bind(this);
@@ -40,10 +40,21 @@ class App2 extends React.Component {
     this.setDealerAnswers= this.setDealerAnswers.bind(this);
     this.setPlayerAnswers = this.setPlayerAnswers.bind(this);
     this.setAnswer = this.setAnswer.bind(this);
+    this.setClassHit = this.setClassHit.bind(this);
+    this.setClassStand = this.setClassStand.bind(this);
+    this.setAnswerMessage = this.setAnswerMessage.bind(this);
    
   }
+  setAnswerMessage(answerMessage){
+    this.setState({answerMessage});
+  }
+  setClassStand(classStand){
+  this.setState({classStand});
+}
 
- 
+ setClassHit(classHit){
+   this.setState({classHit});
+ }
  setAnswer(answer){
    this.setState({answer});
  }
@@ -86,35 +97,51 @@ this.setState({highScore});
   render() {
     
 
-      if(this.state.currentQ === 0){
-        console.log(this.state.currentQ);
-        console.log(this.state.playerAnswers);
-        console.log(this.state.dealerAnswers);
- var questionCount = "";
- var game = '';
- this.state.playerAnswers = [];
- this.state.dealerAnswers = [];
- 
- 
- var welcome = <Welcome setCurrentQ ={this.setCurrentQ.bind(this)}{...this.state} />
+if(this.state.currentQ === 0){
+  console.log(this.state.currentQ);
+  console.log(this.state.playerAnswers);
+  console.log(this.state.dealerAnswers);
+  this.state.classHit = "start";
+  this.state.classStand = "start";
+  this.state.score = 0;
+  var questionCount = "";
+  var game = '';
+  this.state.playerAnswers = [];
+  this.state.dealerAnswers = [];
+  this.state.answerChoice= [];
+ // var game = <Welcome setCurrentQ ={this.setCurrentQ.bind(this)}{...this.state} />
+//  var welcome = <Welcome setCurrentQ ={this.setCurrentQ.bind(this)}{...this.state} />
  }
 
-    else if ((this.state.currentQ !== 0) && (this.state.currentQ <= 4)){
-questionCount = <QuestionCount{...this.state}/>
-var results = '';
-welcome = '';
-game = <Game setChoice = {this.setChoice.bind(this)}
-setScore={this.setScore.bind(this)}
-setTotal = {this.setTotal.bind(this)}
-setCurrentQ ={this.setCurrentQ.bind(this)}
-setGames= {this.setGames.bind(this)}
-{...this.state}/>
-
-}else if (this.state.currentQ === 5) {
-questionCount ='';
-welcome = '';
-game = '';
-results = <Results setGames = {this.setGames.bind(this)} 
+ if ((this.state.currentQ >= 0) && (this.state.currentQ <= 4)){
+  questionCount = <QuestionCount{...this.state}/>
+  var results = '';
+  //welcome = '';
+   game = <Game setChoice = {this.setChoice.bind(this)}
+          setAnswerMessage = {this.setAnswerMessage.bind(this)}
+          setClassStand = {this.setClassStand.bind(this)}
+          setClassHit = {this.setClassHit.bind(this)}
+          setAnswer = {this.setAnswer.bind(this)}
+          setChoice ={this.setChoice.bind(this)}
+          setScore={this.setScore.bind(this)}
+          setTotal = {this.setTotal.bind(this)}
+          setCurrentQ ={this.setCurrentQ.bind(this)}
+          setGames= {this.setGames.bind(this)}
+          setClassHit = {this.setClassHit.bind(this)}
+          setPlayerAnswers = {this.setPlayerAnswers.bind(this)}
+          setDealerAnswers = {this.setDealerAnswers.bind(this)}
+          setHighScore = {this.setHighScore.bind(this)}
+          
+          {...this.state}/>
+  }
+  /*
+else if (this.state.currentQ === 5) {
+//  questionCount ='';
+ // welcome = '';
+//  game = '';
+ var  results = <Results setGames = {this.setGames.bind(this)} 
+          setClassStand = {this.setClassStand.bind(this)}
+          setClassHit = {this.setClassHit.bind(this)}
           setPlayerAnswers = {this.setPlayerAnswers.bind(this)}
           setDealerAnswers = {this.setDealerAnswers.bind(this)}
            setTotal = {this.setTotal.bind(this)}
@@ -122,33 +149,38 @@ results = <Results setGames = {this.setGames.bind(this)}
            setHighScore = {this.setHighScore.bind(this)}
            setCurrentQ = {this.setCurrentQ.bind(this)}
            {...this.state} />
-    }
-else if  ((this.state.currentQ>=6) && (this.state.currentQ <=9)){ 
-questionCount =' Here are your answers to the quiz!';
-results = '';
-welcome = '';
-game = <Game setChoice = {this.setChoice.bind(this)}
-setAnswer = {this.setAnswer.bind(this)}
-setScore={this.setScore.bind(this)}
-setTotal = {this.setTotal.bind(this)}
-setCurrentQ ={this.setCurrentQ.bind(this)}
-setGames= {this.setGames.bind(this)}
-sethandNum={this.sethandNum.bind(this)}
-{...this.state}/>
+  }*/
+else   {
+//((this.state.currentQ>=6) && (this.state.currentQ <=9)){ 
+  questionCount = "Question " + this.state.handNum +":           " + this.state.answerMessage;
+  results = '';
+  //welcome = '';
+  game = <Game setChoice = {this.setChoice.bind(this)}
+          setAnswerMessage = {this.setAnswerMessage.bind(this)}
+          setClassStand = {this.setClassStand.bind(this)}
+          setClassHit = {this.setClassHit.bind(this)}
+          setAnswer = {this.setAnswer.bind(this)}
+          setScore={this.setScore.bind(this)}
+          setTotal = {this.setTotal.bind(this)}
+          setCurrentQ ={this.setCurrentQ.bind(this)}
+          setGames= {this.setGames.bind(this)}
+          sethandNum={this.sethandNum.bind(this)}
+          setPlayerAnswers = {this.setPlayerAnswers.bind(this)}
+          setDealerAnswers = {this.setDealerAnswers.bind(this)}
+          setHighScore = {this.setHighScore.bind(this)}
+          {...this.state}/>
 }
-else {
-  this.setState({currentQ:0});
- // this.setState({playerAnswers: ""});
- // this.setState({dealerAnswers: ""});
- this.state.playerAnswers = [];
- this.state.dealerAnswers = [];
- this.state.handNum = 0;
-  console.log(this.state.currentQ);
-  console.log(this.state.playerAnswers);
- // this.setState({handNum: 0});
-}
+//else {
+ //this.setState({currentQ:0});
+ //this.state.playerAnswers = [];
+ //this.state.dealerAnswers = [];
+ //this.state.handNum = 0;
+ // console.log(this.state.currentQ);
+ // console.log(this.state.playerAnswers);
+ 
+//}
 
-   
+  
 /*The return method calls variable questionCount to display current question as long as you havent reached
   the end of the quiz. In that case it is set to an empty string. Then Question list is called passing in
   setter methods and all states. Question list will render current question answers. Result is then rendered once
@@ -158,10 +190,10 @@ else {
     return (
      
       <div className = "main">
-        {welcome}
-        {questionCount}
+        {/*welcome*/}
+    {/*questionCount*/}
         {game}
-        {results}
+        {/*results*/}
       </div>
     );
   }
