@@ -704,11 +704,23 @@ class Gameplay extends React.Component {
 
       this.setState({showDealerCards: true});
 
+
       console.log(`Dealer hand: [${hand.cards[0].shortName}, ${hand.cards[1].shortName}], `
         + `Pts: ${dealerPts}`
       );
       console.log(`Dealer has ${softAces} soft Aces`);
       console.log(`Dealer naturalBlackjack: ${hand.naturalBlackjack}`);
+
+      /*  If all active player hands have natural blackjacks,
+          and on revealing the whole dealer hand the dealer doesn't,
+          there is no need for the dealer to hit
+      */
+      if(activeCount === naturalBlackjackCount && hand.naturalBlackjack === false) {
+        console.log(`Dealer win impossible`);
+        this.checkWinningHands();
+        return;
+      }
+
 
       /*  Use the dealer hit function if dealer should play
           after a slight timeout delay
