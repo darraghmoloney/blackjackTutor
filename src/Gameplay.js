@@ -634,6 +634,7 @@ class Gameplay extends React.Component {
     hand.standDisabled = true;
     hand.hintDisabled = true;
     hand.surrenderDisabled = true;
+    hand.hintMessage = "";
 
     /*  Record surrender so the hand isn't counted in the game over win checks */
     hand.surrendered = true;
@@ -665,7 +666,6 @@ class Gameplay extends React.Component {
        some hands which didn't go bust  */
 //______________________________________________________________________________
   dealerPlay() {
-
 
     /*  Check if active player hands are all natural blackjacks -
         if that's the case and the dealer doesn't have a possible natural
@@ -729,10 +729,10 @@ class Gameplay extends React.Component {
 
       }
 
-
     }
 
   }
+
 
 /*  Hit for the dealer. Using a function for setTimeout delays
     so the dealer game updates after a short pause, so cards come out one by one
@@ -798,6 +798,7 @@ class Gameplay extends React.Component {
     }
 
   }
+
 
 /*  Tidy up after the dealer stops playing - clear timeouts & then check winners
  */
@@ -876,8 +877,8 @@ class Gameplay extends React.Component {
           else {
             /*  2b-1 dealer has a Natural Blackjack, so dealer wins */
             if(dHand.naturalBlackjack === true) {
-              hand.gameOverMessage = "Hand Lost. Dealer Natural Blackjack";
-              console.log( `Player hand ${hand.number} lost with dealer Natural Blackjack` );
+              hand.gameOverMessage = "Hand Lost. Dealer Natural Blackjack.";
+              console.log( `Player hand ${hand.number} loses with dealer Natural Blackjack` );
             }
             /*  2b-2 nobody has a Natural Blackjack, no winner */
             else {
@@ -891,8 +892,14 @@ class Gameplay extends React.Component {
       else {
         /*  If the dealer is not bust, the player hand loses */
         if(dHand.bust === false) {
-          hand.gameOverMessage = "Hand Lost.";
-          console.log( `Player hand ${hand.number} loses on points` );
+          if(dHand.naturalBlackjack === true) {
+            hand.gameOverMessage = "Hand Lost. Dealer Natural Blackjack.";
+            console.log( `Player hand ${hand.number} loses on points to dealer Natural Blackjack` );
+          }
+          else {
+            hand.gameOverMessage = "Hand Lost.";
+            console.log( `Player hand ${hand.number} loses on points` );
+          }
         }
         /*  If the dealer is bust, the player hand wins
             (player hand was already checked for not being bust)
