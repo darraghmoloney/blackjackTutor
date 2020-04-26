@@ -128,7 +128,7 @@ function getHintHardHand(dealer, player, doubleAllowed, surrenderAllowed, player
 
 /*  Hint for a hand with an Ace still worth 11 pts */
 //______________________________________________________________________________
-function getHintSoftHand(dealer, player, playerCardsCount, doubleAllowed) {
+function getHintSoftHand(dealer, player, doubleAllowed) {
 
   console.log(`Hint for Soft hand`)
 
