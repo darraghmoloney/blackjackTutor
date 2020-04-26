@@ -855,7 +855,7 @@ class Gameplay extends React.Component {
         /*  Check case 1: player pts are better */
         if(hand.points > dealerPts) {
           if(hand.naturalBlackjack) {
-            hand.gameOverMessage = "Hand Won! Natural Blackjack!";
+            hand.gameOverMessage = "Hand Won! Blackjack!";
             console.log( `Player hand ${hand.number} wins with Natural Blackjack` );
           } else {
             hand.gameOverMessage = "Hand Won!";
@@ -873,13 +873,13 @@ class Gameplay extends React.Component {
                 so player wins
              */
             if(dHand.naturalBlackjack === false) {
-              hand.gameOverMessage = "Hand Won! Natural Blackjack!";
+              hand.gameOverMessage = "Hand Won! Blackjack!";
               hand.won = true;
               console.log( `Player hand ${hand.number} wins with Natural Blackjack` );
             }
             /*  2a-2 dealer also has a Natural Blackjack, so no winner */
             else {
-            hand.gameOverMessage = "Push. Natural Blackjacks.";
+            hand.gameOverMessage = "Push. Blackjacks.";
             hand.push = true;
             console.log( `Player hand ${hand.number} push on Natural Blackjack` );
             }
@@ -889,7 +889,7 @@ class Gameplay extends React.Component {
           else {
             /*  2b-1 dealer has a Natural Blackjack, so dealer wins */
             if(dHand.naturalBlackjack === true) {
-              hand.gameOverMessage = "Hand Lost. Dealer Natural Blackjack.";
+              hand.gameOverMessage = "Hand Lost. Dealer Blackjack.";
               console.log( `Player hand ${hand.number} loses with dealer Natural Blackjack` );
             }
             /*  2b-2 nobody has a Natural Blackjack, no winner */
@@ -905,7 +905,7 @@ class Gameplay extends React.Component {
         /*  If the dealer is not bust, the player hand loses */
         if(dHand.bust === false) {
           if(dHand.naturalBlackjack === true) {
-            hand.gameOverMessage = "Hand Lost. Dealer Natural Blackjack.";
+            hand.gameOverMessage = "Hand Lost. Dealer Blackjack.";
             console.log( `Player hand ${hand.number} loses on points to dealer Natural Blackjack` );
           }
           else {
