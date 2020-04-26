@@ -41,6 +41,9 @@ class Gameplay extends React.Component {
           dealerStartDelay: 200, //wait before dealer play is shown
           dealerTimeout: '', //control & reset dealer delay
 
+          dealerDealDelay: 800,
+          dealerHitTimeout: '',
+
           winCheckDelay: 800,
           winCheckTimeout: '', //delay before win messages shown
 
@@ -53,6 +56,8 @@ class Gameplay extends React.Component {
     this.selectDoubleAfterSplit = this.selectDoubleAfterSplit.bind(this);
 
     this.dealerPlay = this.dealerPlay.bind(this);
+    this.dealerHit = this.dealerHit.bind(this);
+    this.dealerFinish = this.dealerFinish.bind(this);
     this.checkWinningHands = this.checkWinningHands.bind(this);
 
   }
@@ -705,52 +710,109 @@ class Gameplay extends React.Component {
       console.log(`Dealer has ${softAces} soft Aces`);
       console.log(`Dealer naturalBlackjack: ${hand.naturalBlackjack}`);
 
+      /*  Use the dealer hit function if dealer should play
+          after a slight timeout delay
+      */
+      if((dealerPts < 17) || (dealerPts === 17 && softAces > 0)) {
 
+        let hitTimeout = setTimeout(this.dealerHit, this.state.dealerDealDelay);
+        this.setState({dealerHitTimeout: hitTimeout});
 
-        while((dealerPts < 17) || (dealerPts === 17 && softAces > 0)) {
-
-          /*  Get a new card and add it to the dealer's hand */
-          let nextCard = this.getCard();
-          hand.cards.push(nextCard);
-
-          if(nextCard.value === "A") {
-            softAces++;
-            hand.softAces = softAces;
-            console.log(`Soft Ace added for dealer`);
-          }
-
-          dealerPts += nextCard.points;
-          console.log(`Dealer dealt ${nextCard.shortName}, Hand pts: ${dealerPts}`);
-
-          while(dealerPts > 21 && softAces > 0) {
-            dealerPts -= 10;
-            softAces--;
-            hand.softAces = softAces;
-            console.log(`Dealer Ace hardened, pts ${dealerPts}, ${softAces} soft aces left`);
-          }
-
-          hand.points = dealerPts;
-          this.setState({dealerHand: hand});
-        }
-
-        /*  Check if dealer went bust */
-        if(dealerPts > 21) {
-          hand.bust = true;
-          hand.gameOverMessage = "Dealer Bust!";
-          console.log(`Dealer is bust with ${dealerPts} pts`);
-          this.setState({dealerHand: hand});
-        }
+      }
+      /*  Otherwise, just check the winner without the dealer getting any
+          new cards
+      */
+      else {
 
         let timeout = setTimeout(this.checkWinningHands, this.state.winCheckDelay);
         this.setState({winCheckTimeout: timeout});
 
       }
 
-      /*  Dealer play is now finished - Find the winners
-          after a slight time delay
-       */
 
-      // this.checkWinningHands();
+    }
+
+  }
+
+/*  Hit for the dealer. Using a function for setTimeout delays
+    so the dealer game updates after a short pause, so cards come out one by one
+ */
+//______________________________________________________________________________
+  dealerHit() {
+
+    let hand = this.state.dealerHand;
+    let dealerPts = hand.points;
+    let softAces = hand.softAces;
+
+    let nextCard = this.getCard();
+    hand.cards.push(nextCard);
+
+    if(nextCard.value === "A") {
+      softAces++;
+      hand.softAces = softAces;
+      console.log(`Soft Ace added for dealer`);
+    }
+
+    dealerPts += nextCard.points;
+    console.log(`Dealer dealt ${nextCard.shortName}, Hand pts: ${dealerPts}`);
+
+    while(dealerPts > 21 && softAces > 0) {
+      dealerPts -= 10;
+      softAces--;
+      hand.softAces = softAces;
+      console.log(`Dealer Ace hardened, pts ${dealerPts}, ${softAces} soft aces left`);
+    }
+
+    hand.points = dealerPts;
+    this.setState({dealerHand: hand});
+
+    /*  Get a new card by recursively calling this function */
+    if((dealerPts < 17) || (dealerPts === 17 && softAces > 0)) {
+
+      let hitTimeout = setTimeout(this.dealerHit, this.state.dealerDealDelay);
+      this.setState({dealerHitTimeout: hitTimeout});
+
+    }
+    /*  Stop & check winners if dealer went bust */
+    else if (dealerPts > 21) {
+
+      hand.bust = true;
+      hand.gameOverMessage = "Dealer Bust!";
+      console.log(`Dealer is bust with ${dealerPts} pts`);
+      this.setState({dealerHand: hand});
+
+      let checkDelay = this.state.winCheckDelay;
+      let dealerWait = setTimeout(this.dealerFinish, checkDelay);
+      this.setState({winCheckTimeout: dealerWait});
+
+    }
+    /*  Stop & check winners if dealer no longer playing (hard 17 hand) */
+    else {
+
+      console.log(`Dealer finished playing with ${dealerPts} pts`);
+
+      let checkDelay = this.state.winCheckDelay;
+      let dealerWait = setTimeout(this.dealerFinish, checkDelay);
+      this.setState({winCheckTimeout: dealerWait});
+
+    }
+
+  }
+
+/*  Tidy up after the dealer stops playing - clear timeouts & then check winners
+ */
+//______________________________________________________________________________
+  dealerFinish() {
+
+    let standTimeout = this.state.winCheckDelay;
+    clearTimeout(standTimeout);
+    this.setState({winCheckDelay: standTimeout});
+
+    let hitTimeout = this.state.dealerHitTimeout;
+    clearTimeout(hitTimeout);
+    this.setState({dealerHitTimeout: hitTimeout});
+
+    this.checkWinningHands();
 
   }
 
@@ -860,8 +922,17 @@ class Gameplay extends React.Component {
 //_____________________________________________________________________________
   newGame() {
 
+    /*  Just in case, reset all the timeouts */
     let timeout = clearTimeout(this.state.dealerTimeout);
     this.setState({dealerTimeout: timeout});
+
+    let hitTimeout = clearTimeout(this.state.dealerHitTimeout);
+    this.setState({dealerHitTimeout: hitTimeout});
+
+    let winTimeout = clearTimeout(this.state.winCheckTimeout);
+    this.setState({winCheckTimeout: winTimeout});
+
+
 
     let firstHands = this.makeFirstHands(); //Deal new hands
 
