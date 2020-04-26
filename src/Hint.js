@@ -12,8 +12,7 @@ import {hardStrategyTable, softStrategyTable, pairsStrategyTable} from './strate
     )
 */
 //______________________________________________________________________________
-export function getHint(dblOK, dblAfterSplitOk, surrenderOK,
-  dealerHand, playerHand) {
+export function getHint(dealerHand, playerHand, dblOK, dblAfterSplitOk, surrenderOK) {
 
     let dealer = dealerHand.shownPoints;
     let player = playerHand.points;
