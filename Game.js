@@ -96,6 +96,10 @@ class GameTutor extends React.Component {
 //______________________________________________________________________________
 /*  Deal first hands for the player and dealer */
   makeFirstHands() {
+    const setChoice = this.props.setChoice;
+
+    setChoice("");
+    console.log(this.props.choice);
 
     let firstHands = [];
 
@@ -132,11 +136,7 @@ class GameTutor extends React.Component {
    let dealerFirstPoints = dealerCard2.points;
    let dealerTotalPoints = dealerCard1.points + dealerCard2.points;
    this.state.dealerPoints = dealerFirstPoints;
-   //this.setState({dealerPoints: dealerFirstPoints});
-   console.log(dealerFirstPoints);
-   console.log(playerFirstPoints);
-   console.log(this.state.dealerPoints);
-   console.log(this.state.playerPoints);
+  
 
    let dealerAceTotal = 0;
    if(dealerCard1.value === "A") {
@@ -318,11 +318,9 @@ class GameTutor extends React.Component {
      
   }
   
-      //let results = <Results />
-     // return results
-     resetHandle(){
+  resetHandle(){
         const {setCurrentQ, setScore, setGames, currentQ, setClassStand, setClassHit} = this.props;
-        const start = "start";
+
         setClassStand("start");
         setClassHit("start");
         setCurrentQ(this.props.currentQ - 5);
@@ -336,7 +334,7 @@ class GameTutor extends React.Component {
         }
         
           
-        seeAnswers(){
+  seeAnswers(){
           const {setCurrentQ} = this.props;
           const currentQ = this.props.currentQ;
          // let six = 6;
@@ -348,7 +346,7 @@ class GameTutor extends React.Component {
           this.newGame();
         }
         
-        results(){ 
+  results(){ 
         const {setHighScore, highScore} = this.props;
         var averageScore = (this.props.totalScore/this.props.numGames);
             var percentage = (this.props.score / 4* 100);
@@ -372,16 +370,16 @@ class GameTutor extends React.Component {
                      setHighScore(this.props.score);
                 }
                
-            let results =
-              <div className = "results">
-                <h4>You got {this.props.score} out of 4 correct!</h4>
-                  <h4>{percentage}% - {comment}</h4>
-                  <h4>Your high score is : {highScore}</h4>
+        let results =
+          <div className = "results">
+              <h4>You got {this.props.score} out of 4 correct!</h4>
+                <h4>{percentage}% - {comment}</h4>
+                 <h4>Your high score is : {highScore}</h4>
                   <h4>Your average score is: {averageScore} </h4>
-                   <button className = "start" id = "tryAgain" onClick = {this.resetHandle.bind(this)}> Try Again! </button>
-                  <div className = "divider"></div>
-                   <button className = "start" id = "SeeAnswers" onClick = {this.seeAnswers.bind(this)}> See Answers </button>
-              </div>
+             <button className = "start" id = "tryAgain" onClick = {this.resetHandle.bind(this)}> Try Again! </button>
+                <div className = "divider"></div>
+              <button className = "start" id = "SeeAnswers" onClick = {this.seeAnswers.bind(this)}> See Answers </button>
+               </div>
         
           return results;
         
@@ -392,12 +390,12 @@ class GameTutor extends React.Component {
       let welcome = 
       <div className = "welcomePage">
       <h4>
-      <p >Welcome to the Black Jack Quiz!</p>
-      <p>Please select your difficulty below..</p></h4>
+         <p >Welcome to the Black Jack Quiz!</p>
+           <p>Please select your difficulty below..</p></h4>
         <button id = "beginner">Beginner</button>
-        <div className = "divider"></div>
+          <div className = "divider"></div>
         <button id = "beginner">Intermediate</button>
-        <div className = "divider"></div>
+          <div className = "divider"></div>
         <button id = "beginner">Advanced</button>
          <br/><br/>
         <button className = "start" id = "startQuiz"  onClick={() => {this.start()}}>Start Quiz!</button>
@@ -421,15 +419,10 @@ hit(){
     const setChoice = this.props.setChoice;
     const setClassStand = this.props.setClassStand;
     const setClassHit = this.props.setClassHit;
-    const Hit = "Hit";
-    setChoice(Hit);
-    const start = "start";
-    const select = "startClick";
-    setClassStand(start);
-   setClassHit(select);
-   this.setState({nextDisabled: false});
-    //this.setState({choice: Hit});
- 
+    setChoice("Hit");
+    setClassStand("start");
+    setClassHit("startClick");
+    this.setState({nextDisabled: false});
   }
 
 
@@ -446,12 +439,9 @@ hit(){
 */
 split (){
     const setChoice = this.props.setChoice;
-    const Split = "Split";
     const choice = this.props;
-    setChoice(Split);
+    setChoice("Split");
     this.setState({nextDisabled: false});
-  
-    //this.setState({choice: Split});
    }
 
 
@@ -461,20 +451,12 @@ split (){
     start playing, too.
 */
 stand(){
-    const setChoice = this.props.setChoice;
-    const setClassStand = this.props.setClassStand;
-    const setClassHit = this.props.setClassHit;
-    const Stand = "Stand";
-    const start = "start";
-    const select = "startClick";
-    const choice = this.props;
-    setChoice(Stand);
-    setClassStand(select);
-    setClassHit(start);
+    const {setChoice, setClassStand, setClassHit, choice }= this.props;
+    setChoice("Stand");
+    setClassStand("startClick");
+    setClassHit("start");
     this.setState({nextDisabled: false});
-    //this.setState({choice: Stand});
-  
-  
+    
     }
 
 
@@ -485,27 +467,8 @@ stand(){
 
 //______________________________________________________________________________
 /*  Reset & restart the game */
-  newGame() {/*
-    const playerFirstPoints = this.props.playerFirstPoints
-    const dealerFirstPoints = this.props.dealerFirstPoints
-    const setAnswerMessage = this.props.setAnswerMessage;
-    const setClassHit = this.props.setClassHit;
-    const setClassStand = this.props.setClassStand;
-    const answerChoice = this.props.answerChoice;
-    const dealerAnswers = this.props.dealerAnswers;
-   const playerAnswers = this.props.playerAnswers;
-    const currentQ = this.props.currentQ;
-    const setCurrentQ = this.props.setCurrentQ;
-    const handNum = this.props.handNum;
-    const sethandNum = this.props.sethandNum;
-    const answer = this.props.answer;
-    const setAnswer = this.props.setAnswer;
-    const setChoice = this.props.setChoice;
-    const setScore = this.props.setScore;
-    const score = this.props.score;
-    const choice = this.props.choice;
-*/
-
+  newGame() {
+  
     const {playerFirstPoints, dealerFirstPoints, setAnswerMessage, setClassHit, setClassStand, 
           answerChoice, dealerAnswers, playerAnswers, currentQ, setCurrentQ, handNum, sethandNum,
           answer, setAnswer, setChoice,  setScore, score, choice} = this.props;
@@ -517,24 +480,15 @@ stand(){
     const Split = "Split";
     const reSet = "";
 
-    setChoice(reSet);
+    //setChoice(reSet);
     setCurrentQ(currentQ+1);
-       
-    
-     
 
     let firstHands = this.makeFirstHands(); //Deal new hands
-    //this.setState({DP: DP.push(this.state.DealerPoints)});
-    //  this.setState({PP: PP.push(this.state.playerPoints)});
-    
     console.log(currentQ);
+    console.log(choice);
     
     if(choice===""){
-      this.setState({nextDisabled: true});
-    }
-    if (currentQ === 0){
-      this.setState({DP: []});
-      this.setState({PP: []});
+       this.setState({nextDisabled: true});
     }
    
     if(this.props.currentQ ===4){
@@ -542,14 +496,11 @@ stand(){
         this.setState({gameStarted: false});
 
     }
-    
 
     if(currentQ !==5 && this.state.gameStarted === false) {
       this.setState({gameStarted: true});
     }
      
-
-
     if (this.props.answer === this.props.choice)
     {
       setScore(this.props.score+1);
@@ -561,91 +512,44 @@ stand(){
       }
   
       if(this.props.currentQ  <5){
-      setClassHit("start");
-      setClassStand("start");
-      this.setState ({playerHands: [firstHands.player]});
-      this.setState ({dealerHand: firstHands.dealer});
-      this.setState ({activeHands: 1});
-      this.setState ({totalHands: 1});
-      this.setState ({showDealerCards: false});
-      this.setState ({bustHands: 0});
-      this.setState({answerChoice: answerChoice.push(LocalAnswerChoice)});
-      this.setState({playerAnswers: playerAnswers.push(this.state.playerHands)});
-      this.setState({dealerAnswers: dealerAnswers.push(this.state.dealerHand)});
-      this.setState({playerAnswers: playerAnswers.push(firstHands.player)});
-      this.setState({dealerAnswers: dealerAnswers.push(firstHands.dealer)});
-      this.setState({ DP: [...this.state.DP, this.state.dealerPoints] });
-      this.setState({ PP: [...this.state.PP, this.state.playerPoints] })
-     // this.setState({DP: this.state.DP.push(this.state.dealerPoints)});
-     // this.setState({PP: this.state.PP.push(this.state.playerPoints)});
-     console.log(this.state.PP);
-      console.log(this.state.dealerHand);
-      console.log(this.state.playerHands);
-
-
+        setClassHit("start");
+        setClassStand("start");
+        this.setState ({playerHands: [firstHands.player]});
+        this.setState ({dealerHand: firstHands.dealer});
+        this.setState ({showDealerCards: false});
+        this.setState({answerChoice: answerChoice.push(LocalAnswerChoice)});
+        this.setState({playerAnswers: playerAnswers.push(this.state.playerHands)});
+        this.setState({dealerAnswers: dealerAnswers.push(this.state.dealerHand)});
+        this.setState({playerAnswers: playerAnswers.push(firstHands.player)});
+        this.setState({dealerAnswers: dealerAnswers.push(firstHands.dealer)});
   }
   else if(this.props.currentQ ===9){
-          this.setState({AnswerNum: 1});
-          this.setState({gameStarted: false});
-          this.setState({welcome: true});
-          setCurrentQ(currentQ-9);
-          sethandNum(1);
+        this.setState({AnswerNum: 1});
+        this.setState({gameStarted: false});
+        this.setState({welcome: true});
+        setCurrentQ(currentQ-9);
+        sethandNum(1);
   }
     else{
         this.setState({results: false})
         this.setState({nextDisabled: false})
-      
-        
-        console.log(this.props.currentQ);
-      
-        if (answerChoice[this.state.AnswerNum].answer===answerChoice[this.state.AnswerNum].choice && answerChoice[this.state.AnswerNum].answer===Hit){
-            setClassHit("correct");
-            setClassStand("start");
-          //  setAnswerMessage("Nice job, you got the right answer!");
-            this.setState({answerMessage: "Nice job, you got the right answer!"});
-     }
-        if (answerChoice[this.state.AnswerNum].answer===answerChoice[this.state.AnswerNum].choice && answerChoice[this.state.AnswerNum].answer===Stand){
-           setClassStand("correct");
-           setClassHit("start");
-          //setAnswerMessage("Nice job, you got the right answer!");
-          this.setState({answerMessage: "Nice job, you got the right answer!"});
-     }
-       if (answerChoice[this.state.AnswerNum].answer!==answerChoice[this.state.AnswerNum].choice && answerChoice[this.state.AnswerNum].choice===Stand){
-         setClassStand("wrong");
-         setClassHit("correct");
-        // setAnswerMessage("Unlucky, you answered that question incorrect!");
-        this.setState({answerMessage: "Unlucky, you answered that question incorrect!"});
-       }
-       if (answerChoice[this.state.AnswerNum].answer!==answerChoice[this.state.AnswerNum].choice && answerChoice[this.state.AnswerNum].choice===Hit){
-         setClassStand("correct");
-         setClassHit("wrong");
-        // setAnswerMessage("Unlucky, you answered that question incorrect!");
-        this.setState({answerMessage: "Unlucky, you answered that question incorrect!"});
-         
-       }
-    
-      
-   
+        this.setButtonColor(); 
 
     /*  Player hand stored as an array so more hands can be added later */
-    this.setState ({playerHands:  [playerAnswers[handNum]]});
-    this.setState ({dealerHand: dealerAnswers[handNum]});
-    this.setState ({activeHands: 1});
-    this.setState ({totalHands: 1});
-    this.setState ({showDealerCards: false});
-    this.setState ({bustHands: 0});
-    sethandNum(handNum+2);
-    this.setState({AnswerNum: this.state.AnswerNum + 1});
-    console.log(handNum);
-    console.log(playerAnswers);
+        this.setState ({playerHands:  [playerAnswers[handNum]]});
+        this.setState ({dealerHand: dealerAnswers[handNum]});
+        this.setState ({activeHands: 1});
+        this.setState ({totalHands: 1});
+        this.setState ({showDealerCards: false});
+        this.setState ({bustHands: 0});
+        sethandNum(handNum+2);
+        this.setState({AnswerNum: this.state.AnswerNum + 1});
+        console.log(handNum);
+        console.log(playerAnswers);
    }
    
     this.setCorrectAnswers();
-    console.log(this.state.AnswerNum);
-    console.log(answerChoice);
-    console.log(choice);
-    console.log(this.state.playerPoints);
-    console.log(this.state.dealerPoints);
+    setChoice("");
  }
 
 
@@ -666,7 +570,6 @@ stand(){
       const {setAnswer, answer, currentQ} = this.props;
 
       if(this.state.dealerPoints===2 && (this.state.playerPoints>=13 && this.state.playerPoints<=21))
-    //  if(this.state.DP[currentQ+1]===2 && (this.state.PP[currentQ+1]>=13 && this.state.playerPoints[currentQ+1]<=21))
       {
         setAnswer("Stand");
         this.setState({answer: "Stand"});
@@ -674,36 +577,31 @@ stand(){
         console.log(answer);
       }
       else if(this.state.dealerPoints===3 && (this.state.playerPoints>=13 && this.state.playerPoints<=21))
-      //else if(this.state.DP[currentQ+1]===3 && (this.state.PP[currentQ+1]>=13 && this.state.playerPoints[currentQ+1]<=21))
       {
         setAnswer("Stand");
         this.setState({answer: "Stand"});
         console.log(answer);
       }
       else if(this.state.dealerPoints===4 && (this.state.playerPoints>=12 && this.state.playerPoints<=21))
-      //else if(this.state.DP[currentQ+1]===4 && (this.state.PP[currentQ+1]>=13 && this.state.playerPoints[currentQ+1]<=21))
       {
         setAnswer("Stand");
         this.setState({answer: "Stand"});
         console.log(answer);
       }
       else  if(this.state.dealerPoints===5 && (this.state.playerPoints>=12 && this.state.playerPoints<=21))
-      //else if(this.state.DP[currentQ+1]===5 && (this.state.PP[currentQ+1]>=13 && this.state.playerPoints[currentQ+1]<=21))
       {
         setAnswer("Stand");
         this.setState({answer: "Stand"});
         console.log(answer);
       }
      else if(this.state.dealerPoints===6 && (this.state.playerPoints>=12 && this.state.playerPoints<=21))
-     //else if(this.state.DP[currentQ+1]===6 && (this.state.PP[currentQ+1]>=13 && this.state.playerPoints[currentQ+1]<=21))
       {
         setAnswer("Stand");
         this.setState({answer: "Stand"});
         console.log(this.state.playerPoints);
         console.log(answer);
       }
-      else if(this.state.dealerPoints>=7 && (this.state.playerPoints>=17 && this.state.playerPoints<=21))  //needs equivalent for jack, queen,king
-     // else if(this.state.DP[currentQ+1]>=7 && (this.state.PP[currentQ+1]>=17 && this.state.playerPoints[currentQ+1]<=21))
+      else if(this.state.dealerPoints>=7 && (this.state.playerPoints>=17 && this.state.playerPoints<=21))  
       {
         setAnswer("Stand");
         this.setState({answer: "Stand"});
@@ -720,6 +618,32 @@ stand(){
         console.log(this.state.PP[currentQ]);
 
       }
+    }
+
+
+
+    setButtonColor(){
+      const {answerChoice,setClassHit, setClassStand} = this.props;
+      if (answerChoice[this.state.AnswerNum].answer===answerChoice[this.state.AnswerNum].choice && answerChoice[this.state.AnswerNum].answer==="Hit"){
+          setClassHit("correct");
+          setClassStand("start");
+          this.setState({answerMessage: "Nice job, you got the right answer!"});
+     }
+      if (answerChoice[this.state.AnswerNum].answer===answerChoice[this.state.AnswerNum].choice && answerChoice[this.state.AnswerNum].answer==="Stand"){
+          setClassStand("correct");
+          setClassHit("start");
+          this.setState({answerMessage: "Nice job, you got the right answer!"});
+     }
+      if (answerChoice[this.state.AnswerNum].answer!==answerChoice[this.state.AnswerNum].choice && answerChoice[this.state.AnswerNum].choice==="Stand"){
+          setClassStand("wrong");
+          setClassHit("correct");
+          this.setState({answerMessage: "Unlucky, you answered that question incorrect!"});
+     }
+      if (answerChoice[this.state.AnswerNum].answer!==answerChoice[this.state.AnswerNum].choice && answerChoice[this.state.AnswerNum].choice==="Hit"){
+         setClassStand("correct");
+         setClassHit("wrong");
+         this.setState({answerMessage: "Unlucky, you answered that question incorrect!"});
+     }
     }
 
 
