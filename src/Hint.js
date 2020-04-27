@@ -10,13 +10,14 @@ import {hardStrategyTable, softStrategyTable, pairsStrategyTable} from './strate
       surrender allowed)
 
     Returns
-      - a hint object with a hint message string, and booleans for the
-      hint given -
-          --hit,      -> one value will be true, the rest false
-          --stand,
-          --split, 
-          --double,
-          --surrender
+      - a hint object with a hint message string, and
+          * shortHint -> one word hint message String e.g. "hit", "stand", ...
+          * booleans for the hint given -
+              --hit,      -> one value will be true, the rest false
+              --stand,
+              --split,
+              --double,
+              --surrender
 */
 //______________________________________________________________________________
 export function getHint(dealerHand, playerHand, dblOK, dblAfterSplitOk, surrenderOK) {
@@ -205,7 +206,8 @@ function getHintPairHand(dealer, player, doubleAllowed, doubleAfterSplitAllowed,
 //______________________________________________________________________________
 function makeFullHint(shortenedHint, extraInfo) {
   let hint = {
-      hintMessage: "",
+      hintMessage: "", //full hint sentence with "You should..."
+      shortHint: "", //one word hint
       hit: false,
       stand: false,
       split: false,
@@ -220,32 +222,39 @@ function makeFullHint(shortenedHint, extraInfo) {
 
     if(shortenedHint === 'h') {
       hint.hintMessage = "You should hit";
+      hint.shortHint = "hit";
       hint.hit = true;
     }
     else if(shortenedHint === 'd') {
       if(doubleAllowed) {
         hint.hintMessage = "You should double";
+        hint.shortHint = "double";
         hint.double = true;
       } else {
         hint.hintMessage = "You should hit";
+        hint.shortHint = "hit";
         hint.hit = true;
       }
     }
     else if(shortenedHint === 's') {
       hint.hintMessage = "You should stand";
+      hint.shortHint = "stand";
       hint.stand = true;
     }
     else if(shortenedHint === 'h2s3') {
       if(surrenderAllowed) {
         hint.hintMessage = "You should surrender";
+        hint.shortHint = "surrender";
         hint.surrender = true;
       }
       else {
         if(numberOfCards <= 2) { //Will skip if undefined value
           hint.hintMessage = "You should hit";
+          hint.shortHint = "hit";
           hint.hit = true;
         } else {
           hint.hintMessage = "You should stand";
+          hint.shortHint = "stand";
           hint.stand = true;
         }
       }
@@ -253,31 +262,38 @@ function makeFullHint(shortenedHint, extraInfo) {
     else if(shortenedHint === 'ds') {
       if(doubleAllowed) {
         hint.hintMessage = "You should double";
+        hint.shortHint = "double";
         hint.double = true;
       } else {
         hint.hintMessage = "You should stand";
+        hint.shortHint = "stand";
         hint.stand = true;
       }
     }
     else if(shortenedHint === 'p') {
       hint.hintMessage = "You should split";
+      hint.shortHint = "split";
       hint.split = true;
     }
     else if(shortenedHint === 'ph') {
       if(doubleAfterSplitAllowed) {
         hint.hintMessage = "You should split";
+        hint.shortHint = "split";
         hint.split = true;
       } else {
         hint.hintMessage = "You should hit";
+        hint.shortHint = "hit";
         hint.hit = true;
       }
     }
     else if(shortenedHint === 'rh') {
       if(surrenderAllowed) {
         hint.hintMessage = "You should surrender";
+        hint.shortHint = "surrender";
         hint.surrender = true;
       } else {
         hint.hintMessage = "You should hit";
+        hint.shortHint = "hit";
         hint.hit = true;
       }
     }
