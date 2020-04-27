@@ -16,7 +16,7 @@ class App2 extends React.Component {
       score: 0,
       currentQ: 0,
       choice: "",
-      answer: "Card",
+      answer: "",
       highScore: 0,
       numGames: 0,
       totalScore: 0,
