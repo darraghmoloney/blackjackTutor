@@ -12,11 +12,11 @@ class App2 extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      
+
       score: 0,
       currentQ: 0,
       choice: "",
-      answer: "Card",
+      answer: "",
       highScore: 0,
       numGames: 0,
       totalScore: 0,
@@ -27,7 +27,7 @@ class App2 extends React.Component {
       classHit: 'start',
       classStand: 'start',
       handNum: 1,
-      
+
     }
 
     this.setCurrentQ = this.setCurrentQ.bind(this);
@@ -43,7 +43,7 @@ class App2 extends React.Component {
     this.setClassHit = this.setClassHit.bind(this);
     this.setClassStand = this.setClassStand.bind(this);
     this.setAnswerMessage = this.setAnswerMessage.bind(this);
-   
+
   }
   setAnswerMessage(answerMessage){
     this.setState({answerMessage});
@@ -61,14 +61,14 @@ class App2 extends React.Component {
   setTotal(totalScore){
  this.setState({totalScore});
   }
- 
+
   setGames(numGames){
  this.setState({numGames});
   }
   setHighScore(highScore){
 this.setState({highScore});
   }
- 
+
   setCurrentQ(currentQ) {
     this.setState({currentQ});
   }
@@ -87,15 +87,15 @@ this.setState({highScore});
   setDealerAnswers(dealerAnswers){
     this.setState({dealerAnswers});
   }
- 
+
   /* If the current question is less than amount of questions, then call on the questionCount component
     to return which question you are on...eg 1 out of 4... If the current question
     reaches more than number of questions in quiz, you have come to the end and result component is called
   */
 
- 
+
   render() {
-    
+
 
 if(this.state.currentQ === 0){
   console.log(this.state.currentQ);
@@ -131,7 +131,7 @@ if(this.state.currentQ === 0){
           setPlayerAnswers = {this.setPlayerAnswers.bind(this)}
           setDealerAnswers = {this.setDealerAnswers.bind(this)}
           setHighScore = {this.setHighScore.bind(this)}
-          
+
           {...this.state}/>
   }
   /*
@@ -139,7 +139,7 @@ else if (this.state.currentQ === 5) {
 //  questionCount ='';
  // welcome = '';
 //  game = '';
- var  results = <Results setGames = {this.setGames.bind(this)} 
+ var  results = <Results setGames = {this.setGames.bind(this)}
           setClassStand = {this.setClassStand.bind(this)}
           setClassHit = {this.setClassHit.bind(this)}
           setPlayerAnswers = {this.setPlayerAnswers.bind(this)}
@@ -151,7 +151,7 @@ else if (this.state.currentQ === 5) {
            {...this.state} />
   }*/
 else   {
-//((this.state.currentQ>=6) && (this.state.currentQ <=9)){ 
+//((this.state.currentQ>=6) && (this.state.currentQ <=9)){
   questionCount = "Question " + this.state.handNum +":           " + this.state.answerMessage;
   results = '';
   //welcome = '';
@@ -177,10 +177,10 @@ else   {
  //this.state.handNum = 0;
  // console.log(this.state.currentQ);
  // console.log(this.state.playerAnswers);
- 
+
 //}
 
-  
+
 /*The return method calls variable questionCount to display current question as long as you havent reached
   the end of the quiz. In that case it is set to an empty string. Then Question list is called passing in
   setter methods and all states. Question list will render current question answers. Result is then rendered once
@@ -188,7 +188,7 @@ else   {
 */
 
     return (
-     
+
       <div className = "main">
         {/*welcome*/}
     {/*questionCount*/}
