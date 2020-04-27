@@ -1,15 +1,22 @@
 import {hardStrategyTable, softStrategyTable, pairsStrategyTable} from './strategyTables.js';
 
-/*  Make a hint for the player.
+/*  Make a hint for the player. Can be imported in  other components
+    with
+          import {getHint} from Hint.js;
 
     Uses
       - the player and dealer hand objects
-      - the game options (double allowed, surrender allowed)
+      - the game options (double allowed, double after split allowed,
+      surrender allowed)
 
-      (NB - the option doubleAfterSplitAllowed is not necessary here because
-      it is part of the overall double allowed setting and handled
-      by the hand object in the gameplay)
-    )
+    Returns
+      - a hint object with a hint message string, and booleans for the
+      hint given -
+          --hit,      -> one value will be true, the rest false
+          --stand,
+          --split, 
+          --double,
+          --surrender
 */
 //______________________________________________________________________________
 export function getHint(dealerHand, playerHand, dblOK, dblAfterSplitOk, surrenderOK) {
