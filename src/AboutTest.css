@@ -101,3 +101,85 @@
 #whatIsPara{
     padding-top: 4%;
 }
+
+@media (min-width: 768px) and (max-width: 991px) {
+    
+    .AboutTest{
+        height:4000px;
+    }
+    #buttonDiv{
+        position: relative;
+        border: none;
+        color: white;
+        text-align: center;
+        text-decoration:saddlebrown;
+        display:inline-flexbox;
+        font-size: 16px;
+        transition-duration: 0.4s;
+        cursor: pointer;
+        width:9%;
+        top:23%;
+        left:35%;      
+}
+
+#button1,#button2,#button4,#button3,#button5{
+    background-color: rgb(15, 90, 151);
+    background-image: url("https:/www.transparenttextures.com/patterns/felt.png");
+    position: relative;
+    font-size: 25px;
+    width:1300%;
+    padding:20px;
+    margin-bottom: 30%;
+}
+
+#warningDiv{
+    position: relative;
+    width:60%;
+    left:20%;
+    bottom:450px;
+}
+    
+    
+    
+  }
+  /********** Xtra Small devices only **********/
+  
+  @media (max-width: 767px) {
+    
+    .AboutTest{
+        height:4800px;
+    }
+    #buttonDiv{
+        position: relative;
+        border: none;
+        color: white;
+        text-align: center;
+        text-decoration:saddlebrown;
+        display:inline-flexbox;
+        font-size: 16px;
+        transition-duration: 0.4s;
+        cursor: pointer;
+        width:13%;
+        top:23%;
+        left:25%;      
+}
+
+#button1,#button2,#button4,#button3,#button5{
+    background-color: rgb(15, 90, 151);
+    background-image: url("https:/www.transparenttextures.com/patterns/felt.png");
+    position: relative;
+    font-size: 25px;
+    width:1300%;
+    padding:20px;
+    margin-bottom: 30%;
+}
+
+#warningDiv{
+    position: relative;
+    width:60%;
+    left:20%;
+    bottom:450px;
+}
+    
+
+  }
