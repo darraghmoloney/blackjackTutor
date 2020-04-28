@@ -16,7 +16,7 @@ class App2 extends React.Component {
       score: 0,
       currentQ: 0,
       choice: "",
-      answer: "",
+      answer: "start",
       highScore: 0,
       numGames: 0,
       totalScore: 0,
@@ -134,24 +134,8 @@ if(this.state.currentQ === 0){
           
           {...this.state}/>
   }
-  /*
-else if (this.state.currentQ === 5) {
-//  questionCount ='';
- // welcome = '';
-//  game = '';
- var  results = <Results setGames = {this.setGames.bind(this)} 
-          setClassStand = {this.setClassStand.bind(this)}
-          setClassHit = {this.setClassHit.bind(this)}
-          setPlayerAnswers = {this.setPlayerAnswers.bind(this)}
-          setDealerAnswers = {this.setDealerAnswers.bind(this)}
-           setTotal = {this.setTotal.bind(this)}
-           setScore={this.setScore.bind(this)}
-           setHighScore = {this.setHighScore.bind(this)}
-           setCurrentQ = {this.setCurrentQ.bind(this)}
-           {...this.state} />
-  }*/
+  
 else   {
-//((this.state.currentQ>=6) && (this.state.currentQ <=9)){ 
   questionCount = "Question " + this.state.handNum +":           " + this.state.answerMessage;
   results = '';
   //welcome = '';

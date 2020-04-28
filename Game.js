@@ -29,11 +29,12 @@ class GameTutor extends React.Component {
           AnswerNum: 1,
           answerMessage: "Nice job, you got the right answer!",
           QuestionCount: true,
-          nextDiasbled: false,
+          choiceDisabled: false,
+         
           playerPoints:0,
           dealerPoints:0,
-          PP: [],
-          DP: []
+          classDouble: "start",
+          classSplit: "start"
           
 
     }
@@ -223,13 +224,13 @@ class GameTutor extends React.Component {
           </div>
 
           <div id="playerButtons">
-            <button  className = {this.props.classHit} id = "Hit" disabled={hand.hitDisabled} onClick={() => {this.hit(hand.number)}}>Hit</button>
+            <button  className = {this.props.classHit} id = "Hit" disabled={this.state.choiceDisabled} onClick={() => {this.hit(hand.number)}}>Hit</button>
             <div className ="divider2"></div>
-            <button className = "start" id = "Split" disabled={hand.splitDisabled} onClick={() => {this.split(hand.number)}}>Split</button>
+            <button className = {this.state.classSplit} id = "Split" disabled={this.state.choiceDisabled} onClick={() => {this.split(hand.number)}}>Split</button>
             <div className ="divider2"></div>
-            <button className = {this.props.classStand} id = "Stand" disabled={hand.standDisabled} onClick={() => {this.stand(hand.number)}}>Stand</button>
+            <button className = {this.props.classStand} id = "Stand" disabled={this.state.choiceDisabled} onClick={() => {this.stand(hand.number)}}>Stand</button>
             <div className ="divider2"></div>
-            <button className = "start" id = "Hint" disabled={hand.hintDisabled} onClick={() => {this.toggleHint(hand.number)}}>Hint</button>
+            <button className = {this.state.classDouble} id = "Hint" disabled={this.state.choiceDisabled} onClick={() => {this.Double(hand.number)}}>Double Down</button>
           </div>
         </div>
       ));
@@ -414,21 +415,31 @@ class GameTutor extends React.Component {
 //______________________________________________________________________________
 /*  Hit - Get a new card for the player hand, add it, and update the points, etc */
 hit(){
- 
-    const choice = this.props;
-    const setChoice = this.props.setChoice;
-    const setClassStand = this.props.setClassStand;
-    const setClassHit = this.props.setClassHit;
+ const {setChoice, setClassStand, setClassHit} = this.props;
+  
     setChoice("Hit");
     setClassStand("start");
     setClassHit("startClick");
+    this.setState({nextDisabled: false});
+    this.setState({classSplit: "start"});
+    this.setState({classDouble: "start"});
     this.setState({nextDisabled: false});
   }
 
 
 //______________________________________________________________________________
 /*  Double - get one more card, and stand (if not bust) */
-
+Double(){
+  const {setChoice, setClassStand, setClassHit} = this.props;
+   
+     setChoice("Double");
+     setClassStand("start");
+     setClassHit("start");
+     this.setState({nextDisabled: false});
+     this.setState({classSplit: "start"});
+     this.setState({classDouble: "startClick"});
+     this.setState({nextDisabled: false});
+   }
 
 //______________________________________________________________________________
 /*  Split - if both of the first cards have the same points, make
@@ -438,9 +449,12 @@ hit(){
     NB - Only a 2 card hand may be split
 */
 split (){
-    const setChoice = this.props.setChoice;
-    const choice = this.props;
+    const {setChoice, choice, setClassStand, setClassHit}= this.props;
     setChoice("Split");
+    setClassStand("start");
+    setClassHit("start");
+    this.setState({classSplit: "startClick"});
+    this.setState({classDouble: "start"});
     this.setState({nextDisabled: false});
    }
 
@@ -455,6 +469,8 @@ stand(){
     setChoice("Stand");
     setClassStand("startClick");
     setClassHit("start");
+    this.setState({classSplit: "start"});
+    this.setState({classDouble: "start"});
     this.setState({nextDisabled: false});
     
     }
@@ -482,14 +498,16 @@ stand(){
 
     //setChoice(reSet);
     setCurrentQ(currentQ+1);
+    this.setState({nextDisabled: true});
 
     let firstHands = this.makeFirstHands(); //Deal new hands
     console.log(currentQ);
     console.log(choice);
+    console.log(score);
     
-    if(choice===""){
-       this.setState({nextDisabled: true});
-    }
+  // if(choice===""){
+  //     this.setState({nextDisabled: true});
+  //  }
    
     if(this.props.currentQ ===4){
         this.setState({results: true});
@@ -512,8 +530,11 @@ stand(){
       }
   
       if(this.props.currentQ  <5){
+        this.setState({choiceDisabled: false})
         setClassHit("start");
         setClassStand("start");
+        this.setState({classDouble: "start"});
+        this.setState({classSplit: "start"});
         this.setState ({playerHands: [firstHands.player]});
         this.setState ({dealerHand: firstHands.dealer});
         this.setState ({showDealerCards: false});
@@ -544,6 +565,8 @@ stand(){
         this.setState ({bustHands: 0});
         sethandNum(handNum+2);
         this.setState({AnswerNum: this.state.AnswerNum + 1});
+        this.setState({choiceDisabled: true});
+        console.log(this.state.choiceDisabled)
         console.log(handNum);
         console.log(playerAnswers);
    }
@@ -614,9 +637,6 @@ stand(){
         setAnswer("Hit");
         this.setState({answer: "Hit"});
         console.log(answer);
-        console.log(this.state.DP[currentQ]);
-        console.log(this.state.PP[currentQ]);
-
       }
     }
 
@@ -626,22 +646,26 @@ stand(){
       const {answerChoice,setClassHit, setClassStand} = this.props;
       if (answerChoice[this.state.AnswerNum].answer===answerChoice[this.state.AnswerNum].choice && answerChoice[this.state.AnswerNum].answer==="Hit"){
           setClassHit("correct");
-          setClassStand("start");
+          setClassStand("answers");
+          this.setState({classDouble:"answers"});
           this.setState({answerMessage: "Nice job, you got the right answer!"});
      }
       if (answerChoice[this.state.AnswerNum].answer===answerChoice[this.state.AnswerNum].choice && answerChoice[this.state.AnswerNum].answer==="Stand"){
           setClassStand("correct");
-          setClassHit("start");
+          setClassHit("answers");
+          this.setState({classDouble:"answers"});
           this.setState({answerMessage: "Nice job, you got the right answer!"});
      }
       if (answerChoice[this.state.AnswerNum].answer!==answerChoice[this.state.AnswerNum].choice && answerChoice[this.state.AnswerNum].choice==="Stand"){
           setClassStand("wrong");
           setClassHit("correct");
+          this.setState({classDouble:"answers"});
           this.setState({answerMessage: "Unlucky, you answered that question incorrect!"});
      }
       if (answerChoice[this.state.AnswerNum].answer!==answerChoice[this.state.AnswerNum].choice && answerChoice[this.state.AnswerNum].choice==="Hit"){
          setClassStand("correct");
          setClassHit("wrong");
+         this.setState({classDouble:"answers"});
          this.setState({answerMessage: "Unlucky, you answered that question incorrect!"});
      }
     }
