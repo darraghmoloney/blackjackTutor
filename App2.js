@@ -11,50 +11,50 @@ class App2 extends React.Component {
     super(props);
     this.state = {
       
-      score: 0,
-      currentQ: 0,
-      choice: "",
-      answer: "start",
-      highScore: 0,
-      numGames: 0,
-      playerAnswers: [],
-      dealerAnswers: [],
-      answerChoice: [],
+     // score: 0,
+     // currentQ: 0,
+     // choice: "",
+     // answer: "start",
+     // highScore: 0,
+     // numGames: 0,
+     // playerAnswers: [],
+     // dealerAnswers: [],
+     // answerChoice: [],
       //answerMessage: "Nice job, you got the right answer!",
-      classHit: 'start',
-      classStand: 'start',
-      handNum: 1,
+      //classHit: 'start',
+      //classStand: 'start',
+      //handNum: 1,
       
     }
 
-    this.setCurrentQ = this.setCurrentQ.bind(this);
-    this.setScore = this.setScore.bind(this);
-    this.setChoice = this.setChoice.bind(this);
-    this.setHighScore = this.setHighScore.bind(this);
-    this.setGames = this.setGames.bind(this);
-    this.setTotal = this.setTotal.bind(this);
-    this.sethandNum = this.sethandNum.bind(this);
-    this.setDealerAnswers= this.setDealerAnswers.bind(this);
-    this.setPlayerAnswers = this.setPlayerAnswers.bind(this);
-    this.setAnswer = this.setAnswer.bind(this);
-    this.setClassHit = this.setClassHit.bind(this);
-    this.setClassStand = this.setClassStand.bind(this);
+   // this.setCurrentQ = this.setCurrentQ.bind(this);
+   // this.setScore = this.setScore.bind(this);
+   // this.setChoice = this.setChoice.bind(this);
+  //  this.setHighScore = this.setHighScore.bind(this);
+   // this.setGames = this.setGames.bind(this);
+   // this.setTotal = this.setTotal.bind(this);
+   // this.sethandNum = this.sethandNum.bind(this);
+   // this.setDealerAnswers= this.setDealerAnswers.bind(this);
+   // this.setPlayerAnswers = this.setPlayerAnswers.bind(this);
+  //  this.setAnswer = this.setAnswer.bind(this);
+  //  this.setClassHit = this.setClassHit.bind(this);
+   // this.setClassStand = this.setClassStand.bind(this);
     this.setAnswerMessage = this.setAnswerMessage.bind(this);
    
   }
   setAnswerMessage(answerMessage){
     this.setState({answerMessage});
   }
-  setClassStand(classStand){
-  this.setState({classStand});
-}
+ // setClassStand(classStand){
+ // this.setState({classStand});
+//}
 
- setClassHit(classHit){
-   this.setState({classHit});
- }
- setAnswer(answer){
-   this.setState({answer});
- }
+ //setClassHit(classHit){
+ //  this.setState({classHit});
+ //}
+ //setAnswer(answer){
+  // this.setState({answer});
+ //}
   setTotal(totalScore){
  this.setState({totalScore});
   }
@@ -62,28 +62,28 @@ class App2 extends React.Component {
   setGames(numGames){
  this.setState({numGames});
   }
-  setHighScore(highScore){
-this.setState({highScore});
-  }
+  //setHighScore(highScore){
+//this.setState({highScore});
+//  }
  
-  setCurrentQ(currentQ) {
-    this.setState({currentQ});
-  }
-  setScore(score) {
-    this.setState({score});
-  }
-  setChoice(choice) {
- this.setState({choice});
-  }
-  sethandNum(handNum){
-    this.setState({handNum});
-  }
-  setPlayerAnswers(playerAnswers){
-    this.setState({playerAnswers});
-  }
-  setDealerAnswers(dealerAnswers){
-    this.setState({dealerAnswers});
-  }
+ // setCurrentQ(currentQ) {
+  //  this.setState({currentQ});
+  //}
+  //setScore(score) {
+  //  this.setState({score});
+ // }
+  //setChoice(choice) {
+ //this.setState({choice});
+ // }
+ // sethandNum(handNum){
+ //   this.setState({handNum});
+ // }
+ // setPlayerAnswers(playerAnswers){
+ //   this.setState({playerAnswers});
+ // }
+ // setDealerAnswers(dealerAnswers){
+ //   this.setState({dealerAnswers});
+ // }
  
   /* If the current question is less than amount of questions, then call on the questionCount component
     to return which question you are on...eg 1 out of 4... If the current question
@@ -95,17 +95,20 @@ this.setState({highScore});
     
 
 if(this.state.currentQ === 0){
+  var questionCount = "0";
+  
+  /*
   console.log(this.state.currentQ);
   console.log(this.state.playerAnswers);
   console.log(this.state.dealerAnswers);
   this.state.classHit = "start";
   this.state.classStand = "start";
   this.state.score = 0;
-  var questionCount = "";
+  
   var game = '';
   this.state.playerAnswers = [];
   this.state.dealerAnswers = [];
-  this.state.answerChoice= [];
+  this.state.answerChoice= [];*/
  // var game = <Welcome setCurrentQ ={this.setCurrentQ.bind(this)}{...this.state} />
 //  var welcome = <Welcome setCurrentQ ={this.setCurrentQ.bind(this)}{...this.state} />
  }
@@ -114,20 +117,20 @@ if(this.state.currentQ === 0){
   questionCount = <QuestionCount{...this.state}/>
   var results = '';
   //welcome = '';
-   game = <Game setChoice = {this.setChoice.bind(this)}
+   var game = <Game //setChoice = {this.setChoice.bind(this)}
           setAnswerMessage = {this.setAnswerMessage.bind(this)}
-          setClassStand = {this.setClassStand.bind(this)}
-          setClassHit = {this.setClassHit.bind(this)}
-          setAnswer = {this.setAnswer.bind(this)}
-          setChoice ={this.setChoice.bind(this)}
-          setScore={this.setScore.bind(this)}
+        //  setClassStand = {this.setClassStand.bind(this)}
+        //  setClassHit = {this.setClassHit.bind(this)}
+         // setAnswer = {this.setAnswer.bind(this)}
+         // setChoice ={this.setChoice.bind(this)}
+         // setScore={this.setScore.bind(this)}
           setTotal = {this.setTotal.bind(this)}
-          setCurrentQ ={this.setCurrentQ.bind(this)}
+        //  setCurrentQ ={this.setCurrentQ.bind(this)}
           setGames= {this.setGames.bind(this)}
           setClassHit = {this.setClassHit.bind(this)}
-          setPlayerAnswers = {this.setPlayerAnswers.bind(this)}
-          setDealerAnswers = {this.setDealerAnswers.bind(this)}
-          setHighScore = {this.setHighScore.bind(this)}
+         // setPlayerAnswers = {this.setPlayerAnswers.bind(this)}
+         // setDealerAnswers = {this.setDealerAnswers.bind(this)}
+         // setHighScore = {this.setHighScore.bind(this)}
           
           {...this.state}/>
   }
@@ -136,19 +139,19 @@ else   {
   questionCount = "Question " + this.state.handNum +":           " + this.state.answerMessage;
   results = '';
   //welcome = '';
-  game = <Game setChoice = {this.setChoice.bind(this)}
+  game = <Game //setChoice = {this.setChoice.bind(this)}
           setAnswerMessage = {this.setAnswerMessage.bind(this)}
-          setClassStand = {this.setClassStand.bind(this)}
-          setClassHit = {this.setClassHit.bind(this)}
-          setAnswer = {this.setAnswer.bind(this)}
-          setScore={this.setScore.bind(this)}
-          setTotal = {this.setTotal.bind(this)}
-          setCurrentQ ={this.setCurrentQ.bind(this)}
-          setGames= {this.setGames.bind(this)}
-          sethandNum={this.sethandNum.bind(this)}
-          setPlayerAnswers = {this.setPlayerAnswers.bind(this)}
-          setDealerAnswers = {this.setDealerAnswers.bind(this)}
-          setHighScore = {this.setHighScore.bind(this)}
+        //  setClassStand = {this.setClassStand.bind(this)}
+        //  setClassHit = {this.setClassHit.bind(this)}
+        //  setAnswer = {this.setAnswer.bind(this)}
+         // setScore={this.setScore.bind(this)}
+        //  setTotal = {this.setTotal.bind(this)}
+         // setCurrentQ ={this.setCurrentQ.bind(this)}
+        //  setGames= {this.setGames.bind(this)}
+         // sethandNum={this.sethandNum.bind(this)}
+         // setPlayerAnswers = {this.setPlayerAnswers.bind(this)}
+         // setDealerAnswers = {this.setDealerAnswers.bind(this)}
+        //  setHighScore = {this.setHighScore.bind(this)}
           {...this.state}/>
 }
 //else {

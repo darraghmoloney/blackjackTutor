@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import App2 from './App2';
 import css from './Quiz.css';
+import Game from './Game.js';
+//import css from './Quiz.css';
+import WelcomeCss from './Welcome.css';
+import { Redirect } from 'react-router-dom';
 
 
 class Quiz extends Component {
@@ -9,7 +13,7 @@ class Quiz extends Component {
 
         return (
             <div className="Quiz"> 
-            <App2 />
+            <Game />
         </div>
         )
     }
