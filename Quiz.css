@@ -28,6 +28,7 @@
 .Quiz * {
   font-family: 'Alegreya Sans SC', sans-serif;
   text-align: center;
+  
 
 }
 .main{
@@ -37,12 +38,13 @@ background-color: #008f05;
 background-image: url("https://www.transparenttextures.com/patterns/felt.png");
 
 }
-.WelcomePage{
+.WelcomePage {
 
 font-family: 'Alegreya Sans SC', sans-serif;
 text-align: center;
 font-size: 60px;
-
+background-image:url('./blackjackbackground.jpg');
+background-size: cover;
 }
 .playerStatus{
   font-family: 'Alegreya Sans SC', sans-serif;

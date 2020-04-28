@@ -1,12 +1,10 @@
 import React from 'react';
 import QuestionCount from './QuestionCount.js';
-import Results from './Results.js';
-//import Welcome from './Welcome';
 import Game from './Game.js';
-//import GameTutor from './GameTutor';
 import css from './Quiz.css';
 import WelcomeCss from './Welcome.css';
 import { Redirect } from 'react-router-dom';
+//import {ImageBackground} from 'react-native';
 
 class App2 extends React.Component {
   constructor(props) {
@@ -19,7 +17,6 @@ class App2 extends React.Component {
       answer: "start",
       highScore: 0,
       numGames: 0,
-      totalScore: 0,
       playerAnswers: [],
       dealerAnswers: [],
       answerChoice: [],
@@ -113,7 +110,7 @@ if(this.state.currentQ === 0){
 //  var welcome = <Welcome setCurrentQ ={this.setCurrentQ.bind(this)}{...this.state} />
  }
 
- if ((this.state.currentQ >= 0) && (this.state.currentQ <= 4)){
+ if ((this.state.currentQ >= 0) && (this.state.currentQ <= 10)){
   questionCount = <QuestionCount{...this.state}/>
   var results = '';
   //welcome = '';

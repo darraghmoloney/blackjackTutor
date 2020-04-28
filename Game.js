@@ -1,6 +1,8 @@
 import React from 'react';
 import {cardDeck, makeMultiDecks, shuffleDeck} from './card.js';
 import './Quiz.css';
+import poker from './blackjackbackground.jpg';
+
 
 
 const blankCard =  "./cardImages/200px-Card_back_05.svg.png";
@@ -30,7 +32,9 @@ class GameTutor extends React.Component {
           answerMessage: "Nice job, you got the right answer!",
           QuestionCount: true,
           choiceDisabled: false,
-         
+          lastTenScores: [],
+          totalQuestions: 0,
+          totalScore:0,
           playerPoints:0,
           dealerPoints:0,
           classDouble: "start",
@@ -297,34 +301,44 @@ class GameTutor extends React.Component {
 
     var currentQ = this.props.currentQ;
     var questions = this.props.questions;
-      if(currentQ===0 || currentQ === 5){
+      if(currentQ===0 || currentQ === 11){
     
         let displayQuestionNumber = "";
         return displayQuestionNumber;
       }
-    if (currentQ>0 && currentQ<5){
+    if (currentQ>0 && currentQ<11){
       let displayQuestionNumber = 
          <div className = "questionCount">
-          <h4> Question {currentQ} / 4</h4>
+          <h4> Question {currentQ} / 10</h4>
          </div>
        return displayQuestionNumber;
      }
      else{
        let displayQuestionNumber = 
        <div className = "questionCount">
-       <h4> Question {(this.state.AnswerNum-1)} / 4:  {this.state.answerMessage}</h4>
+       <h4> Question {(this.state.AnswerNum-1)} / 10:  {this.state.answerMessage}</h4>
       </div>
       return displayQuestionNumber;
      }
      
-  }
+  } 
+
+  printPastScores(){
+    
+   // let numbers = this.state.lastTenScores
+   // let roots = numbers.map(function(num) {
+   //     return Math.sqrt(num)
+  ///}
+}
   
   resetHandle(){
         const {setCurrentQ, setScore, setGames, currentQ, setClassStand, setClassHit} = this.props;
 
         setClassStand("start");
         setClassHit("start");
-        setCurrentQ(this.props.currentQ - 5);
+       // setCurrentQ(this.props.currentQ - 5);
+       // setCurrentQ(this.props.currentQ - 11);
+       setCurrentQ(0);
         console.log(this.props.currentQ);
         setScore(this.props.score === 0);
         setGames(this.props.numGames + 1);
@@ -338,8 +352,6 @@ class GameTutor extends React.Component {
   seeAnswers(){
           const {setCurrentQ} = this.props;
           const currentQ = this.props.currentQ;
-         // let six = 6;
-          //this.setState({currentQ: six});
           setCurrentQ(this.props.currentQ + 1);
           console.log(currentQ);
           this.setState({results: false});
@@ -349,9 +361,11 @@ class GameTutor extends React.Component {
         
   results(){ 
         const {setHighScore, highScore} = this.props;
-        var averageScore = (this.props.totalScore/this.props.numGames);
-            var percentage = (this.props.score / 4* 100);
+        var averageScore = Math.round((this.state.totalScore/this.state.totalQuestions)*10);
+            var percentage = (this.props.score / 10* 100);
             var comment = '';
+            
+
         if(percentage === 100){
                 comment = "Congratulations, you are ready to win big!" ;
                 }
@@ -370,13 +384,15 @@ class GameTutor extends React.Component {
                 if (this.props.score > highScore){
                      setHighScore(this.props.score);
                 }
+        
                
         let results =
           <div className = "results">
-              <h4>You got {this.props.score} out of 4 correct!</h4>
+              <h4>You got {this.props.score} out of 10 correct!</h4>
                 <h4>{percentage}% - {comment}</h4>
                  <h4>Your high score is : {highScore}</h4>
                   <h4>Your average score is: {averageScore} </h4>
+                  <h4> Your last scores are: {this.state.lastTenScores}</h4>
              <button className = "start" id = "tryAgain" onClick = {this.resetHandle.bind(this)}> Try Again! </button>
                 <div className = "divider"></div>
               <button className = "start" id = "SeeAnswers" onClick = {this.seeAnswers.bind(this)}> See Answers </button>
@@ -389,6 +405,7 @@ class GameTutor extends React.Component {
   welcome(){
    
       let welcome = 
+      
       <div className = "welcomePage">
       <h4>
          <p >Welcome to the Black Jack Quiz!</p>
@@ -400,7 +417,6 @@ class GameTutor extends React.Component {
         <button id = "beginner">Advanced</button>
          <br/><br/>
         <button className = "start" id = "startQuiz"  onClick={() => {this.start()}}>Start Quiz!</button>
-       
     </div>
     return welcome;
   }
@@ -508,10 +524,12 @@ stand(){
   // if(choice===""){
   //     this.setState({nextDisabled: true});
   //  }
-   
-    if(this.props.currentQ ===4){
+   //4
+    if(this.props.currentQ ===10){
         this.setState({results: true});
         this.setState({gameStarted: false});
+        this.state.lastTenScores.push(this.props.score+",");
+        console.log(this.state.lastTenScores);
 
     }
 
@@ -522,17 +540,19 @@ stand(){
     if (this.props.answer === this.props.choice)
     {
       setScore(this.props.score+1);
+      this.setState({totalScore: this.state.totalScore+1});
     }
 
     let LocalAnswerChoice = {
         "choice": choice,
         "answer": answer,
       }
-  
-      if(this.props.currentQ  <5){
+  //5
+      if(this.props.currentQ  <11){
         this.setState({choiceDisabled: false})
         setClassHit("start");
         setClassStand("start");
+        this.setState({totalQuestions: this.state.totalQuestions +1});
         this.setState({classDouble: "start"});
         this.setState({classSplit: "start"});
         this.setState ({playerHands: [firstHands.player]});
@@ -543,12 +563,14 @@ stand(){
         this.setState({dealerAnswers: dealerAnswers.push(this.state.dealerHand)});
         this.setState({playerAnswers: playerAnswers.push(firstHands.player)});
         this.setState({dealerAnswers: dealerAnswers.push(firstHands.dealer)});
-  }
-  else if(this.props.currentQ ===9){
+        
+  }//9
+  else if(this.props.currentQ ===21){
         this.setState({AnswerNum: 1});
         this.setState({gameStarted: false});
         this.setState({welcome: true});
-        setCurrentQ(currentQ-9);
+       // setCurrentQ(currentQ-9);
+       setCurrentQ(0);
         sethandNum(1);
   }
     else{
