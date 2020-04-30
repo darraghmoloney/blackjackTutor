@@ -88,6 +88,12 @@
   background-image: url("https://www.transparenttextures.com/patterns/felt.png");
 font-family: 'Alegreya Sans SC', sans-serif;
 }
+
+.Quiz * {
+  font-family: 'Alegreya Sans SC', sans-serif;
+}
+
+
 /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
 #start{
   background-color: goldenrod;

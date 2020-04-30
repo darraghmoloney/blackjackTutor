@@ -41,6 +41,9 @@ class Gameplay extends React.Component {
           dealerStartDelay: 200, //wait before dealer play is shown
           dealerTimeout: '', //control & reset dealer delay
 
+          dealerDealDelay: 800,
+          dealerHitTimeout: '',
+
           winCheckDelay: 800,
           winCheckTimeout: '', //delay before win messages shown
 
@@ -53,6 +56,8 @@ class Gameplay extends React.Component {
     this.selectDoubleAfterSplit = this.selectDoubleAfterSplit.bind(this);
 
     this.dealerPlay = this.dealerPlay.bind(this);
+    this.dealerHit = this.dealerHit.bind(this);
+    this.dealerFinish = this.dealerFinish.bind(this);
     this.checkWinningHands = this.checkWinningHands.bind(this);
 
   }
@@ -100,22 +105,14 @@ class Gameplay extends React.Component {
 
 
 /*  Check if 2 cards are a natural Blackjack
-    i.e. an Ace and a Face card
+    i.e. an Ace and a Face/10 card
     - A natural Blackjack will win over another 21 point hand
     NB This function should only be called if the hand has only
     two cards in it */
 //______________________________________________________________________________
   checkNaturalBlackjack(card1, card2) {
-    if( (card1.points + card2.points) !== 21 ) {
-      return false; //blackjack must be exactly 21 points
-    }
-    if( (card1.value === "A") && (card2.value !== 10) ) {
-      return true;  //if one card is ace, the other card must be worth 10 to
-                    //be 21 pts. so if the other card is not a number 10 card,
-                    //it must be a K, Q, or J.
-    }
-    else if( (card1.value !== 10) && (card2.value === "A") ) {
-      return true;
+    if( (card1.points + card2.points) === 21 ) {
+      return true; //blackjack must be exactly 21 points
     }
     else {
       return false;
@@ -326,13 +323,19 @@ class Gameplay extends React.Component {
           {/*<div id="hint" className="handInfoGP">{hand.hintMessage}</div>*/}
           {/*<div id="handGameOverMsg"> &nbsp; {hand.gameOverMessage}</div>*/}
           {hand.won === true &&
-              <div id="winMessageGP">✔️ {hand.gameOverMessage}</div>
+              <div id="winMessageGP">
+                <span role="img" aria-label="checkmark">✔️</span> {hand.gameOverMessage}
+              </div>
           }
           {hand.push === true &&
-              <div id="winMessageGP">❕ {hand.gameOverMessage}</div>
+              <div id="winMessageGP">
+                <span role="img" aria-label="exclamation mark">❕</span> {hand.gameOverMessage}
+              </div>
           }
           {!hand.won && !hand.push && hand.gameOverMessage !== "" &&
-              <div id="winMessageGP">❌ {hand.gameOverMessage}</div>
+              <div id="winMessageGP">
+                <span role="img" aria-label="red X">❌</span> {hand.gameOverMessage}
+              </div>
           }
 
           <br />
@@ -631,6 +634,7 @@ class Gameplay extends React.Component {
     hand.standDisabled = true;
     hand.hintDisabled = true;
     hand.surrenderDisabled = true;
+    hand.hintMessage = "";
 
     /*  Record surrender so the hand isn't counted in the game over win checks */
     hand.surrendered = true;
@@ -663,59 +667,165 @@ class Gameplay extends React.Component {
 //______________________________________________________________________________
   dealerPlay() {
 
-    this.setState({showDealerCards: true});
+    /*  Check if active player hands are all natural blackjacks -
+        if that's the case and the dealer doesn't have a possible natural
+        blackjack, there is no need for the dealer to play.
+    */
+    let playerHands = this.state.playerHands;
+    let activeCount = 0;
+    let naturalBlackjackCount = 0;
+
+    playerHands.forEach((pHand, i) => {
+        if(pHand.bust === false && pHand.surrendered === false) {
+          activeCount++;
+        }
+        if(pHand.naturalBlackjack === true) {
+          naturalBlackjackCount++;
+        }
+    });
+
+    console.log(`Player has ${naturalBlackjackCount} natural blackjacks ` +
+      `in ${activeCount} hands`);
 
     let hand = this.state.dealerHand;
     let dealerPts = hand.points;
     let softAces = hand.softAces;
 
-    console.log(`Dealer hand: [${hand.cards[0].shortName}, ${hand.cards[1].shortName}], `
-      + `Pts: ${dealerPts}`
-    );
-    console.log(`Dealer has ${softAces} soft Aces`);
-    console.log(`Dealer naturalBlackjack: ${hand.naturalBlackjack}`);
+    /*  If all the active player hands are natural blackjacks,
+        and a dealer natural blackjack is not possible
+        (visible card does not have a value of 10 or 11), just
+        finish the game with all the active player hands winning
+    */
+    if( activeCount === naturalBlackjackCount && hand.shownPoints < 10) {
+      console.log(`Dealer win impossible`);
+      this.checkWinningHands();
+    }
+    else {
 
-      while((dealerPts < 17) || (dealerPts === 17 && softAces > 0)) {
+      this.setState({showDealerCards: true});
 
-        /*  Get a new card and add it to the dealer's hand */
-        let nextCard = this.getCard();
-        hand.cards.push(nextCard);
 
-        if(nextCard.value === "A") {
-          softAces++;
-          hand.softAces = softAces;
-          console.log(`Soft Ace added for dealer`);
-        }
+      console.log(`Dealer hand: [${hand.cards[0].shortName}, ${hand.cards[1].shortName}], `
+        + `Pts: ${dealerPts}`
+      );
+      console.log(`Dealer has ${softAces} soft Aces`);
+      console.log(`Dealer naturalBlackjack: ${hand.naturalBlackjack}`);
 
-        dealerPts += nextCard.points;
-        console.log(`Dealer dealt ${nextCard.shortName}, Hand pts: ${dealerPts}`);
-
-        while(dealerPts > 21 && softAces > 0) {
-          dealerPts -= 10;
-          softAces--;
-          hand.softAces = softAces;
-          console.log(`Dealer Ace hardened, pts ${dealerPts}, ${softAces} soft aces left`);
-        }
-
-        hand.points = dealerPts;
-        this.setState({dealerHand: hand});
+      /*  If all active player hands have natural blackjacks,
+          and on revealing the whole dealer hand the dealer doesn't,
+          there is no need for the dealer to hit
+      */
+      if(activeCount === naturalBlackjackCount && hand.naturalBlackjack === false) {
+        console.log(`Dealer win impossible`);
+        this.checkWinningHands();
+        return;
       }
 
-      /*  Check if dealer went bust */
-      if(dealerPts > 21) {
-        hand.bust = true;
-        hand.gameOverMessage = "Dealer Bust!";
-        console.log(`Dealer is bust with ${dealerPts} pts`);
-        this.setState({dealerHand: hand});
+
+      /*  Use the dealer hit function if dealer should play
+          after a slight timeout delay
+      */
+      if((dealerPts < 17) || (dealerPts === 17 && softAces > 0)) {
+
+        let hitTimeout = setTimeout(this.dealerHit, this.state.dealerDealDelay);
+        this.setState({dealerHitTimeout: hitTimeout});
+
+      }
+      /*  Otherwise, just check the winner without the dealer getting any
+          new cards
+      */
+      else {
+
+        let timeout = setTimeout(this.checkWinningHands, this.state.winCheckDelay);
+        this.setState({winCheckTimeout: timeout});
+
       }
 
-      /*  Dealer play is now finished - Find the winners
-          after a slight time delay
-       */
-      let timeout = setTimeout(this.checkWinningHands, this.state.winCheckDelay);
-      this.setState({winCheckTimeout: timeout});
+    }
 
-      // this.checkWinningHands();
+  }
+
+
+/*  Hit for the dealer. Using a function for setTimeout delays
+    so the dealer game updates after a short pause, so cards come out one by one
+ */
+//______________________________________________________________________________
+  dealerHit() {
+
+    let hand = this.state.dealerHand;
+    let dealerPts = hand.points;
+    let softAces = hand.softAces;
+
+    let nextCard = this.getCard();
+    hand.cards.push(nextCard);
+
+    if(nextCard.value === "A") {
+      softAces++;
+      hand.softAces = softAces;
+      console.log(`Soft Ace added for dealer`);
+    }
+
+    dealerPts += nextCard.points;
+    console.log(`Dealer dealt ${nextCard.shortName}, Hand pts: ${dealerPts}`);
+
+    while(dealerPts > 21 && softAces > 0) {
+      dealerPts -= 10;
+      softAces--;
+      hand.softAces = softAces;
+      console.log(`Dealer Ace hardened, pts ${dealerPts}, ${softAces} soft aces left`);
+    }
+
+    hand.points = dealerPts;
+    this.setState({dealerHand: hand});
+
+    /*  Get a new card by recursively calling this function */
+    if((dealerPts < 17) || (dealerPts === 17 && softAces > 0)) {
+
+      let hitTimeout = setTimeout(this.dealerHit, this.state.dealerDealDelay);
+      this.setState({dealerHitTimeout: hitTimeout});
+
+    }
+    /*  Stop & check winners if dealer went bust */
+    else if (dealerPts > 21) {
+
+      hand.bust = true;
+      hand.gameOverMessage = "Dealer Bust!";
+      console.log(`Dealer is bust with ${dealerPts} pts`);
+      this.setState({dealerHand: hand});
+
+      let checkDelay = this.state.winCheckDelay;
+      let dealerWait = setTimeout(this.dealerFinish, checkDelay);
+      this.setState({winCheckTimeout: dealerWait});
+
+    }
+    /*  Stop & check winners if dealer no longer playing (hard 17 hand) */
+    else {
+
+      console.log(`Dealer finished playing with ${dealerPts} pts`);
+
+      let checkDelay = this.state.winCheckDelay;
+      let dealerWait = setTimeout(this.dealerFinish, checkDelay);
+      this.setState({winCheckTimeout: dealerWait});
+
+    }
+
+  }
+
+
+/*  Tidy up after the dealer stops playing - clear timeouts & then check winners
+ */
+//______________________________________________________________________________
+  dealerFinish() {
+
+    let standTimeout = this.state.winCheckDelay;
+    clearTimeout(standTimeout);
+    this.setState({winCheckDelay: standTimeout});
+
+    let hitTimeout = this.state.dealerHitTimeout;
+    clearTimeout(hitTimeout);
+    this.setState({dealerHitTimeout: hitTimeout});
+
+    this.checkWinningHands();
 
   }
 
@@ -740,13 +850,18 @@ class Gameplay extends React.Component {
     */
     hands.forEach((hand, i) => {
       /*  Only check hands that aren't bust */
-      if(hand.bust !== true && hand.surrendered !== true) {
+      if(hand.bust === false && hand.surrendered === false) {
 
         /*  Check case 1: player pts are better */
         if(hand.points > dealerPts) {
-          hand.gameOverMessage = "Hand Won!";
+          if(hand.naturalBlackjack) {
+            hand.gameOverMessage = "Hand Won! Blackjack!";
+            console.log( `Player hand ${hand.number} wins with Natural Blackjack` );
+          } else {
+            hand.gameOverMessage = "Hand Won!";
+            console.log( `Player hand ${hand.number} wins on points` );
+          }
           hand.won = true;
-          console.log( `Player hand ${hand.number} wins on points` );
         }
 
         /*  Check case 2: same pts */
@@ -758,13 +873,13 @@ class Gameplay extends React.Component {
                 so player wins
              */
             if(dHand.naturalBlackjack === false) {
-              hand.gameOverMessage = "Hand Won! Natural Blackjack!";
+              hand.gameOverMessage = "Hand Won! Blackjack!";
               hand.won = true;
               console.log( `Player hand ${hand.number} wins with Natural Blackjack` );
             }
             /*  2a-2 dealer also has a Natural Blackjack, so no winner */
             else {
-            hand.gameOverMessage = "Push. Natural Blackjacks.";
+            hand.gameOverMessage = "Push. Blackjacks.";
             hand.push = true;
             console.log( `Player hand ${hand.number} push on Natural Blackjack` );
             }
@@ -774,8 +889,8 @@ class Gameplay extends React.Component {
           else {
             /*  2b-1 dealer has a Natural Blackjack, so dealer wins */
             if(dHand.naturalBlackjack === true) {
-              hand.gameOverMessage = "Hand Lost. Dealer Natural Blackjack";
-              console.log( `Player hand ${hand.number} lost with dealer Natural Blackjack` );
+              hand.gameOverMessage = "Hand Lost. Dealer Blackjack.";
+              console.log( `Player hand ${hand.number} loses with dealer Natural Blackjack` );
             }
             /*  2b-2 nobody has a Natural Blackjack, no winner */
             else {
@@ -789,8 +904,14 @@ class Gameplay extends React.Component {
       else {
         /*  If the dealer is not bust, the player hand loses */
         if(dHand.bust === false) {
-          hand.gameOverMessage = "Hand Lost.";
-          console.log( `Player hand ${hand.number} loses on points` );
+          if(dHand.naturalBlackjack === true) {
+            hand.gameOverMessage = "Hand Lost. Dealer Blackjack.";
+            console.log( `Player hand ${hand.number} loses on points to dealer Natural Blackjack` );
+          }
+          else {
+            hand.gameOverMessage = "Hand Lost.";
+            console.log( `Player hand ${hand.number} loses on points` );
+          }
         }
         /*  If the dealer is bust, the player hand wins
             (player hand was already checked for not being bust)
@@ -820,8 +941,17 @@ class Gameplay extends React.Component {
 //_____________________________________________________________________________
   newGame() {
 
+    /*  Just in case, reset all the timeouts */
     let timeout = clearTimeout(this.state.dealerTimeout);
     this.setState({dealerTimeout: timeout});
+
+    let hitTimeout = clearTimeout(this.state.dealerHitTimeout);
+    this.setState({dealerHitTimeout: hitTimeout});
+
+    let winTimeout = clearTimeout(this.state.winCheckTimeout);
+    this.setState({winCheckTimeout: winTimeout});
+
+
 
     let firstHands = this.makeFirstHands(); //Deal new hands
 
@@ -863,6 +993,8 @@ class Gameplay extends React.Component {
           the previous choice
       */
       currentDoubleAllowed = !currentDoubleAllowed;
+
+      this.resetAllHints();
       this.setState({doubleAllowed: currentDoubleAllowed});
     }
 
@@ -874,6 +1006,8 @@ class Gameplay extends React.Component {
 
       /*  Boolean opposite - True -> False & vice versa */
       currentSurrenderAllowed = !currentSurrenderAllowed;
+
+      this.resetAllHints();
       this.setState({surrenderAllowed: currentSurrenderAllowed});
     }
 
@@ -885,6 +1019,8 @@ class Gameplay extends React.Component {
 
       /*  Boolean opposite - True -> False & vice versa */
       currentSplitAllowed = !currentSplitAllowed;
+
+      this.resetAllHints();
       this.setState({splitAllowed: currentSplitAllowed});
     }
 
@@ -895,6 +1031,8 @@ class Gameplay extends React.Component {
       let currentDblAfterSplitAllowed = this.state.doubleAfterSplitAllowed;
 
       currentDblAfterSplitAllowed = !currentDblAfterSplitAllowed;
+
+      this.resetAllHints();
       this.setState({doubleAfterSplitAllowed: currentDblAfterSplitAllowed});
     }
 
@@ -922,7 +1060,9 @@ class Gameplay extends React.Component {
     checkboxes be shown again and the game itself hidden  */
 //______________________________________________________________________________
     optionsChange() {
+
       this.setState({optionsChosen: false});
+
     }
 
 
@@ -946,12 +1086,15 @@ class Gameplay extends React.Component {
       /*  Show the hint or hide it by just making a blank string */
       if(hintVisible === true) {
 
+        let doublePossible = !hand.doubleDisabled && this.state.doubleAllowed;
+        let dblAfterSplitPossible = !hand.doubleDisabled && this.state.doubleAfterSplitAllowed;
+
        /* Get a hint message for the hand */
-       let playerHint = getHint(this.state.doubleAllowed,
-                                this.state.doubleAfterSplitAllowed,
-                                this.state.surrenderAllowed,
-                                this.state.dealerHand,
-                                hand);
+       let playerHint = getHint(this.state.dealerHand,
+                                hand,
+                                doublePossible,
+                                dblAfterSplitPossible,
+                                this.state.surrenderAllowed,);
 
         hand.hintMessage = playerHint.hintMessage;
 
@@ -966,6 +1109,22 @@ class Gameplay extends React.Component {
       hands[handIndex] = hand;
       this.setState({playerHands: hands});
     }
+
+
+/*  Reset hint messages if game options changed  */
+//______________________________________________________________________________
+  resetAllHints() {
+
+    let hands = this.state.playerHands;
+
+    hands.forEach((hand, i) => {
+      hand.hintShown = false;
+      hand.hintMessage = "";
+    });
+
+    this.setState({playerHands: hands});
+
+  }
 
 
 
