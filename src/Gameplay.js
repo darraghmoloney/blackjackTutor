@@ -1216,7 +1216,9 @@ class Gameplay extends React.Component {
 
             <div id="gameOptionsGP">
               <button className="gameplayBtnGP" onClick={newGameClick}>New Game</button>
-              <button className="gameplayBtnGP" onClick={optionsClick}>Options</button>
+              {this.state.activeHands > 0 &&
+                <button className="gameplayBtnGP" onClick={optionsClick}>Options</button>
+              }
             </div>
 
             {this.state.gameStarted === true &&
