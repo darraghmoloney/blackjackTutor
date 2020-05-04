@@ -86,6 +86,8 @@ class Gameplay extends React.Component {
     /*  Remove the first card from the array */
     let nextCard = deckForGame.shift();
 
+    nextCard.animated = false; //Animate once only
+
     this.setState({gameDeck: deckForGame});
     return nextCard;
 
@@ -243,7 +245,11 @@ class Gameplay extends React.Component {
         {hand.cards.map( (card, index) => (
             <img
               key={index}
-              className="cardDisplayGP  w3-center w3-animate-right"
+              className=
+              { (index > 1 && !card.animated) ?
+                "cardDisplayGP  w3-center w3-animate-right" :
+                "cardDisplayGP"
+              }
               src={card.imagePath}
               alt={card.shortName}
             />
@@ -341,6 +347,24 @@ class Gameplay extends React.Component {
           <br />
         </div>
       ));
+
+      /*  Remove card animation CSS from cards after they've been displayed
+          once, so that the Options menu doesn't cause the animation to repeat.
+
+          This loops through every player card and sets their "animated"
+          property to true. Only new cards have this property - it is 
+          undefined for the first dealt cards.
+      */
+      let playerHands = this.state.playerHands;
+      playerHands.forEach((pHand, i) => {
+        pHand.cards.forEach((card, i) => {
+            if(card.animated === false) {
+              card.animated = true;
+            }
+        });
+
+      });
+
 
       return <div id="allPlayerHandsGP">{hands}</div>;
   }
@@ -1192,7 +1216,9 @@ class Gameplay extends React.Component {
 
             <div id="gameOptionsGP">
               <button className="gameplayBtnGP" onClick={newGameClick}>New Game</button>
-              <button className="gameplayBtnGP" onClick={optionsClick}>Options</button>
+              {this.state.activeHands > 0 &&
+                <button className="gameplayBtnGP" onClick={optionsClick}>Options</button>
+              }
             </div>
 
             {this.state.gameStarted === true &&
