@@ -9,12 +9,17 @@
 
 .dealer{
   font-family: 'Alegreya Sans SC', sans-serif;
+  
+  
+  
+  
 }
-
+/*background-color: #008f05;*/
 .game{
   font-size: 20px;
   font-family: 'Alegreya Sans SC', sans-serif;
-  background-color: #008f05;
+  background-color: #106813;
+  border-radius: 8px;
   background-image: url("https://www.transparenttextures.com/patterns/felt.png");
 
 
@@ -26,14 +31,25 @@
   border: 5px solid black;
   border-radius: 7%;
   transition: opacity 0.25s ease-in-out;
+  
+}
+.cardDisplayQuiz {
+  max-width: 10%;
+  opacity: 1;
+  border: 5px solid black;
+  border-radius: 7%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 5), 0 6px 20px 0 rgba(0, 0, 0, 5);
+
+
 }
 .Quiz * {
   font-family: 'Alegreya Sans SC', sans-serif;
   text-align: center;
- 
+  color: rgb(19, 18, 18);
   
-
 }
+ 
+
 .main{
 font-family: 'Alegreya Sans SC', sans-serif;
 text-align: center;
@@ -52,7 +68,24 @@ background-size: cover;
 .playerStatus{
   font-family: 'Alegreya Sans SC', sans-serif;
 
+}/*
+.welcomePicture{
+  box-shadow: 10px 10px 5px rgb(43, 42, 42);
+  -moz-box-shadow: 10px 10px 5px rgb(43, 42, 42);
+  -webkit-box-shadow: 10px 10px 5px rgb(43, 42, 42);
+  -khtml-box-shadow: 10px 10px 5px rgb(43, 42, 42);
+}*/
+.welcomePicture{
+  filter: blur( .5px );
+  box-shadow: 10px 20px 30px black;
+ /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 5), 0 6px 20px 0 rgba(0, 0, 0, 5);*/
+ /* animation: mymove 3s infinite;*/
+ /* box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 
+              0 6px 27px 0 rgba(0, 0, 0, 0.19);*/
 }
+/*@keyframes mymove {
+  50% {box-shadow: 10px 20px 30px black}
+}*/
 .divider{
   width:20px;
   height:auto;
@@ -80,15 +113,40 @@ background-size: cover;
   background-color: goldenrod;
   font-family: 'Alegreya Sans SC', sans-serif;
   border-radius: 2px;
-  font-size: 0.9rem;
+  font-size: 1.5rem;
   padding: 6px 12px;
-  -mox-box-shadow: inset 0 1 px 0 10  rgb(241, 207, 11);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 5), 0 6px 20px 0 rgba(0, 0, 0, 5);
+ /* -mox-box-shadow: inset 0 1 px 0 10  rgb(241, 207, 11);
   -webkit-box-shadow: inset 0 1 px 0 10 rgb(241, 207, 11);
-  box-shadow: inset 0 1 px 0 10  rgb(241, 207, 11);
+  box-shadow: inset 0 1 px 0 10  rgb(241, 207, 11);*/
   border: solid 1px  rgb(241, 207, 11);
   color: black;
   text-shadow: 0 1px 0  rgb(241, 207, 11);
 
+}
+.startQuiz {
+  background-color: goldenrod;
+  font-family: 'Alegreya Sans SC', sans-serif;
+  border-radius: 2px;
+  font-size: 1.8rem;
+  padding: 6px 12px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 5), 0 6px 20px 0 rgba(0, 0, 0, 5);
+  /*box-shadow: 8px 16px 25px black;
+  -mox-box-shadow: inset 0 1 px 0 10  rgb(241, 207, 11);
+  -webkit-box-shadow: inset 0 1 px 0 10 rgb(241, 207, 11);
+  box-shadow: inset 0 1 px 0 10  rgb(241, 207, 11);*/
+  border: solid 1px  rgb(241, 207, 11);
+  color: black;
+  text-shadow: 0 1px 0  rgb(241, 207, 11);
+
+}
+.startQuiz:hover{
+  background:  rgb(255, 217, 0);
+}
+
+.startQuiz:active{
+  background: rgb(233, 211, 87);
+  border-color:rgb(233, 211, 87); 
 }
 
 
@@ -96,11 +154,12 @@ background-size: cover;
   background-color: goldenrod;
   font-family: 'Alegreya Sans SC', sans-serif;
   border-radius: 2px;
-  font-size: 0.9rem;
+  font-size: 1.5rem;
   padding: 6px 12px;
-  -mox-box-shadow: inset 0 1 px 0 10  rgb(241, 207, 11);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 5), 0 6px 20px 0 rgba(0, 0, 0, 5);
+ /* -mox-box-shadow: inset 0 1 px 0 10  rgb(241, 207, 11);
   -webkit-box-shadow: inset 0 1 px 0 10 rgb(241, 207, 11);
-  box-shadow: inset 0 1 px 0 10  rgb(241, 207, 11);
+  box-shadow: inset 0 1 px 0 10  rgb(241, 207, 11);*/
   border: solid 1px  rgb(241, 207, 11);
   color: black;
   text-shadow: 0 1px 0  rgb(241, 207, 11);
@@ -119,7 +178,7 @@ background-size: cover;
   background: rgb(255, 217, 0); 
   font-family: 'Alegreya Sans SC', sans-serif;
   border-radius: 2px;
-  font-size: 0.9rem;
+  font-size: 1.5rem;
   padding: 6px 12px;
   -mox-box-shadow: inset 0 1 px 0 10  rgb(241, 207, 11);
   -webkit-box-shadow: inset 0 1 px 0 10 rgb(241, 207, 11);
@@ -134,11 +193,12 @@ background-size: cover;
   background-color: rgb(46, 243, 56);
   font-family: 'Alegreya Sans SC', sans-serif;
   border-radius: 2px;
-  font-size: 0.9rem;
+  font-size: 1.5rem;
   padding: 6px 12px;
-  -mox-box-shadow: inset 0 1 px 0 10  rgb(46, 243, 56, .4);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 5), 0 6px 20px 0 rgba(0, 0, 0, 5);
+ /* -mox-box-shadow: inset 0 1 px 0 10  rgb(46, 243, 56, .4);
   -webkit-box-shadow: inset 0 5 px 0 15 rgb(46, 243, 56, .4);
-  box-shadow: inset 0 5 px 0 15  rgb(46, 243, 56);
+  box-shadow: inset 0 5 px 0 15  rgb(46, 243, 56);*/
   border: solid 1px  rgb(46, 242, 56);
   color: black;
   text-shadow: 0 1px 0  rgb(46, 242, 56);
@@ -147,88 +207,16 @@ background-size: cover;
   background-color: rgb(245, 23, 23);
   font-family: 'Alegreya Sans SC', sans-serif;
   border-radius: 2px;
-  font-size: 0.9rem;
+  font-size: 1.5rem;
   padding: 6px 12px;
-  -mox-box-shadow: inset 0 1 px 0 10 rgb(245, 23, 23, .4);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 5), 0 6px 20px 0 rgba(0, 0, 0, 5);
+ /* -mox-box-shadow: inset 0 1 px 0 10 rgb(245, 23, 23, .4);
   -webkit-box-shadow: inset 0 5 px 0 15 rgb(245, 23, 23, .4);
-  box-shadow: inset 0 5 px 0 15  rgb(245, 23, 23, .4);
+  box-shadow: inset 0 5 px 0 15  rgb(245, 23, 23, .4);*/
   border: solid 1px  rgb(245, 23, 23);
   color: black;
   text-shadow: 0 1px 0  rgb(245, 23, 23);
 }
-
-#beginner{
-position: relative;
-font-family: 'Alegreya Sans SC', sans-serif;
-background: orangeRed;
-border: none;
-color: white;
-padding: 15 px 24 px;
-font-size: 1.4rem;
-box-shadow: -6px 6px 0 hsl(16, 100%, 30%);
-outline: none;
-}
-
-#beginner:active{
-  background: hsl(16, 100%, 40%);
-  top: 3px;
-  left: -3px;
-  box-shadow: -3px 3px 0 hsl(16, 100%, 30%);
-}
-#beginner:hover{
-  background: hsl(16, 100%, 45%);
-  
-}
-
-  #beginner::before {
-    position: absolute;
-    display: block;
-    content: "";
-    height: 0;
-    width: 0;
-    /* border width needs to be size of the element's box shadow */
-    border: solid 6px transparent;
-
-    /* border width needs to be size of the element's box shadow */
-    border-right: solid 6px hsl(16, 100%, 30%);
-
-    /* no width for left, makes measurements easier */
-    border-left-width: 0px;
-
-    background: none;
-    top: 0px;
-
-    /* needs to be the same size as border width */
-    left: -6px;
-  }
-
-  #beginner::after {
-    position: absolute;
-    display: block;
-    content: "";
-    height: 0;
-    width: 0;
-    border: solid 6px transparent;
-    border-top: solid 6px hsl(16, 100%, 30%);
-    border-bottom-width: 0px;
-    background: none;
-    right: 0;
-    bottom: -6px;
-  }
-
-    #beginner:active::before {
-      border: solid 3px transparent;
-      border-right: solid 3px hsl(16, 100%, 30%);
-      border-left-width: 0px;
-      left: -3px;
-    }
-
-    #befinner:active::after {
-      border: solid 3px transparent;
-      border-top: solid 3px hsl(16, 100%, 30%);
-      border-bottom-width: 0px;
-      bottom: -3px;
-    }
 
   
 
