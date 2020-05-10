@@ -95,14 +95,14 @@ class Gameplay extends React.Component {
 
 
 /* Calculate the points of a hand by looping through all cards and
-  getting the total points. Should probably use .reduce() function  */
+  getting the total points using .reduce() function  */
 //______________________________________________________________________________
   getCardPoints(hand) {
-    let total = 0;
-    for(let card of hand) {
-      total += card.points;
-    }
-    return total;
+
+    return hand.reduce((total, card) =>
+      total + card.points
+    , 0);
+
   }
 
 
@@ -113,12 +113,10 @@ class Gameplay extends React.Component {
     two cards in it */
 //______________________________________________________________________________
   checkNaturalBlackjack(card1, card2) {
-    if( (card1.points + card2.points) === 21 ) {
-      return true; //blackjack must be exactly 21 points
-    }
-    else {
-      return false;
-    }
+
+    //blackjack must be exactly 21 points
+    return (card1.points + card2.points) === 21;
+
   }
 
 
@@ -352,7 +350,7 @@ class Gameplay extends React.Component {
           once, so that the Options menu doesn't cause the animation to repeat.
 
           This loops through every player card and sets their "animated"
-          property to true. Only new cards have this property - it is 
+          property to true. Only new cards have this property - it is
           undefined for the first dealt cards.
       */
       let playerHands = this.state.playerHands;
