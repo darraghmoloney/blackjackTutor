@@ -5,6 +5,7 @@ import './Gameplay.css';
 
 
 const blankCard =  "./cardImages/200px-Card_back_05.svg.png";
+const chips = "./casino-chips.png";
 
 
 class Gameplay extends React.Component {
@@ -1234,9 +1235,13 @@ class Gameplay extends React.Component {
                 {this.displayAllPlayerHands()}
               </div>
 
+              <div id="pokerChipsGP">
+                <img src={chips} id="chips" alt="casino chips" />
+              </div>
+
+
               <div id="handStatsGP">
-                Active hands: {this.state.activeHands}&nbsp;
-                Total hands: {this.state.totalHands}
+
               </div>
               </>
             }

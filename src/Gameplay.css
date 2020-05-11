@@ -3,17 +3,29 @@
 .cardDisplayGP {
   max-width: 6rem;
   opacity: 1;
-  border: 5px solid black;
+  border: 0.15rem solid black;
   border-radius: 7%;
+  box-shadow: 0 0.2rem 0.1rem -0.1rem grey;
 
+}
 
+#dealerGameGP{
+  border: 0.2rem solid rgba(211, 211, 211, 0.25);
+  /* border-top-width: 0; */
+  border-bottom-left-radius: 25%;
+  border-bottom-right-radius: 25%;
+  margin-left: 0.75rem;
+  margin-right: 0.75rem;
+  /* position: relative; */
+  /* padding-left: 1rem; */
+  /* min-height: 25%; */
 }
 
 
 .dealerShowGP {
   margin-right: 2%;
   margin-left: 2%;
-  padding: 2%;
+  padding-bottom: 2%;
   /* border: 3px solid #aaa; */
   color: lightgrey;
   margin-bottom: 0.05rem;
@@ -33,16 +45,33 @@
   padding-top: 2%;
   margin-right: 2%;
   margin-left: 2%;
-  /* border: 0.15rem solid #ffaa3b; */
+
   color: lightgrey;
+  /* border: 0.15 solid white; */
+  /* border-right: 0.15rem solid white; */
+  /* border-left: 0.15rem solid white; */
+  /* border-bottom: 0.15rem solid white; */
+  /* border-bottom-left-radius: 50%; */
+  /* border-bottom-right-radius: 50%; */
+  /* z-index: ; */
 }
+
+/* #playerGameGP::after{
+  content: "";
+  position: absolute;
+  margin: auto;
+  z-index: -1;
+  width: 90%;
+  border: 3rem solid black;
+} */
 
 #gameContainerGP {
   text-align: center;
   /* margin-top: 30px; */
   margin-top: 2.45%;
   /* padding-top: 35px; */
-  padding-top: 2.5%;
+  /* padding-top: 2.5%; */
+  padding-bottom: 2.5%;
   border-radius: 0.5rem;
   /* min-height: 25%; */
   /* padding-bottom: 5px; */
@@ -50,10 +79,20 @@
   flex-direction: column;
   align-items: center;
   justify-content: center; */
-  background-color: #064408;
+
+  background-color: black;
+  /* background-image: url('./carpet-texture-background.jpg'); */
+  background-image: url('./carpet-texture-background-blurred.png');
+  /* filter: blur(3rem); */
+
+}
+
+#gameInterfaceGP {
   background-image: url("https:/www.transparenttextures.com/patterns/felt.png");
-
-
+  background-color: #064408;
+  border-bottom-left-radius: 30%;
+  border-bottom-right-radius: 30%;
+  border-bottom: 0.5rem solid black;
 }
 
 #gameOptionsGP {
@@ -64,6 +103,7 @@
 #settingsGP {
   color: white;
   padding: 17%;
+  background-color: rgba(0,0,0, 0.50);
 }
 
 #handStatsGP {
@@ -129,4 +169,18 @@
 
 #playerButtonsHidden {
   padding: 0.38rem;
+}
+
+#pokerChipsGP {
+  background-image: url('./casino-chips.png');
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 25%;
+}
+
+#chips{
+  max-width: 15%;
+  width: 15%;
+
 }
