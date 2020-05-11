@@ -310,9 +310,10 @@ class Gameplay extends React.Component {
             {hand.hintDisabled === false &&
               <button
                 className="gameplayBtnGP"
+                id="hintButtonGP"
                 disabled={hand.hintDisabled}
                 onClick={() => {this.toggleHint(hand.number)}}>
-                  Hint
+                  ?
               </button>
             }
 
@@ -1235,8 +1236,8 @@ class Gameplay extends React.Component {
                 {this.displayAllPlayerHands()}
               </div>
 
-              <div id="pokerChipsGP">
-                
+              <div id="pokerChipsGP" className="chips">
+
               </div>
 
 
