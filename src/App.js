@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Footer from './Footer';
+// import Footer from './Footer';
 import './App.css';
-import {BrowserRouter as Router, Link} from 'react-router-dom';
+// import {BrowserRouter as Router, Link} from 'react-router-dom';
 
 import fire from './config/fire'
 import Login from './Login.js';
