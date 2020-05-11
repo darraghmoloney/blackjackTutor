@@ -92,7 +92,7 @@
   background-color: #064408;
   border-bottom-left-radius: 30%;
   border-bottom-right-radius: 30%;
-  border-bottom: 0.5rem solid black;
+  border-bottom: 0.5rem solid #190D01; /* Table bottom edge effect */
 }
 
 #gameOptionsGP {
