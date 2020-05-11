@@ -1,166 +1,99 @@
 import React from 'react';
-import {cardDeck} from './card.js';
-
-
-const deckForGame = cardDeck;
+import {cardDeck, makeMultiDecks, shuffleDeck} from './card.js';
+import './Quiz.css';
+import blackjackWelcome from './blackjackquizWelcome.jpg'
+import {getHint} from './Hint.js';
 const blankCard =  "./cardImages/200px-Card_back_05.svg.png";
-//const playerAnswers = new Array(4);
-//const dealerAnswers = new Array(4);
-//var i = 0;
 class Game extends React.Component {
 
   constructor(props) {
 
     super(props);
 
-     /*  Deal cards for Player & Dealer */
-
-    let playerCard1 = this.getCard();
-    let dealerCard1 = this.getCard();
-
-    let playerCard2 = this.getCard();
-    let dealerCard2 = this.getCard();
-
-    /*  Check how many Aces the player has */
-    let playerAceTotal = 0;
-    if(playerCard1.value === "A") {
-      playerAceTotal++;
-    }
-    if(playerCard2.value === "A") {
-      playerAceTotal++;
-    }
-
-    /*  Get the points for the first player hand
-        and change them if there are 2 Aces
-    */
-    let playerFirstPoints = this.getCardPoints([playerCard1, playerCard2]);
-    if(playerFirstPoints > 21) {
-        playerFirstPoints -= 10;
-        playerAceTotal--;
-    }
-
-    /*  Points for dealer */
-    let dealerFirstPoints = dealerCard2.points;
-    let dealerTotalPoints = dealerCard1.points + dealerCard2.points;
-
-    let dealerAceTotal = 0;
-    if(dealerCard1.value === "A") {
-      dealerAceTotal++;
-    }
-    if (dealerCard2.value === "A") {
-      dealerAceTotal++;
-    }
-
-    if(dealerTotalPoints > 21) {
-      dealerTotalPoints -= 10;
-      dealerAceTotal--;
-    }
-
-     /*  Check if either hand is a perfect blackjack (Ace & Face card) */
-    let dealerPerfectBlackjack = this.checkPerfectBlackjack(dealerCard1, dealerCard2);
-    let playerPerfectBlackjack = this.checkPerfectBlackjack(playerCard1, playerCard2);
-
-    /*  Disable the split button if the two cards have different pts */
-    let disabledSplit = (playerCard1.points !== playerCard2.points);
-
-     /*  Create hands as JavaScript objects */
-    let dealerFirstHand = {
-      "cards": [dealerCard1, dealerCard2],
-      "softAces": dealerAceTotal,
-      "points": dealerTotalPoints,
-      "shownPoints": dealerFirstPoints,
-      "bust": false,
-      "gameOverMessage": "",
-      "perfectBlackjack": dealerPerfectBlackjack,
-    }
-
-    let playerFirstHand = {
-      "number": 0,
-      "cards": [playerCard1, playerCard2],
-      "softAces": playerAceTotal,
-      "points": playerFirstPoints,
-      "bust": false,
-      "gameOverMessage": "",
-      "hintMessage": "",
-      "hintShown": false,
-      "splitDisabled": disabledSplit,
-      "hitDisabled": false,
-      "standDisabled": false,
-      "doubleDisabled": false,
-      "hintDisabled": false,
-
-      "perfectBlackjack": playerPerfectBlackjack,
-    }
-    if (this.props.currentQ>5){
-      this.state = {
-
-        gameDeck: cardDeck,
-
-       // playerHands: [playerFirstHand], //a nested array
-          playerHands: this.props.playerAnswers[0],
-        //dealerHand: dealerFirstHand,
-        dealerHand: this.props.dealerAnswers[0],
-
-        activeHands: 1,
-        totalHands: 1,
-        bustHands: 0,
-
-        showDealerCards: false, //hide one card for the dealer
-
-        playerHandJSX: '',
-  }
-
-console.log(this.state.playerHands);
-console.log(this.state.dealerHand);
-    }
-
     this.state = {
 
           gameDeck: cardDeck,
-
-          playerHands: [playerFirstHand], //a nested array
-
-          dealerHand: dealerFirstHand,
-
-          activeHands: 1,
-          totalHands: 1,
-          bustHands: 0,
-
+          score:0,
+          currentQ: 0,
+          totalQuestions: 0,
+          totalScore:0,
+          highScore: 0,
+          numGames: 0,
+          playerPoints:0,
+          dealerPoints:0,
+          pastScores: [],
+          lastTenScores: [],
+          playerHands: [], //stored in Array to add hands later
+          dealerHand: '', // stores dealerhand
+          playerAnswers: [], //stores past player hands
+          dealerAnswers: [], // stores past dealer hands
+          answerChoice: [], // stores the correct answers and players' choices
           showDealerCards: false, //hide one card for the dealer
+          quizStarted: false, //renders gameplay when true
+          welcome: true, //renders welcome page when true
+          results: false, // renders results page when true
+          AnswerNum: 1, // tracks the index of answers
+          answerMessage: "Nice job, you got the right answer!",
+          QuestionCount: true, // renders the current question number
+          choiceDisabled: false, // disables buttons when answers are being shown
+          classDouble: "start", //Sets all gameplay buttons to starting className
+          classSplit: "start",
+          classHit: 'start',
+          classStand: 'start',
+          classSurrender: 'start',
+          answer: "start",
+          choice: "",
+          handNum: 0, // used to track index for player and dealer hands once quiz is over and answers shown
+          playerHint: "",// These are used to send in first dealer hand and player hand to
+          dealerHint: "" // hint function to find answers.
 
-          playerHandJSX: '',
+
+
     }
-    console.log({playerFirstHand});
-    console.log(`Dealer dealt: [ ? ` +
-      `, ${this.state.dealerHand.cards[1].shortName}] Pts shown: ${this.state.dealerHand.shownPoints}`);
 
-    console.log(`Dealer has ${this.state.dealerHand.softAces} soft aces`);
 
-    console.log(`Player dealt: [${this.state.playerHands[0].cards[0].shortName}` +
-      `, ${this.state.playerHands[0].cards[1].shortName}] Pts: ${this.state.playerHands[0].points}`);
 
-    console.log(`Player has ${this.state.playerHands[0].softAces} soft aces`);
 
-    console.log(`Dealer perfectBlackjack: ${dealerPerfectBlackjack}`);
-    console.log(`Player perfectBlackjack: ${playerPerfectBlackjack}`);
+    this.start = this.start.bind(this);
+    this.welcome = this.welcome.bind(this);
+    this.results = this.results.bind(this);
+    this.resetHandle = this.resetHandle.bind(this);
+    this.seeAnswers = this.seeAnswers.bind(this);
 
   }
 
-  /*  Get a card from the game deck */
+
+//*****************************************************************************************
+//////////////////////////////////////GAME SET-UP//////////////////////////////////////////
+//*****************************************************************************************
+
+
+//*****************************************************************************************
+//Get a card from the game deck
+
   getCard() {
 
-    /*  Remove the first card from the array */
-    if(deckForGame.length > 0) {
-      let nextCard = deckForGame.shift();
-      return nextCard;
+    let deckForGame = this.state.gameDeck;
+
+    /* Make a new deck if the end is reached */
+    if(deckForGame.length <= 0) {
+      deckForGame = makeMultiDecks(8);
+      shuffleDeck(deckForGame);
     }
 
-    // TODO: handle the card deck being empty
+    /*  Remove the first card from the array */
+    let nextCard = deckForGame.shift();
+
+    this.setState({gameDeck: deckForGame});
+    return nextCard;
+
   }
 
-  /* Calculate the points of a hand by looping through all cards and
-    getting the total points. Should probably use .reduce() function
-    */
+
+//*****************************************************************************************
+/* Calculate the points of a hand by looping through all cards and
+  getting the total points.
+  */
   getCardPoints(hand) {
     let total = 0;
     for(let card of hand) {
@@ -169,707 +102,808 @@ console.log(this.state.dealerHand);
     return total;
   }
 
-  /*  Check if 2 cards are a perfect Blackjack
-      i.e. an Ace and a Face card
-      - A perfect Blackjack will win over another 21 point hand
-      NB This function should only be called if the hand has only
-      two cards in it
-  */
-  checkPerfectBlackjack(card1, card2) {
-    if( (card1.points + card2.points) !== 21 ) {
-      return false; //blackjack must be exactly 21 points
-    }
-    if( (card1.value === "A") && (card2.value !== 10) ) {
-      return true;  //if one card is ace, the other card must be worth 10 to
-                    //be 21 pts. so if the other card is not a number 10 card,
-                    //it must be a K, Q, or J.
-    }
-    else if( (card1.value !== 10) && (card2.value === "A") ) {
-      return true;
-    }
-    else {
-      return false;
-    }
+
+
+
+
+//*****************************************************************************************
+// Deal first hands for the player and dealer
+
+  makeFirstHands() {
+    this.setState({choices: ""});
+    let firstHands = [];
+
+    /*  Deal cards for Player & Dealer */
+   let playerCard1 = this.getCard();
+   let dealerCard1 = this.getCard();
+
+   let playerCard2 = this.getCard();
+   let dealerCard2 = this.getCard();
+
+   /*  Check how many Aces the player has */
+   let playerAceTotal = 0;
+   if(playerCard1.value === "A") {
+     playerAceTotal++;
+   }
+   if(playerCard2.value === "A") {
+     playerAceTotal++;
+   }
+
+   /*  Get the points for the first player hand
+       and change them if there are 2 Aces
+   */
+   let playerFirstPoints = this.getCardPoints([playerCard1, playerCard2]);
+   this.state.playerPoints = playerFirstPoints;
+
+   if(playerFirstPoints > 21) {
+       playerFirstPoints -= 10;
+       playerAceTotal--;
+   }
+
+   /*  Points for dealer */
+   let dealerFirstPoints = dealerCard2.points;
+   let dealerTotalPoints = dealerCard1.points + dealerCard2.points;
+   this.state.dealerPoints = dealerFirstPoints;
+
+
+   let dealerAceTotal = 0;
+   if(dealerCard1.value === "A") {
+     dealerAceTotal++;
+   }
+   if (dealerCard2.value === "A") {
+     dealerAceTotal++;
+   }
+
+   if(dealerTotalPoints > 21) {
+     dealerTotalPoints -= 10;
+     dealerAceTotal--;
+   }
+
+
+    /*  Create hands as JavaScript objects */
+   let dealerFirstHand = {
+     "cards": [dealerCard1, dealerCard2],
+     "softAces": dealerAceTotal,
+     "points": dealerTotalPoints,
+     "shownPoints": dealerFirstPoints,
+     "bust": false,
+     "gameOverMessage": "",
+   }
+
+   let playerFirstHand = {
+     "number": 0,
+     "cards": [playerCard1, playerCard2],
+     "softAces": playerAceTotal,
+     "points": playerFirstPoints,
+     "bust": false,
+     "surrendered": false,
+     "gameOverMessage": "",
+     "hintMessage": "",
+     "hintShown": false,
+     "hitDisabled": false,
+     "standDisabled": false,
+     "doubleDisabled": false,
+     "hintDisabled": false,
+     "surrenderDisabled": false,
+   }
+   /* Save the dealer and player first hands in the firstHands object to be returned
+      playerHint and dealerHint are created to use as parameters for the hint function*/
+
+   firstHands.dealer = dealerFirstHand;
+   firstHands.player = playerFirstHand;
+   this.state.playerHint = firstHands.player;
+   this.state.dealerHint = firstHands.dealer;
+
+  /*Returns an array of JS objects containing the hand info*/
+   return firstHands;
   }
 
-  /*  Show every player hand using the .map() function */
-  displayAllPlayerHands() {
-   // const currentQ = this.props.currentQ;
-   // if(currentQ < 6){
 
+
+
+
+//******************************************************************************************
+/////////////////////////////////////////DISPLAY///////////////////////////////////////////
+//*****************************************************************************************
+
+
+//*****************************************************************************************
+/*  Show every player hand using the .map() function. Game play buttons are also
+    defined here. */
+  displayAllPlayerHands() {
+
+    const styleHand = {
+      fontSize: 25
+    }
     let hands =
     this.state.playerHands.map( (hand, index) => (
-
-        <div key={index} className="playerShow w3-container">
+        <div id="allPlayerHands" key={index} className="playerShow w3-container">
 
 
         {hand.cards.map( (card, index) => (
-            <img key={index} className="cardQuiz w3-center w3-animate-right" src={card.imagePath} alt={card.shortName} />
+            <img
+              key={index}
+              className="cardDisplayQuiz  w3-center w3-animate-right"
+              src={card.imagePath}
+              alt={card.shortName}
+            />
         ))}
 
-
-
-          <div className="handStatus">
+          <div style = {styleHand} className="playerStatus">
             <span id="playerPoints">Player Points: {hand.points}</span>
             <span id="handStatus"> &nbsp; {hand.gameOverMessage}</span>
-            <span id="hint"> &nbsp; {hand.hintMessage}</span>
           </div>
-
 
           <div id="playerButtons">
-            <button  id = "start" disabled={hand.hitDisabled} onClick={() => {this.hit(hand.number)}}>Hit</button>
+            <button  className = {this.state.classHit} id = "Hit" disabled={this.state.choiceDisabled} onClick={() => {this.hit(hand.number)}}>Hit</button>
             <div className ="divider2"></div>
-            <div  className ="divider2"></div>
-            <button type = "radio" id = "start" disabled={hand.splitDisabled} onClick={() => {this.split(hand.number)}}>Split</button>
+            <button className = {this.state.classSplit} id = "Split" disabled={this.state.choiceDisabled} onClick={() => {this.split(hand.number)}}>Split</button>
             <div className ="divider2"></div>
-            <button type = "radio"id = "start" disabled={hand.standDisabled} onClick={() => {this.stand(hand.number)}}>Stand</button>
+            <button className = {this.state.classStand} id = "Stand" disabled={this.state.choiceDisabled} onClick={() => {this.stand(hand.number)}}>Stand</button>
             <div className ="divider2"></div>
-            <button type = "radio" id = "start" disabled={hand.hintDisabled} onClick={() => {this.toggleHint(hand.number)}}>Hint</button>
+            <button className = {this.state.classDouble} id = "Hint" disabled={this.state.choiceDisabled} onClick={() => {this.Double(hand.number)}}>Double Down</button>
+            <div className ="divider2"></div>
+            <button className = {this.state.classSurrender} id = "Surrender" disabled={this.state.choiceDisabled} onClick={() => {this.Surrender(hand.number)}}>Surrender</button>
+
           </div>
         </div>
-
       ));
- console.log(hands);
+
       return hands;
-        }
+  }
 
 
+//*****************************************************************************************
+// Show the first dealer hand in the game, with one card hidden
 
-  /*  Show the first dealer hand in the game, with one card hidden */
   displayHiddenDealerHand() {
+    const styleHand = {
+      fontSize: 25
+    }
     let shownCard = this.state.dealerHand.cards[1];
     return (
-      <div id="dealerCards" className="dealerShow">
-        <img className="cardQuiz" src={blankCard} alt="back of card" />
-        <img className="cardQuiz" src={shownCard.imagePath} alt={shownCard.shortName} />
-        <div id="dealerPoints">Dealer Points: {this.state.dealerHand.shownPoints}</div>
+
+     <div style = {styleHand} className = "dealer">
+
+
+        <img className="cardDisplayQuiz" src={blankCard} alt="back of card" />
+        <img className="cardDisplayQuiz" src={shownCard.imagePath} alt={shownCard.shortName} />
+        <div id ="dealerID">Dealer Points: {this.state.dealerHand.shownPoints}</div>
       </div>
     );
   }
 
 
-  /*  Show both of the first 2 cards of the dealer, if the player is finished
-      and not bust for every hand
-   */
+//*****************************************************************************************
+/* Show both of the first 2 cards of the dealer, if the player is finished
+/  and not bust for every hand*/
+
   displayWholeDealerHand() {
-  //  const dealerAnswers = this.props.dealerAnswers;
-  //  const playerAnswers = this.props.playerAnswers;
-  //  this.setState({playerAnswers: playerAnswers.push(this.state.playerHands)});
-  //  this.setState({dealerAnswers: dealerAnswers.push(this.state.dealerHand)});
+
+    /*  Use map to make Array of cards with JSX to display each one.
+        Note the first two cards are not given animation, to give a
+        "dealing card" effect when new cards enter the hand.
+    */
     let cards =
     this.state.dealerHand.cards.map( (card, index) => (
-      <img key={index} className="cardQuiz w3-center w3-animate-right" src={card.imagePath} alt={card.shortName} />
+
+      <img
+        key={index}
+        className=
+        { (index > 1) ?
+          "cardDisplay  w3-center w3-animate-right" :
+          "cardDisplay"
+        }
+        src={card.imagePath}
+        alt={card.shortName}
+      />
     )
     );
 
     let displayHTML =
-      <div id="dealerHand" className="dealerShow w3-container">{cards}<div id="dealerPoints">Dealer Points: {this.state.dealerHand.points} {this.state.dealerHand.gameOverMessage}</div></div>
+      <div className="dealer" >
+        <div>
+          Dealer Points: {this.state.dealerHand.points}&nbsp;
+          {this.state.dealerHand.gameOverMessage}
+        </div>
+        {cards}
+      </div>
 
     return displayHTML;
   }
 
-  /*  Hit - Get a new card for the player hand, add it, and update the points, etc */
-  hit(handNumber) {
+// *****************************************************************************************
+/* Displays the current question depending on what section of the  quiz the user is on. If
+welcome or results page are shown, then it is set to an empty string, during the quiz it displays
+question number and for the answers section it shows question number and a message*/
 
-    /*  Get the current hand */
-    let fullHand = this.state.playerHands;
-    let hand;
-    let handIndex = 0;
-    for(let i=0; i<fullHand.length; i++) {
-      if(fullHand[i].number === handNumber) {
-        hand = fullHand[i];
-        handIndex = i;
-        break;
+  displayQuestionNumber(){
+    const styleQuestion = {
+      fontSize: 25
+    }
+    if(this.state.currentQ===0 || this.state.currentQ === 11){
+        let displayQuestionNumber = "";
+        return displayQuestionNumber;
       }
-    }
-
-    /*  A bust hand cannot get a new card, so we stop the function here by returning
-      if this hand is bust
-   */
-    if(hand.bust === true) {
-      return;
-    }
-
-    /*  Get the next card from the game deck */
-    let newCard = this.getCard();
-
-    hand.perfectBlackjack = false; //Cannot be a perfect blackjack with 2+ cards
-    hand.points += newCard.points;
-
-    /* Check for Ace for points changing reasons */
-    if(newCard.value === 'A') {
-      hand.softAces ++;
-    }
-
-    console.log(`Hit for Hand ${handNumber}. Added ${newCard.shortName}, Pts: ${hand.points} `);
-
-    /* Reduce pts of Aces if necessary */
-    while(hand.points > 21 && hand.softAces > 0) {
-      hand.points -= 10;
-      hand.softAces --;
-      console.log(`Hardened Ace for Hand ${handNumber}, Pts: ${hand.points}`);
-    }
-
-    /* Add the actual card object */
-    hand.cards.push(newCard);
-
-    hand.splitDisabled = true; //Cannot split with more than 2 cards in hand
-
-    /* Handle a bust hand */
-    if(hand.points > 21) {
-      hand.bust = true;
-      hand.gameOverMessage = "Bust!";
-      console.log(`Hand ${handNumber} is bust`);
-      hand.hitDisabled = true;  //Disable buttons
-      hand.standDisabled = true;
-      hand.doubleDisabled = true;
-      hand.hintDisabled = true;
-      hand.hintMessage = "";
-
-      let active = this.state.activeHands - 1; //Track when dealer should play
-      this.setState({activeHands: active});
-
-      let bust = this.state.bustHands;
-      bust++;
-      this.setState({bustHands: bust});
-
-      /* If there are no more hands being played, and some of them
-        are not bust, check the dealer cards
-      */
-      if((active === 0) && (bust < this.state.totalHands)) {
-
-        this.dealerPlay();
-      }
-
-    }
-
-    fullHand[handIndex] = hand; //Adding this hand back to group of player hands
-
-    this.setState({playerHands: fullHand});
+    if (this.state.currentQ>0 && this.state.currentQ<11){
+        let displayQuestionNumber =
+         <div className = "questionCount">
+          <h4 style = {styleQuestion}> Question {this.state.currentQ} / 10</h4>
+         </div>
+       return displayQuestionNumber;
+     }
+     else{
+       let displayQuestionNumber =
+       <div className = "questionCount">
+       <h4 style = {styleQuestion}> Question {(this.state.AnswerNum-1)} / 10: &nbsp; {this.state.answerMessage}</h4>
+      </div>
+      return displayQuestionNumber;
+     }
 
   }
 
 
-    /*  Double - get one more card, and stand (if not bust) */
-  double(handNumber) {
-    /* Get the correct hand by searching all the player hands for it */
-    let fullHand = this.state.playerHands;
-    let hand;
-    let handIndex = 0;
-    for(let i=0; i<fullHand.length; i++) {
-      if(fullHand[i].number === handNumber) {
-        hand = fullHand[i];
-        handIndex = i;
-        break;
-      }
-    }
-    hand.doubleDisabled = true; //Can only double once
-    hand.splitDisabled = true; //Cannot split with 3 cards
-    hand.hintDisabled = true; //Hint no longer needed as final card played
-    hand.perfectBlackjack = false; //No perfect blackjack with more than 2 cards
-    fullHand[handIndex] = hand;
-    this.setState({playerHands: fullHand});
+   //*****************************************************************************************
+   /* Handles the results page. Score, average score, high score, past scores and
+      answer message are all saved as variables and rendered.*/
 
-    this.hit(handNumber);
-    this.stand(handNumber);
-  }
-
-
-  /*  Split - if both of the first cards have the same points, make
-      a new hand from the second card of the original hand.
-      Then deal new cards and add them to both hands.
-
-      NB - Only a 2 card hand may be split
-  */
-  split(handNumber) {
-
-    let currentHands = this.state.playerHands;
-    /* Get the hand object to change from the state variables */
-    let handToChange;
-
-    for(let i=0; i<currentHands.length;i++) {
-      if(currentHands[i].number === handNumber) {
-        handToChange = currentHands[i];
-
-        break;
-      }
-    }
-
-    /*  Disallow change if hand has more than 2 cards */
-    if(handToChange.cards.length > 2) {
-      return;
-    }
-
-    /*  Remove the SECOND card from the original hand
-        and if it's an Ace, set the new hand aces to 1
-    */
-    let cardToMove = handToChange.cards.pop();
-    let newHandSoftAces = (cardToMove.value === "A") ? 1: 0;
-
-    console.log(cardToMove.value);
-    console.log(handToChange.softAces);
-    /*  Update the no. of Aces in the original hand if necessary */
-    if(cardToMove.value === "A") {
-      handToChange.softAces--;
-
-      console.log(handToChange.softAces);
-    }
-
-    /*  Get a new card for the original hand */
-    let firstReplacementCard = this.getCard();
-    handToChange.cards.push(firstReplacementCard);
-
-    /*  Check if the original hand should allow split (2 cards with same points)*/
-    handToChange.splitDisabled = (handToChange.cards[0].points !== firstReplacementCard.points);
-    handToChange.perfectBlackjack = this.checkPerfectBlackjack(handToChange.cards[0], firstReplacementCard);
-
-
-    /*  Update the original hand Ace count if the card just dealt was an Ace */
-    if(firstReplacementCard === "A") {
-      handToChange.softAces++;
-    }
-    /*  Deal new card for the new hand & check for Ace*/
-    let newHandOtherCard = this.getCard();
-    if(newHandOtherCard.value === "A") {
-      newHandSoftAces++;
-    }
-
-
-    /* Calculate points for new hand*/
-    let newHandPoints = cardToMove.points + newHandOtherCard.points;
-    if(newHandPoints > 21) {
-      newHandPoints -= 10;
-      newHandSoftAces--;
-      console.log(newHandSoftAces);
-    }
-
-    let newHandNumber = (this.state.totalHands) + 1;
-
-    /* Disable split if the points values of both cards are different */
-    let newHandDisabledSplit = (cardToMove.points !== newHandOtherCard.points);
-
-    let newPerfectBlackjack = this.checkPerfectBlackjack(cardToMove, newHandOtherCard);
-
-    /*  Create a new hand object */
-    let newHand = {
-      "number": newHandNumber,
-      "cards": [cardToMove, newHandOtherCard],
-      "softAces": newHandSoftAces,
-      "points": newHandPoints,
-      "bust": false,
-      "gameOverMessage": "",
-      "hintMessage": "",
-      "hintShown": false,
-      "splitDisabled": newHandDisabledSplit,
-      "hitDisabled": false,
-      "standDisabled": false,
-      "doubleDisabled": false,
-      "hintDisabled": false,
-      "perfectBlackjack": newPerfectBlackjack,
-    };
-
-    /* Fix the points for the Original Hand */
-    handToChange.points = handToChange.cards[0].points +
-      firstReplacementCard.points;
-
-    /* Reduce pts if 2 Aces in hand */
-    if(handToChange.points > 21) {
-      handToChange.points -= 10;
-      handToChange.softAces--;
-    }
-
-    /* Add new hand array to Hands object */
-    currentHands.push(newHand);
-
-    console.log(`New hand added [${newHand.cards[0].shortName}, ${newHand.cards[1].shortName}] `
-      + `Pts: ${newHand.points}`);
-
-    let currentActiveHands = (this.state.activeHands) + 1;
-
-    this.setState({playerHands: currentHands});
-    this.setState({totalHands: newHandNumber});
-    this.setState({activeHands: currentActiveHands});
-
-  }
-
-  /*  Stand - stop playing for a specific hand.
-      If all hands are not active, and some are not bust, the dealer should
-      start playing, too.
-  */
-  stand(handNumber) {
-    /* Get current hand from hands list */
-    const setScore = this.props.setScore;
-   setScore(this.props.score + 1);
-   const score = this.props.score;
-    console.log(score);
-
-
-    let hands = this.state.playerHands;
-    let currentHand;
-    let currentIndex;
-    for(let i=0; i<hands.length;i++) {
-      if(hands[i].number === handNumber) {
-        currentHand = hands[i];
-        currentIndex = i;
-        break;
-      }
-    }
-
-    /* No stand allowed if the hand is bust
-      (button should be disabled anyway)
-    */
-    if(currentHand.bust === true) {
-      return;
-    }
-
-    currentHand.hitDisabled = true;
-    currentHand.splitDisabled = true;
-    currentHand.standDisabled = true;
-    currentHand.doubleDisabled = true;
-    currentHand.hintDisabled = true;
-    currentHand.hintMessage = "";
-
-    let active = this.state.activeHands;
-    active--;
-
-    hands[currentIndex] = currentHand;
-
-    this.setState({playerHands: hands});
-    this.setState({activeHands: active});
-
-    /*  Dealer should play if no hands are active */
-    if(active === 0) {
-      // this.setState({showDealerCards: true});
-      this.dealerPlay(); //XXXXXXXXXXXXXXXXXXXXX//
-    }
-
-  }
-
-  toggleHint(handNumber) {
-
-
-    let hands = this.state.playerHands;
-    let currentHand;
-    let currentIndex;
-    hands.forEach((hand, i) => {
-      if(hand.number === handNumber) {
-        currentHand = hand;
-        currentIndex = i;
-      }
-    });
-
-    let hintVisible = currentHand.hintShown;
-    hintVisible = !hintVisible;
-
-    currentHand.hintShown = hintVisible;
-
-    if(hintVisible === true) {
-      currentHand.hintMessage = "You should hit. No wait... stand. Or double. Maybe split??";
-    }
-    else {
-      currentHand.hintMessage = "";
-    }
-    hands[currentIndex] = currentHand;
-    this.setState({playerHands: hands});
-  }
-
-  /*  Play the game as the dealer after the player finished and has
-         some hands which didn't go bust
-     */
-  dealerPlay() {
-    this.setState({showDealerCards: true});
-
-
-    let hand = this.state.dealerHand;
-    let dealerPts = hand.points;
-    let softAces = hand.softAces;
-
-    console.log(`Dealer hand: [${hand.cards[0].shortName}, ${hand.cards[1].shortName}], `
-      + `Pts: ${dealerPts}`
-    );
-    console.log(`Dealer has ${softAces} soft Aces`);
-
-    // setTimeout(function () {
-      /*  Dealer HIT -
-            - pts less than 17 OR
-            - pts == 17 and Aces
-        */
-      while((dealerPts < 17) || (dealerPts === 17 && softAces > 0)) {
-
-        /*  Get a new card and add it to the dealer's hand */
-        let nextCard = this.getCard();
-        hand.cards.push(nextCard);
-
-        if(nextCard.value === "A") {
-          softAces++;
-          hand.softAces = softAces;
-          console.log(`Soft Ace added for dealer`);
+  results(){
+        var averageScore = Math.round((this.state.totalScore/this.state.totalQuestions)*10);
+            var percentage = (this.state.score / 10* 100);
+            var comment = '';
+            var PreviousScores;
+            this.state.pastScores.push(this.state.score+",");
+        const styleResult = {
+          fontSize: 30
         }
-        dealerPts += nextCard.points;
-        console.log(`Dealer dealt ${nextCard.shortName}, Hand pts: ${dealerPts}`);
-        while(dealerPts >= 17 && softAces > 0) {
-          dealerPts -= 10;
-          softAces--;
-          hand.softAces = softAces;
-          console.log(`Dealer Ace hardened, pts ${dealerPts}`);
+        if(percentage === 100){
+                comment = "Congratulations, you are ready to win big!" ;
+                }
+        else if (percentage > 80) {
+                comment =  "You are doing great, You are nearly ready!";
+        } else if (percentage < 80 && percentage > 60) {
+                comment = 'Nice score, you are getting the hang of it!';
+        } else {
+                 comment = 'You need to keep working on your Black Jack!';
         }
+                if (this.state.score > this.state.highScore){
+                     this.setState({highScore: this.state.score});
+                }
 
-        hand.points = dealerPts;
-        this.setState({dealerHand: hand});
-      }
+        PreviousScores = this.state.pastScores;
+        let results =
+          <div className = "results">
+            <h4 style = {styleResult}>  {comment}</h4>
+              <h4 style = {styleResult}>You got {this.state.score} out of 10 correct! &nbsp; {percentage}%</h4>
+                 <h4 style = {styleResult}>Your high score is:&nbsp; {this.state.highScore}</h4>
+                  <h4 style = {styleResult}>Your average score is:&nbsp; {averageScore} </h4>
+                  <h4 style = {styleResult}> Your previous scores are:&nbsp; {PreviousScores}</h4>
+                  <div> </div>
+             <button className = "start" id = "tryAgain" onClick = {this.resetHandle.bind(this)}> Try Again! </button>
+                <div className = "divider"></div>
+              <button className = "start" id = "SeeAnswers" onClick = {this.seeAnswers.bind(this)}> See Answers </button>
+              <br/>
+              <div></div>
+               </div>
 
-      /*  Check if dealer went bust */
-      if(dealerPts > 21) {
-        hand.bust = true;
-        hand.gameOverMessage = "Bust!";
-        this.setState({dealerHand: hand});
-      }
-      /*  Dealer play is now finished - Find the winners */
-      this.checkWinningHands();
-    // }, 2000);
+          return results;
   }
 
-  /*  Check which hands won, if some hands are not already bust */
-  checkWinningHands() {
+  //*****************************************************************************************
+  /* This function handles the welcome page and contains the start quiz button*/
 
-    /*  Get the dealer hand */
-    let dHand = this.state.dealerHand;
+  welcome(){
+      const styleObj1={
+        fontSize: 40,
+       }
+      const styleObj2 ={
+      fontSize: 30,
+    }
+      let welcome =
+      <div className = "welcomePage">
+      <h4>
+         <p style = {styleObj1}>Welcome to the Black Jack Quiz!</p>
+           <p style = {styleObj2}>Please click start quiz to begin...</p></h4>
+          <div >
+          <img className = "welcomePicture"src={blackjackWelcome} alt="blackjackWelcome"  height={250} width={400}
+        />
+          </div>
+         <br/>
+        <button className = "startQuiz" id = "startQuiz"  onClick={() => {this.start()}}>Start Quiz!</button>
+        <div> </div>
+        <br/>
+    </div>
+    return welcome;
+  }
 
-    /*  Get the player hands array */
-    let hands = this.state.playerHands;
+  //*****************************************************************************************
+/*This function decides whether or not to show "Previous Question" button or not. It is only
+showed during the answers section*/
 
-    let dealerPts = dHand.points;
-
-    /*  Loop through all the player hands, and check each of them for
-        a win compared to the dealer's points
-    */
-    hands.forEach((hand, i) => {
-      /*  Only check hands that aren't bust */
-      if(hand.bust !== true) {
-
-        /*  Check case 1: player pts are better */
-        if(hand.points > dealerPts) {
-          hand.gameOverMessage = "Hand Won!";
-          console.log( `Player hand ${hand.number} wins on points` );
-        }
-
-        /*  Check case 2: same pts */
-        else if(hand.points === dealerPts ) {
-
-          /*  2a: player has a Perfect Blackjack */
-          if(hand.perfectBlackjack === true) {
-            /*  2a-1 dealer doesn't also have a Perfect Blackjack,
-                so player wins
-             */
-            if(dHand.perfectBlackjack === false) {
-              hand.gameOverMessage = "Perfect Blackjack! Hand Won!";
-              console.log( `Player hand ${hand.number} wins with Perfect Blackjack` );
-            }
-            /*  2a-2 dealer also has a Perfect Blackjack, so no winner */
-            else {
-            hand.gameOverMessage = "Perfect Blackjacks. Push.";
-            console.log( `Player hand ${hand.number} push on Perfect Blackjack` );
-            }
-
-          }
-          /*  2b: player doesn't have a Perfect Blackjack */
-          else {
-            /*  2b-1 dealer has a Perfect Blackjack, so dealer wins */
-            if(dHand.perfectBlackjack === true) {
-              hand.gameOverMessage = "Hand Lost. Dealer wins with Perfect Blackjack";
-              console.log( `Player hand ${hand.number} lost with dealer Perfect Blackjack` );
-            }
-            /*  2b-2 nobody has a Perfect Blackjack, no winner */
-            else {
-              hand.gameOverMessage = "Push.";
-              console.log( `Player hand ${hand.number} push with dealer` );
-            }
-          }
-      }
-      /*  Check case 3: player pts are worse */
+  showPrevButton(){
+    var prevButton ;
+     if (this.state.currentQ<11 || this.state.currentQ ===12){
+      prevButton =
+       <div id="gameOptions">
+         <button className = "start" id = "newQuestion" disabled={this.state.nextDisabled}
+                onClick={() => {this.nextQuestion()}}>Next Question</button>
+        </div>}
       else {
-        /*  If the dealer is not bust, the player hand loses */
-        if(dHand.bust === false) {
-          hand.gameOverMessage = "Hand Lost.";
-          console.log( `Player hand ${hand.number} loses on points` );
-        }
-        /*  If the dealer is bust, the player hand wins
-            (player hand was already checked for not being bust)
-        */
-        else {
-          hand.gameOverMessage = "Dealer Bust! Hand Won!";
-        }
-      }
-    }});
+      prevButton =
+      <div id="gameOptions">
+        <button className = "start" id = "newQuestion" disabled={this.state.previousDisabled}
+                onClick={() => {this.prevCallBack()}}>Previous Question</button>
+        <div className = "divider" ></div>
+          <button className = "start" id = "newQuestion" disabled={this.state.nextDisabled}
+                onClick={() => {this.nextQuestion()}}>&nbsp;Next&nbsp; &nbsp;Question&nbsp;</button>
+         </div>}
 
-    this.setState({playerHands: hands});
+  return prevButton;
+}
 
 
+
+
+/*****************************************************************************************/
+///////////////////////////////////////////Quiz Functions/////////////////////////////////
+/***************************************************************************************/
+
+
+//****************************************************************************************
+// Update user choice and button to hit
+hit(){
+    this.setState({choice: "hit"});
+    this.setState({classHit: 'startClick'});
+    this.setState({classStand: 'start'});
+    this.setState({classSplit: "start"});
+    this.setState({classDouble: "start"});
+    this.setState({classSurrender: "start"});
+    this.setState({nextDisabled: false});
   }
 
 
-  /*  Reset & restart the game */
-  newGame() {
-    const dealerAnswers = this.props.dealerAnswers;
-   const playerAnswers = this.props.playerAnswers;
-    const currentQ = this.props.currentQ;
-    const setCurrentQ = this.props.setCurrentQ;
-    const handNum = this.props.handNum;
-    const sethandNum = this.props.sethandNum;
-    //if (this.props.currentQ > 9){
+//*****************************************************************************************
+// Update user choice and button to stand and validates next question button
+Double(){
+     this.setState({choice: "double"});
+     this.setState({classHit: 'start'});
+     this.setState({classStand: 'start'});
+     this.setState({classSplit: "start"});
+     this.setState({classDouble: "startClick"});
+     this.setState({classSurrender: "start"});
+     this.setState({nextDisabled: false});
+   }
 
-    //    window['i'] = 0; // or window.a
-    // }
+//*****************************************************************************************
+//Update user choice and button to split and validates next question button
+split (){
+
+    this.setState({choice: "split"});
+    this.setState({classHit: 'start'});
+    this.setState({classStand: 'start'});
+    this.setState({classSplit: "startClick"});
+    this.setState({classDouble: "start"});
+    this.setState({classSurrender: "start"});
+    this.setState({nextDisabled: false});
+   }
 
 
-    setCurrentQ(currentQ+1);
-    console.log(this.props.currentQ);
-    let playerCard1 = this.getCard();
-    let dealerCard1 = this.getCard();
+//*****************************************************************************************
+// Update user choice and button to stand and validates next question button
 
-    let playerCard2 = this.getCard();
-    let dealerCard2 = this.getCard();
+stand(){
+    this.setState({choice: "stand"});
+    this.setState({classHit: 'start'});
+    this.setState({classStand: 'startClick'});
+    this.setState({classSplit: "start"});
+    this.setState({classDouble: "start"});
+    this.setState({classSurrender: "start"});
+    this.setState({nextDisabled: false});
 
-    let playerAceTotal = (playerCard1.value === "A") ?
-      ((playerCard2.value === "A") ? 2 : 1 ) : 0;
-
-    let playerFirstPoints = this.getCardPoints([playerCard1, playerCard2]);
-    if(playerFirstPoints > 21) {
-        playerFirstPoints -= 10;
-        playerAceTotal--;
     }
-    let dealerFirstPoints = dealerCard2.points;
-    let dealerTotalPoints = dealerCard1.points + dealerCard2.points;
+//*****************************************************************************************
+// Update user choice and button to surrender and validates next question button
 
-    let dealerAceTotal = (dealerCard2.value === "A") ? 1 : 0;
-    if(dealerTotalPoints > 21) {
-      dealerTotalPoints -= 10;
-      dealerAceTotal--;
+Surrender(){
+  this.setState({choice: "surrender"});
+  this.setState({classHit: 'start'});
+  this.setState({classStand: 'start'});
+  this.setState({classSplit: "start"});
+  this.setState({classDouble: "start"});
+  this.setState({classSurrender: "startClick"});
+  this.setState({nextDisabled: false});
+}
+
+
+//*****************************************************************************************
+/* Updates the next question in the quiz depending on question number */
+
+  nextQuestion() {
+    console.log("handnum next" +this.state.handNum);
+   /* Object created for comparing user choice and answer*/
+    let LocalAnswerChoice = {
+        "choice": this.state.choice,
+        "answer": this.state.answer,
+      }
+  /* increments question number, makes new hands, and finds correct answer */
+
+    this.setState({currentQ: this.state.currentQ+1});
+    this.setState({nextDisabled: true});
+    let firstHands = this.makeFirstHands();
+    this.setCorrectAnswers();
+
+  /*This renders the results page once the last question is finished */
+
+    if(this.state.currentQ ===10){
+        this.setState({results: true});
+        this.setState({quizStarted: false});
     }
 
-    let disabledSplit = (playerCard1.points !== playerCard2.points);
+    /*If results or welcome page currently shown, set quizStarted to true to start quiz */
 
-    let dealerPerfectBlackjack = this.checkPerfectBlackjack(dealerCard1, dealerCard2);
-    let playerPerfectBlackjack = this.checkPerfectBlackjack(playerCard1, playerCard2);
+    if(this.state.quizStarted === false) {
+      this.setState({quizStarted: true});
+    }
+     /*If answer is correct, update score*/
 
-    let dealerFirstHand = {
-      "cards": [dealerCard1, dealerCard2],
-      "softAces": dealerAceTotal,
-      "points": dealerTotalPoints,
-      "shownPoints": dealerFirstPoints,
-      "bust": false,
-      "gameOverMessage": "",
-      "perfectBlackjack": dealerPerfectBlackjack,
+    if (this.state.answer === this.state.choice)
+    {
+      this.setState({score: this.state.score+1});
+      this.setState({totalScore: this.state.totalScore+1});
     }
 
-    let playerFirstHand = {
-      "number": 0,
-      "cards": [playerCard1, playerCard2],
-      "softAces": playerAceTotal,
-      "points": playerFirstPoints,
-      "bust": false,
-      "gameOverMessage": "",
-      "hintMessage": "",
-      "hintShown": false,
-      "splitDisabled": disabledSplit,
-      "hitDisabled": false,
-      "hintDisabled": false,
-      "perfectBlackjack": playerPerfectBlackjack,
-    }
-    if(this.props.currentQ < 6){
-    this.setState ({playerHands: [playerFirstHand]});
-    this.setState ({dealerHand: dealerFirstHand});
-    this.setState ({activeHands: 1});
-    this.setState ({totalHands: 1});
-    this.setState ({showDealerCards: false});
-    this.setState ({bustHands: 0});
+    /* If current question is less than 11, then the quiz is being played. It renders random hands
+       from the makeHands function, and also stores these hands as well as user choice and answers in
+       sepparate arrays to be used for answers section. Buttons are reset to starting className.*/
 
-    this.setState({playerAnswers: playerAnswers.push(this.state.playerHands)});
-    this.setState({dealerAnswers: dealerAnswers.push(this.state.dealerHand)});
-    //  playerAnswers.push(this.state.playerHands);
-     // dealerAnswers.push(this.state.dealerHand);
-     console.log(playerAnswers[handNum]);
-     console.log(playerAnswers[handNum]);
-    }
+      if(this.state.currentQ  <11){
+        this.setState({choiceDisabled: false})
+        this.setState({classHit: 'start'});
+        this.setState({classStand: 'start'});
+        this.setState({classDouble: "start"});
+        this.setState({classSplit: "start"});
+        this.setState({classSurrender:'start'});
+        this.setState({totalQuestions: this.state.totalQuestions +1});
+        this.setState ({playerHands: [firstHands.player]});
+        this.setState ({dealerHand: firstHands.dealer});
+        this.setState ({showDealerCards: false});
+        this.setState({ answerChoice: [...this.state.answerChoice, LocalAnswerChoice]});
+        this.setState({ playerAnswers: [...this.state.playerAnswers, this.state.playerHands]});
+        this.setState({ dealerAnswers:  [...this.state.dealerAnswers, this.state.dealerHands]});
+        this.setState({ playerAnswers: [...this.state.playerAnswers, firstHands.player]});
+        this.setState({dealerAnswers: [...this.state.dealerAnswers, firstHands.dealer]});
+
+   /* Reset  question number to 0 when all the answers have been shown, welcome page therefore
+      set to true and quizStarted set to false. */
+  }
+
+  else if(this.state.currentQ ===21){
+        this.setState({AnswerNum: 1});
+        this.setState({quizStarted: false});
+        this.setState({welcome: true});
+        this.setState({currentQ: 0});
+        this.setState({handNum: 0});
+
+  }
+  /* If question number is greater than 11, then the answers section of the quiz is being shown.
+      playerHands and dealerHands render previous hands that are stored in playerAnswer and
+      dealerAnswer arrays. handNum is used as an index and is initially set to 0, corresponding
+      to the question number being shown from the quiz, and increments with nextQuestion
+      button click. setButtonColor is called to change the buttons depending on the answer */
 
     else{
+        this.setState({results: false})
+        this.setState ({playerHands:  [this.state.playerAnswers[this.state.handNum]]});
+        this.setState ({dealerHand: this.state.dealerAnswers[this.state.handNum]});
+        this.setState ({showDealerCards: false});
+        this.setState({handNum: this.state.handNum+1});
+        this.setState({AnswerNum: this.state.AnswerNum + 1});
+        this.setState({choiceDisabled: true});
+        this.setState({nextDisabled: false})
+        this.setState({classHit: 'answers'});
+        this.setState({classStand: 'answers'});
+        this.setState({classDouble:"answers"});
+        this.setState({classSplit:"answers"});
+        this.setState({classSurrender:"answers"});
+        this.setButtonColor();
+   }
+   console.log(this.state.answerChoice);
+    console.log(this.state.playerAnswers);
+    console.log(this.state.dealerAnswers);
+   /* Resets the users choice*/
+        this.setState({choice: ""});
+ }
 
-       //
+  //*****************************************************************************************
+  /* Resets the quiz if the user does not want to see their answers once they finish*/
+  resetHandle(){
+    this.setState({classStand: "start"});
+    this.setState({classHit: "start"});
+    this.setState({classDouble: "start"});
+    this.setState({classSplit: "start"});
+    this.setState({currentQ: 0});
+    this.setState({results: false});
+    this.setState({welcome: true});
+    this.setState({score: 0});
+    this.setState({numGames: this.state.numGames+1});
+    }
 
+//*****************************************************************************************
+/*Called with "See Answers" button, results set to false, quizStarted set to true, question
+is incremented and newQuestion is called */
 
-      //this.setState ({playerHands: playerAnswers[i]});
-      //this.setState ({dealerHand: dealerAnswers[i]});
-      this.setState ({playerHands: playerAnswers[handNum]});
-      this.setState ({dealerHand: dealerAnswers[handNum]});
-      this.setState ({activeHands: 1});
-      this.setState ({totalHands: 1});
-      this.setState ({showDealerCards: false});
-      this.setState ({bustHands: 0});
-      sethandNum(handNum+1);
-      //this.setState({handNum: this.props.handNum + 1});
-      //this.setState(prevState => {
-      //  return {handNum: prevState.handNum + 1}
-     //})
-
-     // this.state.handNum = handNum+1;
-      //i++;
-      console.log(handNum);
-
-      }
-
-
-
-
-    console.log(`Dealer dealt: [ ? ` +
-      `, ${dealerFirstHand.cards[1].shortName}] Pts shown: ${dealerFirstHand.shownPoints}`);
-
-    console.log(`Dealer has ${dealerFirstHand.softAces} soft aces`);
-
-    console.log(`Player dealt: [${playerFirstHand.cards[0].shortName}` +
-      `, ${playerFirstHand.cards[1].shortName}] Pts: ${playerFirstHand.points}`);
-
-    console.log(`Player has ${playerFirstHand.softAces} soft aces`);
-
-    console.log(`Dealer perfectBlackjack: ${dealerPerfectBlackjack}`);
-    console.log(`Player perfectBlackjack: ${playerPerfectBlackjack}`);
-    console.log(playerAnswers);
-    console.log(dealerAnswers);
-
+  seeAnswers(){
+    this.setState({currentQ: this.state.currentQ+1});
+    this.setState({results: false});
+    this.setState({quizStarted: true});
+    this.nextQuestion();
     }
 
 
-/*
-    printResults(){
-    i++;
-    this.setState ({playerHands: [playerFirstHand]});
-    this.setState ({dealerHand: dealerFirstHand});
-    this.setState ({activeHands: 1});
-    this.setState ({totalHands: 1});
+//*****************************************************************************************
+/* This function starts the quiz, it also resets score and the arrays used to store the dealer
+   hands, player hands and answers */
+  start() {
+    this.setState({classHit: "start"});
+    this.setState({classStand: "start"});
+    this.setState({score: 0});
+    this.state.playerAnswers.length = 0;
+    this.state.dealerAnswers.length = 0;
+    this.state.answerChoice.length = 0;
+    this.setState({welcome: false});
+
+      if(this.state.quizStarted === false) {
+        this.nextQuestion();
+      }
+    }
+//****************************************************************************************
+//This function uses the hint logic to find the correct answer for each question
+  setCorrectAnswers(){
+      let playerHint = getHint(this.state.dealerHint, this.state.playerHint, true,  true, true);
+      this.setState({answer: playerHint.shortHint});
+      console.log(this.state.answer);
+  }
+
+
+//*****************************************************************************************
+/*This function compares the users choice with the correct answer, if the answer is correct
+/ it will change the button of choice green. If the answer is wrong, the button chosen turns red
+/ and the correct button turns green. If the answer is wrong the message is also updated stating
+/ the correct answer*/
+
+    setButtonColor(){
+      console.log("set button color "+this.state.AnswerNum);
+      console.log("user Choice" + this.state.answerChoice[this.state.AnswerNum].choice);
+      let playerChoice = this.state.answerChoice[this.state.AnswerNum].choice;
+      let gameAnswer = this.state.answerChoice[this.state.AnswerNum].answer;
+      let correctAnswer = true;
+      if (this.state.answerChoice[this.state.AnswerNum].answer!==this.state.answerChoice[this.state.AnswerNum].choice)
+       correctAnswer = false;
+
+      if (correctAnswer && playerChoice === "hit"){
+          this.setState({classHit: 'correct'});
+          this.setState({answerMessage: "Nice job, you got the right answer!"});
+      }
+      if (correctAnswer && playerChoice === "stand"){
+        this.setState({classStand: 'correct'});
+        this.setState({answerMessage: "Nice job, you got the right answer!"});
+      }
+      if (correctAnswer && playerChoice === "split"){
+        this.setState({classSplit:"correct"});
+        this.setState({answerMessage: "Nice job, you got the right answer!"});
+       }
+       if (correctAnswer && playerChoice === "double"){
+        this.setState({classDouble: "correct"});
+        this.setState({answerMessage: "Nice job, you got the right answer!"});
+       }
+      if (correctAnswer && playerChoice ==="surrender"){
+        this.setState({classSurrender:"correct"});
+        this.setState({answerMessage: "Nice job, you got the right answer!"});
+
+}
+////////////////////////////////Answer: Hit//////////////////////////////////
+
+      if(!correctAnswer&& playerChoice==="stand"&& gameAnswer==="hit"){
+         this.setState({classHit: 'correct'});
+         this.setState({classStand: 'wrong'});
+         this.setState({answerMessage: "Unlucky, the correct answer was Hit!"});
+      }
+
+      if(!correctAnswer&& playerChoice==="split"&& gameAnswer==="hit"){
+         this.setState({classHit: 'correct'});
+         this.setState({classSplit:"wrong"});
+         this.setState({answerMessage: "Unlucky, the correct answer was Hit!"});
+      }
+
+      if(!correctAnswer&& playerChoice==="double"&& gameAnswer==="hit"){
+         this.setState({classHit: 'correct'});
+         this.setState({classDouble:"wrong"});
+         this.setState({answerMessage: "Unlucky, the correct answer was Hit!"});
+      }
+      if(!correctAnswer&& playerChoice==="surrender"&& gameAnswer==="hit"){
+        this.setState({classHit: 'correct'});
+        this.setState({classSurrender:"wrong"});
+        this.setState({answerMessage: "Unlucky, the correct answer was Hit!"});
+      }
+
+////////////////////////////////////Answer: Stand///////////////////////////////////
+
+    if(!correctAnswer&& playerChoice==="hit"&& gameAnswer==="stand"){
+       this.setState({classHit: 'wrong'});
+       this.setState({classStand: 'correct'});
+       this.setState({answerMessage: "Unlucky, the correct answer was Stand!"});
+     }
+
+    if(!correctAnswer&& playerChoice==="split"&& gameAnswer==="stand"){
+       this.setState({classStand: 'correct'});
+       this.setState({classSplit:"wrong"});
+       this.setState({answerMessage: "Unlucky, the correct answer was Stand!"});
+     }
+
+    if(!correctAnswer&& playerChoice==="double"&& gameAnswer==="stand"){
+       this.setState({classStand: 'correct'});
+       this.setState({classDouble:"wrong"});
+       this.setState({answerMessage: "Unlucky, the correct answer was Stand!"});
+     }
+
+    if(!correctAnswer&& playerChoice==="surrender"&& gameAnswer==="stand"){
+       this.setState({classStand: 'correct'});
+       this.setState({classSurrender:"wrong"});
+       this.setState({answerMessage: "Unlucky, the correct answer was Stand!"});
+    }
+
+////////////////////////////////////Answer: Split///////////////////////////////////
+
+    if(!correctAnswer&& playerChoice==="hit"&& gameAnswer==="split"){
+       this.setState({classHit: 'wrong'});
+       this.setState({classSplit:"correct"});
+       this.setState({answerMessage: "Unlucky, the correct answer was Split!"});
+    }
+
+    if(!correctAnswer&& playerChoice==="stand"&& gameAnswer==="split"){
+       this.setState({classStand: 'wrong'});
+       this.setState({classSplit:"correct"});
+       this.setState({answerMessage: "Unlucky, the correct answer was Split!"});
+    }
+
+    if(!correctAnswer&& playerChoice==="double"&& gameAnswer==="split"){
+       this.setState({classDouble:"wrong"});
+       this.setState({classSplit:"correct"});
+       this.setState({answerMessage: "Unlucky, the correct answer was Split!"});
+   }
+    if(!correctAnswer&& playerChoice==="surrender"&& gameAnswer==="split"){
+       this.setState({classSplit:"correct"});
+       this.setState({classSurrender:"wrong"});
+       this.setState({answerMessage: "Unlucky, the correct answer was Split!"});
+   }
+
+///////////////////////////////////Answer: Double///////////////////////////////////
+    if(!correctAnswer&& playerChoice==="hit"&& gameAnswer==="double"){
+       this.setState({classHit: 'wrong'});
+       this.setState({classDouble:"correct"});
+       this.setState({answerMessage: "Unlucky, the correct answer was Double!"});
+   }
+    if(!correctAnswer&& playerChoice==="stand"&& gameAnswer==="double"){
+       this.setState({classStand: 'wrong'});
+       this.setState({classDouble:"correct"});
+       this.setState({answerMessage: "Unlucky, the correct answer was Double!"});
+   }
+    if(!correctAnswer&& playerChoice==="split"&& gameAnswer==="double"){
+       this.setState({classDouble:"correct"});
+       this.setState({classSplit:"wrong"});
+       this.setState({answerMessage: "Unlucky, the correct answer was Double!"});
+   }
+    if(!correctAnswer&& playerChoice==="surrender"&& gameAnswer==="double"){
+       this.setState({classDouble:"correct"});
+       this.setState({classSurrender:"wrong"});
+       this.setState({answerMessage: "Unlucky, the correct answer was Double!"});
+   }
+
+///////////////////////////////////Answer: Surrender///////////////////////////////////
+
+  if(!correctAnswer&& playerChoice==="hit"&& gameAnswer==="surrender"){
+     this.setState({classHit: 'wrong'});
+     this.setState({classSurrender:"correct"});
+     this.setState({answerMessage: "Unlucky, the correct answer was Surrender!"});
+    }
+
+  if(!correctAnswer&& playerChoice==="stand"&& gameAnswer==="surrender"){
+     this.setState({classStand: 'wrong'});
+     this.setState({classSurrender:"correct"});
+     this.setState({answerMessage: "Unlucky, the correct answer was Surrender!"});
+    }
+
+  if(!correctAnswer&& playerChoice==="split"&& gameAnswer==="surrender"){
+     this.setState({classSplit:"wrong"});
+     this.setState({classSurrender:"correct"});
+     this.setState({answerMessage: "Unlucky, the correct answer was Surrender!"});
+   }
+
+  if(!correctAnswer&& playerChoice==="double"&& gameAnswer==="surrender"){
+     this.setState({classDouble:"wrong"});;
+     this.setState({classSurrender:"correct"});
+     this.setState({answerMessage: "Unlucky, the correct answer was Surrender!"});
+   }
+     }
+//*****************************************************************************************
+/*This function uses a callback for setState of AnswerNum due to React being asynchronous.
+  AnswerNum is used to track index of the answers array. It must be decremented first before
+  previousQuestion is called.  */
+
+     prevCallBack(){
+      this.setState((prevState) => {
+        console.log(this.state.AnswerNum)
+          return {AnswerNum: this.state.AnswerNum-2};
+      }, () => {
+        console.log(this.state.AnswerNum);
+          this.previousQuestion();
+      });
+  }
+  //*****************************************************************************************
+  /*This function allows user to go back to previous question in the answers section. */
+
+  previousQuestion(){
+    this.setState({currentQ: this.state.currentQ -1});
+    this.setState({nextDisabled: false});
+    this.setState ({playerHands:  [this.state.playerAnswers[this.state.handNum-2]]});
+    this.setState ({dealerHand: this.state.dealerAnswers[this.state.handNum-2]});
+    this.setState({handNum: this.state.handNum-1});
     this.setState ({showDealerCards: false});
-    this.setState ({bustHands: 0});
-    }*/
+    this.setState({choiceDisabled: true});
+    this.setState({classHit: 'answers'});
+    this.setState({classStand: 'answers'});
+    this.setState({classDouble:"answers"});
+    this.setState({classSplit:"answers"});
+    this.setState({classSurrender:"answers"});
+    this.setButtonColor();
+    this.setState({AnswerNum: this.state.AnswerNum+1});
+    console.log(this.state.answerChoice);
+    console.log(this.state.playerAnswers);
+    console.log(this.state.dealerAnswers);
+  }
 
 
+//*****************************************************************************************
+///////////////////////////////////////RENDER//////////////////////////////////////////////
+//*****************************************************************************************
 
+
+//*****************************************************************************************
+/* The render uses a series of booleans to decide which functions to display,
+  They are all based on question number. Welcome page displays on question 0, the quiz
+  from 1-10, results page on 11, and answers page from 11-20 */
 
   render() {
 
-
     return(
-      <div className="game">
-        <div id="dealerGame">
+        <div className="game">
+        <div>
+        {this.state.QuestionCount === true && this.displayQuestionNumber()}
+        {this.state.welcome === true && this.welcome()}
+        {this.state.results === true && this.results()}
+
+        {this.state.quizStarted === true &&
+        <div>
+
           {this.state.showDealerCards === true &&
             this.displayWholeDealerHand()
           }
+
           {this.state.showDealerCards === false &&
             this.displayHiddenDealerHand()
           }
+
+
+        {this.displayAllPlayerHands()}
+          <br/>
+        {this.showPrevButton()}
+           <br/>
         </div>
-        {this.displayAllPlayerHands()} <br/>
-        <div id="gameOptions">
-          <button id = "start" onClick={() => {this.newGame()}}>Next Question</button>
+
+        }
         </div>
       </div>
+
     );
   }
 
