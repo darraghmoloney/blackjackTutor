@@ -172,7 +172,7 @@
 }
 
 #pokerChipsGP {
-  background-image: url('./casino-chips.png');
+  /* background-image: url('./casino-chips.png'); */
   content: "";
   position: absolute;
   left: 50%;

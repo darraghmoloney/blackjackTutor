@@ -1236,7 +1236,7 @@ class Gameplay extends React.Component {
               </div>
 
               <div id="pokerChipsGP">
-                <img src={chips} id="chips" alt="casino chips" />
+                
               </div>
 
 
