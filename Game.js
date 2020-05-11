@@ -2,7 +2,7 @@ import React from 'react';
 import {cardDeck, makeMultiDecks, shuffleDeck} from './card.js';
 import './Quiz.css';
 import blackjackWelcome from './blackjackquizWelcome.jpg'
-import {getHint} from './hintAnswer';
+import {getHint} from './Hint.js';
 const blankCard =  "./cardImages/200px-Card_back_05.svg.png";
 class Game extends React.Component {
 
@@ -378,9 +378,12 @@ question number and for the answers section it shows question number and a messa
                  <h4 style = {styleResult}>Your high score is:&nbsp; {this.state.highScore}</h4>
                   <h4 style = {styleResult}>Your average score is:&nbsp; {averageScore} </h4>
                   <h4 style = {styleResult}> Your previous scores are:&nbsp; {PreviousScores}</h4>
+                  <div> </div>
              <button className = "start" id = "tryAgain" onClick = {this.resetHandle.bind(this)}> Try Again! </button>
                 <div className = "divider"></div>
               <button className = "start" id = "SeeAnswers" onClick = {this.seeAnswers.bind(this)}> See Answers </button>
+              <br/>
+              <div></div>
                </div>
         
           return results;      
@@ -604,6 +607,9 @@ Surrender(){
         this.setState({classSurrender:"answers"});  
         this.setButtonColor(); 
    }
+   console.log(this.state.answerChoice);
+    console.log(this.state.playerAnswers);
+    console.log(this.state.dealerAnswers);
    /* Resets the users choice*/
         this.setState({choice: ""}); 
  }
@@ -851,6 +857,9 @@ is incremented and newQuestion is called */
     this.setState({classSurrender:"answers"});  
     this.setButtonColor(); 
     this.setState({AnswerNum: this.state.AnswerNum+1});
+    console.log(this.state.answerChoice);
+    console.log(this.state.playerAnswers);
+    console.log(this.state.dealerAnswers);
   }
 
 
