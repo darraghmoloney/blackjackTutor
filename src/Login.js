@@ -38,7 +38,7 @@ class Login extends React.Component {
         </div>
         <div>
           <div>Password</div>
-          <input id="password" placeholder="Enter Password.." type="text"/>
+          <input id="password" placeholder="Enter Password.." type="password"/>
         </div>
         <button style={{margin: '10px'}} onClick={this.login}>Login</button>
         <button style={{margin: '10px'}} onClick={this.signUp}>Sign Up</button>
