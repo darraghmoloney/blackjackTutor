@@ -138,16 +138,17 @@
     left:20%;
     bottom:450px;
 }
-    
-    
-    
+
+
+
   }
   /********** Xtra Small devices only **********/
-  
+
   @media (max-width: 767px) {
-    
+
     .AboutTest{
         height:4800px;
+        font-size: 7px;
     }
     #buttonDiv{
         position: relative;

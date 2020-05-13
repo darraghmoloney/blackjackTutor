@@ -10,14 +10,14 @@ import fire from './config/fire';
 
 
 class HeaderBox extends Component {
-    
+
     logout() {
         fire.auth().signOut();
       }
-   
+
 
     render() {
-    
+
         return (
             <nav className="menu">
                 <h1 className="menu__Title">BlackJack  Tutor</h1>
@@ -28,13 +28,13 @@ class HeaderBox extends Component {
          <li> <Link className="individual_item" to='/aboutTest'>About</Link></li>
          <li><Link className="individual_item" to='/tutor'>Tutor</Link></li>
          <li> <Link className="individual_item" to='/quiz'>Quiz</Link></li>
-         <li> <Link className="individual_item" onClick={this.logout}>Logout</Link></li>
+         <li> <Link className="individual_item" to='/' onClick={this.logout}>Logout</Link></li>
 
         </ul>
-        
-        
-                
-                
+
+
+
+
             </nav>
         );
     }
