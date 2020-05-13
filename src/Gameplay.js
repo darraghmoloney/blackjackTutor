@@ -5,7 +5,7 @@ import './Gameplay.css';
 
 
 const blankCard =  "./cardImages/200px-Card_back_05.svg.png";
-const chips = "./casino-chips.png";
+// const chips = "./casino-chips.png";
 
 
 class Gameplay extends React.Component {
