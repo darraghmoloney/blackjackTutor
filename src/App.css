@@ -154,7 +154,8 @@
   }
   
   .home-tiles{
-    display: inline-block
+    display: inline-block;
+    
    
   }
 }

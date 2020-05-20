@@ -1,0 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Notable&display=swap" rel="stylesheet");
+@import url('https://fonts.googleapis.com/css?family=Josefin+Sans');
+#title{
+    font-size: 30px;
+    font-family:'Lora', serif;
+    color:rgb(29, 44, 29);
+
+}
+
+p1{
+    font-style: italic;
+    color: rgb(29, 44, 29);
+
+}

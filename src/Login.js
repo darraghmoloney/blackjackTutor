@@ -1,5 +1,6 @@
 import React from 'react';
 import fire from './config/fire';
+import './login.css';
 
 class Login extends React.Component {
 
@@ -31,7 +32,13 @@ class Login extends React.Component {
 
   render() {
     return (
+      
       <div style={{ textAlign: 'center' }}>
+        <div id="title"><strong>Welcome To BlackJack Tutor</strong> </div>
+        <p1>If You Are New To Our Platform Please Sign-Up, Otherwise
+          Proceed To Log-In With You Registered Credentials
+        </p1>
+        <div id="container">
         <div>
           <div>Email</div>
           <input id="email" placeholder="Enter Email.." type="text"/>
@@ -42,6 +49,7 @@ class Login extends React.Component {
         </div>
         <button style={{margin: '10px'}} onClick={this.login}>Login</button>
         <button style={{margin: '10px'}} onClick={this.signUp}>Sign Up</button>
+      </div>
       </div>
     )
   }
