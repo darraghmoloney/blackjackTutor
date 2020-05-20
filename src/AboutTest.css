@@ -147,7 +147,7 @@
   @media (max-width: 767px) {
 
     .AboutTest{
-        height:4800px;
+        height:2200px;
         font-size: 7px;
     }
     #buttonDiv{
@@ -160,8 +160,8 @@
         font-size: 16px;
         transition-duration: 0.4s;
         cursor: pointer;
-        width:13%;
-        top:23%;
+        width:17%;
+        top:20%;
         left:25%;      
 }
 
@@ -169,7 +169,7 @@
     background-color: rgb(15, 90, 151);
     background-image: url("https:/www.transparenttextures.com/patterns/felt.png");
     position: relative;
-    font-size: 25px;
+    font-size: 17px;
     width:1300%;
     padding:20px;
     margin-bottom: 30%;

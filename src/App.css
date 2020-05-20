@@ -154,10 +154,9 @@
   }
   
   .home-tiles{
-    height: 40%;
     display:inline;
     position: relative;
-    left:7%;
-    top: 40px;
+    left:12%;
+    top:5%;
   }
 }
