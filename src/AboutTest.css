@@ -168,11 +168,7 @@
 #button1,#button2,#button4,#button3,#button5{
     background-color: rgb(15, 90, 151);
     background-image: url("https:/www.transparenttextures.com/patterns/felt.png");
-    position: relative;
     font-size: 17px;
-    width:1300%;
-    padding:20px;
-    margin-bottom: 30%;
 }
 
 #warningDiv{
