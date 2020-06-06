@@ -1,4 +1,4 @@
-# BlackjackTutor
+# :spades: BlackjackTutor
 
 
 A Blackjack app that teaches you to play better and (hopefully) win more!
