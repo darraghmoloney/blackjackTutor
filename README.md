@@ -2,7 +2,7 @@
 
 
 A Blackjack app that teaches you to play better and (hopefully) win more!
-[Check it out!](http://35.214.8.107:3000/)
+[Check it out!](http://35.214.8.107:3000/) _(And it's LIVE!)_
 
 
 ### Play Better
@@ -30,7 +30,7 @@ Other contributors to the Master branch were:
 
 ---
 _Disclaimers:_ 
-* _As this is a prototype app, phone numbers, addresses etc are not real._
+* _As this is a prototype app, phone numbers, addresses, various quotes, etc are not real._
 * _We make no guarantee of actually improving your skills or that you can win any money._
 * _A card counting feature hasn't been implemented yet, but we're looking into the kicking you out of the casino if you're too good feature._
 * _Card images used are public domain._
