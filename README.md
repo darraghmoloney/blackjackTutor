@@ -23,7 +23,7 @@ This app is developed with a React front-end and is platform-independent. It use
 
 This is a clone of the original repository hosted at Gitlab.
 
-This app was developed for Maynooth University's CS385 Software Project module as part of a team, using SCRUM. 
+This app was developed for [Maynooth University's](https://www.maynoothuniversity.ie/) CS353 [Software Project](https://www.maynoothuniversity.ie/international/study-maynooth/available-courses/computer-science)  module as part of a team, using SCRUM. 
 Other contributors to the Master branch were: 
 * [derryb51](https://gitlab.com/derryb51) 
 * [PatrickCarroll11](https://gitlab.com/PatrickCarroll11) 
