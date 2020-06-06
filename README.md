@@ -18,12 +18,16 @@ Track your progress and improvement.
 Check out the About section if you're a beginner and learn a bit more about the game.
 
 
-This app is developed with a React front-end and is platform-independent. It uses Firebase for login and registration of users.
-It's hosted using a Google Cloud on-demand VM.
-
-Developed for Maynooth University's CS385 Software Project module as part of a team, using SCRUM.
+This app is developed with a React front-end and is platform-independent. It uses Firebase for login and registration of users. It's hosted using a Google Cloud on-demand VM.
 
 This is a clone of the original repository hosted at Gitlab.
+
+This app was developed for Maynooth University's CS385 Software Project module as part of a team, using SCRUM. 
+Other contributors to the Master branch were: 
+* [derryb51](https://gitlab.com/derryb51) 
+* [PatrickCarroll11](https://gitlab.com/PatrickCarroll11) 
+
+
 
 _Disclaimers:_ 
 * _As this is a prototype app, phone numbers, addresses etc are not real._
