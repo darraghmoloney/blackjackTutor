@@ -6,16 +6,16 @@ A Blackjack app that teaches you to play better and (hopefully) win more!
 
 
 ### Play Better
-Play a Blackjack game and get hints on the best thing to do based on basic Blackjack strategy.
+Play a Blackjack game on the **Tutor** page and get hints on the best thing to do based on Blackjack [Basic Strategy](https://en.wikipedia.org/wiki/Blackjack#Basic_strategy).
 
 ### Check Your Strategy
-Test your knowledge in the Quiz mode by choosing the correct action in a randomly generated mix of ten questions.
+Test your knowledge on the **Quiz** page by choosing the correct action in a randomly generated mix of ten questions.
 
 ### Motivate Yourself
-Track your progress and improvement.
+Track your progress and improvement as your best Quiz scores are stored.
 
 ### Get The Info
-Check out the About section if you're a beginner and learn a bit more about the game.
+Check out the **About** section if you're a beginner and learn a bit more about the game.
 
 
 This app is developed with a React front-end and is platform-independent. It uses Firebase for login and registration of users. It's hosted using a Google Cloud on-demand VM.
@@ -28,7 +28,7 @@ Other contributors to the Master branch were:
 * [PatrickCarroll11](https://gitlab.com/PatrickCarroll11) 
 
 
-
+---
 _Disclaimers:_ 
 * _As this is a prototype app, phone numbers, addresses etc are not real._
 * _We make no guarantee of actually improving your skills or that you can win any money._
