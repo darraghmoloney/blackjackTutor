@@ -1,18 +1,20 @@
 # BlackjackTutor
 
+
 A Blackjack app that teaches you to play better and (hopefully) win more!
 [Check it out!](http://35.214.8.107:3000/)
 
-## Play Better
+
+### Play Better
 Play a Blackjack game and get hints on the best thing to do based on basic Blackjack strategy.
 
-## Check Your Strategy
+### Check Your Strategy
 Test your knowledge in the Quiz mode by choosing the correct action in a randomly generated mix of ten questions.
 
-## Motivate Yourself
+### Motivate Yourself
 Track your progress and improvement.
 
-## Get The Info
+### Get The Info
 Check out the About section if you're a beginner and learn a bit more about the game.
 
 
@@ -23,7 +25,8 @@ Developed for Maynooth University's CS385 Software Project module as part of a t
 
 This is a clone of the original repository hosted at Gitlab.
 
-_Disclaimers: 
-* As this is a prototype app, phone numbers, addresses etc are not real.
-* We make no guarantee of actually improving your skills or that you can win any money.
-* A card counting feature hasn't been implemented yet, but we're looking into the kicking you out of the casino if you're too good feature._
+_Disclaimers:_ 
+* _As this is a prototype app, phone numbers, addresses etc are not real._
+* _We make no guarantee of actually improving your skills or that you can win any money._
+* _A card counting feature hasn't been implemented yet, but we're looking into the kicking you out of the casino if you're too good feature._
+* _Card images used are public domain._
