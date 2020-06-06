@@ -26,8 +26,7 @@ This is a clone of the original repository hosted at Gitlab.
 This app was developed for [Maynooth University's](https://www.maynoothuniversity.ie/) CS353 [Software Project](https://www.maynoothuniversity.ie/international/study-maynooth/available-courses/computer-science)  module as part of a team, using SCRUM. 
 Other contributors to the Master branch were: 
 * [derryb51](https://gitlab.com/derryb51) 
-* [PatrickCarroll11](https://gitlab.com/PatrickCarroll11) 
-** _(Note - contributions not showing correctly for PatrickCarroll11 as he's not a member of Github)_
+* [PatrickCarroll11](https://gitlab.com/PatrickCarroll11)  _(Note - contributions not showing correctly here for PatrickCarroll11 as he's not a Github member)_
 
 
 ---
