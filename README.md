@@ -18,6 +18,7 @@ Track your progress and improvement as your best Quiz scores are stored.
 Check out the **About** section if you're a beginner and learn a bit more about the game.
 
 
+---
 This app is developed with a React front-end and is platform-independent. It uses Firebase for login and registration of users. It's hosted using a Google Cloud on-demand VM.
 
 This is a clone of the original repository hosted at Gitlab.
