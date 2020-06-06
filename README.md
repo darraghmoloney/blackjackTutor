@@ -27,6 +27,7 @@ This app was developed for [Maynooth University's](https://www.maynoothuniversit
 Other contributors to the Master branch were: 
 * [derryb51](https://gitlab.com/derryb51) 
 * [PatrickCarroll11](https://gitlab.com/PatrickCarroll11) 
+** _(Note - contributions not showing correctly for PatrickCarroll11 as he's not a member of Github)_
 
 
 ---
