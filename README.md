@@ -2,7 +2,10 @@
 
 
 A Blackjack app that teaches you to play better and (hopefully) win more!
-<mark>[Check it out!](http://35.214.8.107:3000/)</mark> 
+
+![Blackjack Tutor - Gameplay Page](https://user-images.githubusercontent.com/56196541/87729040-514cfb00-c7bc-11ea-870c-d963e312ffd6.png)
+
+[Check it out!](http://35.214.8.107:3000/)
 
 
 ### Play Better
